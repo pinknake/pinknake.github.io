@@ -1,10 +1,11 @@
 const masterItems = {
-  Spices: ["Mirch", "Haldi", "Dhaniya", "Jeera", "Garam Masala"],
-  Oils: ["Mustard Oil 1L", "Mustard Oil 5L", "Refined Oil 1L"],
-  Grains: ["Rice", "Atta", "Chane White 250g"],
-  Dairy: ["Ghee 1kg", "Ghee 2kg", "Milk"],
-  Snacks: ["Biscuits", "Chips", "Namkeen"],
-  Bathroom: ["Soap 2 Pack", "Soap 4 Pack", "Clinic Plus", "Surf Excel 1kg", "Vanish"]
+  Spices: ["Mirch/मिर्च", "Haldi/हल्दी", "Dhaniya/धनिया", "Jeera/जीरा", "Garam Masala/ गरम मसाला", "कड़ी पत्ता", "बेसन", "मेधा" ],
+  Oils: ["Mustard Oil/ सरसों तेल 1L", "Mustard Oil 5L", "Refined Oil/ रिफाइंड 1L"],
+  Grains: ["Rice/ चावल", "Atta/आटा ", "Chane White 250g/ सफेद चना", "काले छोले", " मूंग दाल", "चना दाल", " मां दाल", " काली दाल" "मुंगी मश्री दाल","  ],  
+  Shabji: ["Shabji/ सब्जी", "Tamato/टमाटर", "pea/ मटर", "Colefolower/गोबी", "Patato/अल्लू", " प्याज", "बैंगन", " पत्ता गोभी" ," शिमला मिर्च", " हरी मिर्च", " लहसुन", " गाजर", " मूली"],
+  Dairy: ["Ghee/ देसीघी kg", " पनीर", "milk/दूध", "curd/दही" ],
+Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीराम भुजिया ", "Samoosa/ समोसा ],
+  Bathroom: ["Soap/ शैंपू 2 Pack", "Soap/ गोदरेज साबुन 4 Pack", "Clinic Plus/ क्लीनिंग प्लस शैंपू ", "Surf Excel/ सर्फ एक्सेल ", "Vanish/ वेनिस", "Ezzy/ ईजी"]
 };
 
 let kitchenData = JSON.parse(localStorage.getItem("kitchenData")) || [];
@@ -80,7 +81,8 @@ function renderKitchen(){
         </td>
       </tr>
     `).join("");
-
+    updateHomeSummary();
+  
   const totalExpense = kitchenData.reduce((a,b)=>a+b.total,0);
   document.getElementById("kitchenTotal").innerText = totalExpense;
 
@@ -89,6 +91,7 @@ function renderKitchen(){
                 .reduce((a,b)=>a+b.total,0);
 
   document.getElementById("monthlyTotal").innerText = monthly;
+  updateHomeSummary();
 }
 
 function deleteEntry(i){
@@ -96,6 +99,46 @@ function deleteEntry(i){
   localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
   renderKitchen();
 }
+
+function updateHomeSummary(){
+
+  const now = new Date();
+  const today = now.toDateString();
+  const currentWeek = now.getWeek?.() || getWeekNumber(now);
+  const currentMonth = now.getMonth();
+
+  let todayTotal=0, weekTotal=0, monthTotal=0, grandTotal=0;
+
+  kitchenData.forEach(e=>{
+    const d = new Date(e.date);
+    grandTotal += e.total;
+
+    if(d.toDateString()===today){
+      todayTotal += e.total;
+    }
+
+    if(getWeekNumber(d)===currentWeek){
+      weekTotal += e.total;
+    }
+
+    if(d.getMonth()===currentMonth){
+      monthTotal += e.total;
+    }
+  });
+
+  document.getElementById("todayTotal").innerText = todayTotal;
+  document.getElementById("weekTotal").innerText = weekTotal;
+  document.getElementById("monthTotal").innerText = monthTotal;
+  document.getElementById("grandTotal").innerText = grandTotal;
+}
+
+function getWeekNumber(d){
+  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+}
+
 
 function shareTable(){
 
