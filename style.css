@@ -65,3 +65,30 @@ button {
   border-radius: 8px;
   cursor: pointer;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th {
+  background: #4e73df;
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #f2f2f2;
+}
+
+.card label {
+  font-weight: 600;
+}
