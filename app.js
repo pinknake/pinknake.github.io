@@ -1,62 +1,125 @@
-const itemsDatabase = {
-  Spices: ["Mirch (Chili)", "Haldi (Turmeric)", "Dhaniya", "Jeera"],
-  Vegetables: ["Potato", "Onion", "Tomato"],
+const masterItems = {
+  Spices: ["Mirch", "Haldi", "Dhaniya", "Jeera", "Garam Masala"],
+  Oils: ["Mustard Oil 1L", "Mustard Oil 5L", "Refined Oil 1L"],
+  Grains: ["Rice", "Atta", "Chane White 250g"],
+  Dairy: ["Ghee 1kg", "Ghee 2kg", "Milk"],
   Snacks: ["Biscuits", "Chips", "Namkeen"],
-  Bathroom: ["Soap 2 Pack", "Soap 4 Pack", "Clinic Plus Packet", "Clinic Plus 5L Bottle", "Surf Excel 500g", "Surf Excel 1kg", "Surf Excel 5kg"],
-  Groceries: ["Ghee 1kg", "Ghee 2kg", "Mustard Oil 1L", "Mustard Oil 5L", "Chane 150g", "Chane 250g"]
+  Bathroom: ["Soap 2 Pack", "Soap 4 Pack", "Clinic Plus", "Surf Excel 1kg", "Vanish"]
 };
-let kitchenRecords = JSON.parse(localStorage.getItem("kitchenRecords")) || [];
 
-const categorySelect = document.getElementById("category");
-const predefinedSelect = document.getElementById("predefinedItems");
+let kitchenData = JSON.parse(localStorage.getItem("kitchenData")) || [];
+let tempItems = [];
+
+const categoryEl = document.getElementById("category");
+const itemEl = document.getElementById("itemSelect");
+
+function loadCategories(){
+  categoryEl.innerHTML = Object.keys(masterItems)
+    .map(cat=>`<option>${cat}</option>`).join("");
+  loadItems();
+}
 
 function loadItems(){
-  const category = categorySelect.value;
-  predefinedSelect.innerHTML = itemsDatabase[category]
-    .map(item => `<option>${item}</option>`)
-    .join("");
+  const cat = categoryEl.value;
+  itemEl.innerHTML = masterItems[cat]
+    .map(i=>`<option>${i}</option>`).join("");
 }
-categorySelect.addEventListener("change", loadItems);
-loadItems();
 
-function addKitchenItem(){
-  const item = predefinedSelect.value;
-  const quantity = document.getElementById("quantity").value;
-  const type = document.getElementById("itemType").value;
+categoryEl.addEventListener("change", loadItems);
+loadCategories();
 
-  if(!quantity) return alert("Enter quantity");
+function addTempItem(){
+  const item = itemEl.value;
+  const qty = document.getElementById("qty").value;
+  const type = document.getElementById("type").value;
 
-  kitchenRecords.push({
+  if(!qty) return alert("Enter quantity");
+
+  tempItems.push(`${item} - ${qty} (${type})`);
+  renderTemp();
+}
+
+function renderTemp(){
+  document.getElementById("tempList").innerHTML =
+    tempItems.map((i,index)=>
+      `<li>${i} 
+        <button onclick="removeTemp(${index})">❌</button>
+      </li>`).join("");
+}
+
+function removeTemp(i){
+  tempItems.splice(i,1);
+  renderTemp();
+}
+
+function saveKitchenEntry(){
+  const total = document.getElementById("totalAmount").value;
+  if(tempItems.length===0) return alert("Add items first");
+
+  kitchenData.push({
     date: new Date().toLocaleString(),
-    item: `${item} - ${quantity} (${type})`,
-    amount: ""
+    items: [...tempItems],
+    total: Number(total),
   });
 
-  localStorage.setItem("kitchenRecords", JSON.stringify(kitchenRecords));
+  tempItems = [];
+  localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
   renderKitchen();
+  renderTemp();
 }
 
 function renderKitchen(){
   document.getElementById("kitchenTable").innerHTML =
-    kitchenRecords.map((r,i)=>`
+    kitchenData.map((entry,index)=>`
       <tr>
-        <td>${r.date}</td>
-        <td>${r.item}</td>
+        <td>${entry.date}</td>
+        <td>${entry.items.join("<br>")}</td>
+        <td>₹ ${entry.total}</td>
         <td>
-          <input type="number" placeholder="Enter ₹" 
-          value="${r.amount}"
-          onchange="updateAmount(${i}, this.value)">
+          <button class="delete-btn" onclick="deleteEntry(${index})">Delete</button>
         </td>
       </tr>
     `).join("");
+
+  const totalExpense = kitchenData.reduce((a,b)=>a+b.total,0);
+  document.getElementById("kitchenTotal").innerText = totalExpense;
+
+  const month = new Date().getMonth();
+  const monthly = kitchenData.filter(e=> new Date(e.date).getMonth()===month)
+                .reduce((a,b)=>a+b.total,0);
+
+  document.getElementById("monthlyTotal").innerText = monthly;
 }
 
-function updateAmount(index,value){
-  kitchenRecords[index].amount = value;
-  localStorage.setItem("kitchenRecords", JSON.stringify(kitchenRecords));
+function deleteEntry(i){
+  kitchenData.splice(i,1);
+  localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
+  renderKitchen();
+}
+
+function shareTable(){
+  const lang = prompt("Share in English or Hindi? Type: en / hi");
+
+  let message = "";
+
+  if(lang==="hi"){
+    message = "📊 रसोई खर्च सूची\n\n";
+  } else {
+    message = "📊 Kitchen Expense List\n\n";
+  }
+
+  kitchenData.forEach(e=>{
+    message += `📅 ${e.date}\n`;
+    e.items.forEach(i=> message += `• ${i}\n`);
+    message += `💰 Total: ₹${e.total}\n\n`;
+  });
+
+  window.open("https://wa.me/?text="+encodeURIComponent(message));
 }
 
 renderKitchen();
+
+
 function showTab(id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
