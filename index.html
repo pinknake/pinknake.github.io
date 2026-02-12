@@ -35,11 +35,49 @@
 
 <!-- Kitchen -->
 <section id="kitchen" class="tab">
-  <h2>🍳 Kitchen Stock</h2>
-  <input id="itemName" placeholder="Item Name">
-  <input id="itemQty" placeholder="Quantity">
-  <button onclick="addKitchen()">Add</button>
-  <ul id="kitchenList"></ul>
+  <h2>🍳 Kitchen & Home Stock</h2>
+
+  <div class="card">
+
+    <label>Category</label>
+    <select id="category">
+      <option>Spices</option>
+      <option>Vegetables</option>
+      <option>Snacks</option>
+      <option>Bathroom</option>
+      <option>Groceries</option>
+    </select>
+
+    <label>Select Item</label>
+    <select id="predefinedItems"></select>
+
+    <label>Quantity</label>
+    <input id="quantity" placeholder="e.g. 250g / 1kg / 2 pack">
+
+    <label>Type</label>
+    <select id="itemType">
+      <option>Packet</option>
+      <option>Open</option>
+      <option>Bottle</option>
+    </select>
+
+    <button onclick="addKitchenItem()">Add Item</button>
+
+  </div>
+
+  <br>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date & Time</th>
+        <th>Items</th>
+        <th>Total Amount ₹</th>
+      </tr>
+    </thead>
+    <tbody id="kitchenTable"></tbody>
+  </table>
+
 </section>
 
 <!-- Market -->
