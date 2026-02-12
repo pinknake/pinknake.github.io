@@ -1,3 +1,32 @@
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 15px;
+}
+
+.summary-card {
+  background: linear-gradient(135deg,#4e73df,#1cc88a);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.total-card {
+  background: linear-gradient(135deg,#e74a3b,#f6c23e);
+}
+
+table {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+th {
+  background: linear-gradient(135deg,#36b9cc,#1cc88a);
+}
+
+
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
