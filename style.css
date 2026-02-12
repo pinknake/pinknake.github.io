@@ -92,3 +92,28 @@ tr:hover {
 .card label {
   font-weight: 600;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th {
+  background: #1cc88a;
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.delete-btn {
+  background: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+
