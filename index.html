@@ -26,15 +26,33 @@
 
 <!-- Dashboard -->
 <section id="dashboard" class="tab active">
-  <h2>📊 Aaj Ka Summary</h2>
-  <div class="card">
-    <p>Total Kharch: ₹ <span id="totalExpense">0</span></p>
-    <p>Total Entries: <span id="totalEntries">0</span></p>
+  <h2>🏠 Home Dashboard</h2>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h4>Today</h4>
+      ₹ <span id="todayTotal">0</span>
+    </div>
+
+    <div class="summary-card">
+      <h4>This Week</h4>
+      ₹ <span id="weekTotal">0</span>
+    </div>
+
+    <div class="summary-card">
+      <h4>This Month</h4>
+      ₹ <span id="monthTotal">0</span>
+    </div>
+
+    <div class="summary-card total-card">
+      <h4>Total Expense</h4>
+      ₹ <span id="grandTotal">0</span>
+    </div>
   </div>
 </section>
 
 <!-- Kitchen -->
-y<section id="kitchen" class="tab">
+<section id="kitchen" class="tab">
   <h2>🍳 Kitchen Manager</h2>
 
   <div class="card">
