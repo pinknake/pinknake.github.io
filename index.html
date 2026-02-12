@@ -1,228 +1,77 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🇮🇳 Bharat Music 🎶</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon.png">
-  <meta name="theme-color" content="#d81b60">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      background: linear-gradient(to right, #fff, #fce4ec);
-      color: #333;
-    }header {
-  background: #d81b60;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  background: #f8bbd0;
-  padding: 10px 0;
-  font-size: 14px;
-}
-
-.tabs div {
-  padding: 6px 12px;
-  border-radius: 20px;
-  background: #fff0f5;
-  color: #880e4f;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.tabs div.active, .tabs div:hover {
-  background: #f48fb1;
-}
-
-.container {
-  padding: 15px;
-}
-
-.playlist input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-ul#songList {
-  list-style: none;
-  padding: 0;
-}
-    
-ul#songList li {
-  background: #ffffff;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-ul#songList li:hover {
-  transform: scale(1.01);
-}
-
-.song-cover {
-  width: 50px;
-  height: 50px;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-right: 12px;
-  border: 2px solid #ec407a;
-}
-
-.song-info {
-  flex: 1;
-}
-
-.song-info strong {
-  display: block;
-  color: #d81b60;
-}
-
-.player {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.player img {
-  width: 220px;
-  border-radius: 12px;
-  border: 4px solid #f06292;
-  margin-bottom: 10px;
-}
-
-.player h2 {
-  font-size: 20px;
-  color: #c2185b;
-  margin-bottom: 10px;
-}
-
-audio {
-  width: 100%;
-  max-width: 420px;
-}
-
-.mini-player {
-  position: fixed;
-  bottom: 60px;
-  left: 0;
-  right: 0;
-  background: #fff0f5;
-  border-top: 2px solid #f06292;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  z-index: 1000;
-}
-
-.mini-player img {
-  width: 50px;
-  height: 50px;
-  border-radius: 6px;
-  margin-right: 10px;
-  object-fit: cover;
-  border: 2px solid #ec407a;
-}
-
-.mini-info {
-  flex: 1;
-}
-
-.mini-info strong {
-  color: #d81b60;
-  font-size: 15px;
-}
-
-.mini-info audio {
-  width: 100%;
-}
-.installBtn:hover {
-  background: #c2185b;
-}
-    
-.share-btn {
-  margin-left: 10px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 8px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.ad-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #f5f5f5;
-  text-align: center;
-  padding: 5px;
-  z-index: 999;
-}
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghar Manager</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>🇮🇳 Bharat Music 🎶</header>
-  <div class="tabs">
-    <div class="tab active" onclick="filterTab('songs')">Songs</div>
-    <div class="tab" onclick="filterTab('playlists')">Playlists</div>
-    <div class="tab" onclick="filterTab('artists')">Artists</div>
-    <div class="tab" onclick="filterTab('genres')">Genres</div>
-    <div class="tab" onclick="filterTab('folders')">Folders</div>
-  <button id="installBtn" style="display:none;position:fixed;top:15px;right:15px;background:#d81b60;color:#fff;padding:10px 15px;border:none;border-radius:8px;font-weight:bold;z-index10:999;">
-  📲 Install
-</button>
+
+<header>
+  <h1>🏠 Ghar Manager</h1>
+  <div id="datetime"></div>
+</header>
+
+<nav>
+  <button onclick="showTab('dashboard')">Home</button>
+  <button onclick="showTab('kitchen')">Kitchen</button>
+  <button onclick="showTab('market')">Market</button>
+  <button onclick="showTab('lenden')">Len-Den</button>
+  <button onclick="showTab('history')">History</button>
+</nav>
+
+<main>
+
+<!-- Dashboard -->
+<section id="dashboard" class="tab active">
+  <h2>📊 Aaj Ka Summary</h2>
+  <div class="card">
+    <p>Total Kharch: ₹ <span id="totalExpense">0</span></p>
+    <p>Total Entries: <span id="totalEntries">0</span></p>
   </div>
-  <div class="container">
-    <div class="playlist">
-      <input type="text" id="search" placeholder="Search songs..." />
-      <ul id="songList"></ul>
-    </div>
-    <div class="player">
-      <img id="cover" src="covers/default.jpg" alt="cover">
-      <h2 id="title">Select a Song</h2>
-      <audio id="audioPlayer" controls autoplay></audio>
-    </div>
-  </div>
-  <div class="mini-player">
-    <img id="miniCover" src="covers/default.jpg" alt="cover">
-    <div class="mini-info">
-      <strong id="miniTitle">No Song Playing</strong>
-      <audio id="miniAudio" controls></audio>
-    </div>
-    <button class="share-btn" onclick="shareSong()">📤 Share</button>
-  </div>
-  <div class="ad-banner">
-    <script type="text/javascript">
-      atOptions = {
-        'key': '2839a3c1ca8fc9e07589a1b83ea67a15',
-        'format': 'iframe',
-        'height': 50,
-        'width': 320,
-        'params': {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
-  </div>
-  <script>
+</section>
+
+<!-- Kitchen -->
+<section id="kitchen" class="tab">
+  <h2>🍳 Kitchen Stock</h2>
+  <input id="itemName" placeholder="Item Name">
+  <input id="itemQty" placeholder="Quantity">
+  <button onclick="addKitchen()">Add</button>
+  <ul id="kitchenList"></ul>
+</section>
+
+<!-- Market -->
+<section id="market" class="tab">
+  <h2>🛒 Market List</h2>
+  <input id="marketItem" placeholder="What to bring?">
+  <button onclick="addMarket()">Add</button>
+  <ul id="marketList"></ul>
+  <button onclick="shareWhatsApp()">Share to WhatsApp</button>
+</section>
+
+<!-- Len Den -->
+<section id="lenden" class="tab">
+  <h2>💰 Len-Den Record</h2>
+  <input id="person" placeholder="Naam">
+  <input id="amount" type="number" placeholder="Amount ₹">
+  <select id="method">
+    <option>Cash</option>
+    <option>Bank</option>
+    <option>Credit Card</option>
+  </select>
+  <button onclick="addTransaction()">Save</button>
+</section>
+
+<!-- History -->
+<section id="history" class="tab">
+  <h2>📜 History</h2>
+  <ul id="historyList"></ul>
+</section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
