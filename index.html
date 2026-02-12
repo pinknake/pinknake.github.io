@@ -34,52 +34,66 @@
 </section>
 
 <!-- Kitchen -->
-<section id="kitchen" class="tab">
-  <h2>🍳 Kitchen & Home Stock</h2>
+y<section id="kitchen" class="tab">
+  <h2>🍳 Kitchen Manager</h2>
 
   <div class="card">
 
     <label>Category</label>
-    <select id="category">
-      <option>Spices</option>
-      <option>Vegetables</option>
-      <option>Snacks</option>
-      <option>Bathroom</option>
-      <option>Groceries</option>
-    </select>
+    <select id="category"></select>
 
     <label>Select Item</label>
-    <select id="predefinedItems"></select>
+    <select id="itemSelect"></select>
 
     <label>Quantity</label>
-    <input id="quantity" placeholder="e.g. 250g / 1kg / 2 pack">
+    <input id="qty" placeholder="250g / 1kg / 2 Pack">
 
     <label>Type</label>
-    <select id="itemType">
+    <select id="type">
       <option>Packet</option>
       <option>Open</option>
       <option>Bottle</option>
     </select>
 
-    <button onclick="addKitchenItem()">Add Item</button>
+    <button onclick="addTempItem()">Add To Entry</button>
+
+    <hr>
+
+    <h4>Selected Items</h4>
+    <ul id="tempList"></ul>
+
+    <label>Total Amount ₹</label>
+    <input type="number" id="totalAmount">
+
+    <button onclick="saveKitchenEntry()">Save Entry</button>
 
   </div>
+
+  <br>
+
+  <h3>Total Kitchen Expense: ₹ <span id="kitchenTotal">0</span></h3>
+  <h4>Monthly Summary: ₹ <span id="monthlyTotal">0</span></h4>
 
   <br>
 
   <table>
     <thead>
       <tr>
-        <th>Date & Time</th>
+        <th>Date</th>
         <th>Items</th>
-        <th>Total Amount ₹</th>
+        <th>Total ₹</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody id="kitchenTable"></tbody>
   </table>
 
-</section>
+  <br>
 
+  <button onclick="shareTable()">📤 Share WhatsApp</button>
+
+</section>
+  
 <!-- Market -->
 <section id="market" class="tab">
   <h2>🛒 Market List</h2>
