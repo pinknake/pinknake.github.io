@@ -1,7 +1,7 @@
 {
   "name": "Ghar Manager",
   "short_name": "GharApp",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#1e3c72",
