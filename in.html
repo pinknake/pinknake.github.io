@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2a5298">
+<title>Ghar Manager</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1>🏠 Ghar Manager</h1>
+  <div id="datetime"></div>
+</header>
+
+<nav>
+  <button onclick="showTab('dashboard')">Home</button>
+  <button onclick="showTab('kitchen')">Kitchen</button>
+  <button onclick="showTab('market')">Market</button>
+  <button onclick="showTab('lenden')">Len-Den</button>
+  <button onclick="showTab('history')">History</button>
+  <button onclick="shareApp()">📤 Share App</button>
+</nav>
+
+<main>
+
+<section id="dashboard" class="tab active">
+  <h2>🏠 Home Dashboard</h2>
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <h4>Today</h4>
+      ₹ <span id="todayTotal">0</span>
+    </div>
+
+    <div class="summary-card">
+      <h4>Install App</h4>
+      <button id="installBtn" class="install-btn" style="display:none;">
+        📲 Install App
+      </button>
+    </div>
+
+    <div class="summary-card">
+      <h4>This Week</h4>
+      ₹ <span id="weekTotal">0</span>
+    </div>
+
+    <div class="summary-card">
+      <h4>This Month</h4>
+      ₹ <span id="monthTotal">0</span>
+    </div>
+
+    <div class="summary-card total-card">
+      <h4>Total Expense</h4>
+      ₹ <span id="grandTotal">0</span>
+    </div>
+
+  </div>
+</section>
+
+<section id="kitchen" class="tab">
+  <h2 style="text-align:center;color:#1cc88a;">
+    🍳 Kitchen Portfolio – Happy Home ❤️
+  </h2>
+
+  <div class="card">
+
+    <label>Category</label>
+    <select id="category"></select>
+
+    <label>Select Item</label>
+    <select id="itemSelect"></select>
+
+    <label>Quantity</label>
+    <input id="qty" placeholder="250g / 1kg / 2 Pack">
+
+    <label>Type</label>
+    <select id="type">
+      <option>Packet</option>
+      <option>Open</option>
+      <option>Bottle</option>
+    </select>
+
+    <button onclick="addTempItem()">Add To Entry</button>
+
+    <hr>
+
+    <h4>Selected Items</h4>
+    <ul id="tempList"></ul>
+
+    <label>Total Amount ₹</label>
+    <input type="number" id="totalAmount">
+
+    <button onclick="saveKitchenEntry()">Save Entry</button>
+
+  </div>
+
+  <h3>Total Kitchen Expense: ₹ <span id="kitchenTotal">0</span></h3>
+  <h4>Monthly Summary: ₹ <span id="monthlyTotal">0</span></h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Items</th>
+        <th>Total ₹</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="kitchenTable"></tbody>
+  </table>
+
+  <button onclick="shareTable()">📤 Share WhatsApp</button>
+</section>
+
+<section id="market" class="tab">
+  <h2>🛒 Market List</h2>
+  <input id="marketItem" placeholder="What to bring?">
+  <button onclick="addMarket()">Add</button>
+  <ul id="marketList"></ul>
+  <button onclick="shareWhatsApp()">Share to WhatsApp</button>
+</section>
+
+<section id="lenden" class="tab">
+  <h2>💰 Len-Den Record</h2>
+  <input id="person" placeholder="Naam">
+  <input id="amount" type="number" placeholder="Amount ₹">
+  <select id="method">
+    <option>Cash</option>
+    <option>Bank</option>
+    <option>Credit Card</option>
+  </select>
+  <button onclick="addTransaction()">Save</button>
+</section>
+
+<section id="history" class="tab">
+  <h2>📜 History</h2>
+  <ul id="historyList"></ul>
+</section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
