@@ -14,14 +14,9 @@
 <header>
   <h1>🏠 Ghar Manager</h1>
   <div id="datetime"></div>
-
-  <button id="installBtn" class="install-btn">
-    📲 Install App
-  </button>
 </header>
 
 <nav>
-  <button onclick="shareApp()">📤 Share App</button>
   <button onclick="showTab('dashboard')">Home</button>
   <button onclick="showTab('kitchen')">Kitchen</button>
   <button onclick="showTab('market')">Market</button>
@@ -39,7 +34,12 @@
       <h4>Today</h4>
       ₹ <span id="todayTotal">0</span>
     </div>
-
+<div class = summary-card">
+  <h4>Install app</h4>
+  <button id="installBtn" class="install-btn">
+    📲 Install App
+  </button>
+</div>
     <div class="summary-card">
       <h4>This Week</h4>
       ₹ <span id="weekTotal">0</span>
@@ -55,8 +55,9 @@
       ₹ <span id="grandTotal">0</span>
     </div>
   </div>
+  
 </section>
-
+<button onclick="shareApp()">📤 Share App</button>
 <!-- Kitchen -->
 <section id="kitchen" class="tab">
 <h2 style="text-align:center;color:#1cc88a;">
