@@ -1,0 +1,16 @@
+{
+  "name": "Ghar Manager",
+  "short_name": "GharApp",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#1e3c72",
+  "theme_color": "#2a5298",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3176/3176363.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
