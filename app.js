@@ -1,3 +1,16 @@
+function shareApp(){
+  if(navigator.share){
+    navigator.share({
+      title: "Ghar Manager",
+      text: "Check out my Ghar Manager App 🔥",
+      url: window.location.href
+    });
+  } else {
+    window.open("https://wa.me/?text=" + encodeURIComponent(window.location.href));
+  }
+}
+
+
 const masterItems = {
   Spices: [
     "Mirch/मिर्च",
@@ -151,7 +164,7 @@ function renderKitchen(){
                 .reduce((a,b)=>a+b.total,0);
 
   document.getElementById("monthlyTotal").innerText = monthly;
-  updateHomeSummary();
+  
 }
 
 function deleteEntry(i){
@@ -293,3 +306,27 @@ function render(){
 }
 
 render();
+
+
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "inline-block";
+});
+
+installBtn.addEventListener("click", async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log("User response:", outcome);
+    deferredPrompt = null;
+    installBtn.style.display = "none";
+  }
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
