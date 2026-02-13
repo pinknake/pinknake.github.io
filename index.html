@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2a5298">
-  <button onclick="shareApp()">📤 Share App</button>
- 
   <title>Ghar Manager</title>  
   <button id="installBtn" style="display:none;">
   📲 Install App
@@ -22,8 +20,6 @@
 </header>
 
 <nav>
-  <button id="installBtn" style="display:none;">
-  📲 Install App
   <button onclick="showTab('dashboard')">Home</button>
   <button onclick="showTab('kitchen')">Kitchen</button>
   <button onclick="showTab('market')">Market</button>
@@ -36,7 +32,10 @@
 <!-- Dashboard -->
 <section id="dashboard" class="tab active">
   <h2>🏠 Home Dashboard</h2>
-
+<button onclick="shareApp()">📤 Share App</button>
+ <button id="installBtn" style="display:none;">
+  📲 Install App
+    
   <div class="summary-grid">
     <div class="summary-card">
       <h4>Today</h4>
