@@ -307,32 +307,6 @@ function render(){
 
 render();
 
-
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById("installBtn").style.display = "inline-block";
-});
-
-document.getElementById("installBtn").addEventListener("click", async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const choice = await deferredPrompt.userChoice;
-    console.log(choice.outcome);
-    deferredPrompt = null;
-  }
-});
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("SW registered"))
-      .catch(err => console.log("SW error", err));
-  });
-}
-
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
@@ -350,3 +324,11 @@ installBtn.addEventListener("click", async () => {
     deferredPrompt = null;
   }
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("SW registered"))
+      .catch(err => console.log("SW error", err));
+  });
+}
