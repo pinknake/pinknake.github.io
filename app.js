@@ -192,6 +192,37 @@ document.addEventListener("DOMContentLoaded", function () {
     ).join("");
   }
 
+
+function shareTable() {
+
+  let table = document.getElementById("kitchenTable");
+  let rows = table.getElementsByTagName("tr");
+
+  if(rows.length === 0){
+    alert("No data to share!");
+    return;
+  }
+
+  let message = "🍳 Kitchen Expense Report\n\n";
+
+  for(let i=0; i<rows.length; i++){
+    let cols = rows[i].getElementsByTagName("td");
+    if(cols.length > 0){
+      message += 
+        "Date: " + cols[0].innerText + "\n" +
+        "Items: " + cols[1].innerText + "\n" +
+        "Total: ₹" + cols[2].innerText + "\n\n";
+    }
+  }
+
+  let encodedMessage = encodeURIComponent(message);
+  let url = "https://wa.me/?text=" + encodedMessage;
+
+  window.open(url, "_blank");
+}
+
+
+
   /* =========================
      UTIL
   ========================== */
