@@ -313,7 +313,7 @@ const installBtn = document.getElementById("installBtn");
 window.addEventListener("beforeinstallprompt", (e)=>{
   e.preventDefault();
   deferredPrompt = e;
-  installBtn.style.display = "block";
+  installBtn.style.display = "inline";
 });
 
 installBtn.addEventListener("click", async ()=>{
