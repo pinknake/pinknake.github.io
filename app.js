@@ -304,20 +304,29 @@ function render(){
   document.getElementById("marketList").innerHTML=
     market.map(i=>`<li>${i}</li>`).join("");
 }
-window.addEventListener('beforeinstallprompt', (e)=>{
-e.preventDefault();
-deferredPrompt = e;
-document.getElementById("installBtn").style.display="inline-block";
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "block";
 });
 
-document.getElementById("installBtn").addEventListener("click", async ()=>{
-if(deferredPrompt){
-deferredPrompt.prompt();
-}
+installBtn.addEventListener("click", async ()=>{
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    installBtn.style.display = "none";
+    deferredPrompt = null;
+  }
 });
-
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("sw.js");
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", ()=> {
+    navigator.serviceWorker.register("./sw.js")
+      .then(()=>console.log("SW registered"))
+      .catch(err=>console.log("SW error", err));
+  });
 }
 render();
 
