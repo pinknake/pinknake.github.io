@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2a5298">
+<title>Ghar Manager</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="topbar">
+  <h2>🏠 Ghar Manager</h2>
+  <div id="datetime"></div>
+</header>
+
+<main id="appContent">
+
+  <section id="dashboard" class="tab active">
+    <h3>Dashboard</h3>
+    <div class="summary-grid">
+      <div class="summary-card blue">
+        <p>Today</p>
+        <h2>₹ <span id="todayTotal">0</span></h2>
+      </div>
+
+      <div class="summary-card green">
+        <p>This Week</p>
+        <h2>₹ <span id="weekTotal">0</span></h2>
+      </div>
+
+      <div class="summary-card purple">
+        <p>This Month</p>
+        <h2>₹ <span id="monthTotal">0</span></h2>
+      </div>
+
+      <div class="summary-card red">
+        <p>Total</p>
+        <h2>₹ <span id="grandTotal">0</span></h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Sections same rahenge -->
+
+
+
+<!-- Floating Buttons -->
+<button id="installBtn" class="fab install-btn">📲</button>
+<button onclick="shareApp()" class="fab share-btn">📤</button>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button onclick="showTab('dashboard')">🏠<span>Home</span></button>
+  <button onclick="showTab('kitchen')">🍳<span>Kitchen</span></button>
+  <button onclick="showTab('market')">🛒<span>Market</span></button>
+  <button onclick="showTab('lenden')">💰<span>LenDen</span></button>
+  <button onclick="showTab('history')">📜<span>History</span></button>
+</nav>
+
+<script src="app.js"></script>
+</body>
+</html>
+
+
+
+
