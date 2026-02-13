@@ -44,58 +44,95 @@
 
   <!-- Other Sections same rahenge -->
 <section id="kitchen" class="tab">
-  <h2 style="text-align:center;color:#1cc88a;">
-    🍳 Kitchen Portfolio – Happy Home ❤️
-  </h2>
 
-  <div class="card">
+  <div class="section-title">
+    🍳 Kitchen Portfolio
+    <p>Manage your kitchen expenses smartly ❤️</p>
+  </div>
 
-    <label>Category</label>
-    <select id="category"></select>
+  <!-- Entry Card -->
+  <div class="modern-card">
 
-    <label>Select Item</label>
-    <select id="itemSelect"></select>
+    <div class="input-group">
+      <label>Category</label>
+      <select id="category"></select>
+    </div>
 
-    <label>Quantity</label>
-    <input id="qty" placeholder="250g / 1kg / 2 Pack">
+    <div class="input-group">
+      <label>Select Item</label>
+      <select id="itemSelect"></select>
+    </div>
 
-    <label>Type</label>
-    <select id="type">
-      <option>Packet</option>
-      <option>Open</option>
-      <option>Bottle</option>
-    </select>
+    <div class="row-2">
+      <div class="input-group">
+        <label>Quantity</label>
+        <input id="qty" placeholder="250g / 1kg / 2 Pack">
+      </div>
 
-    <button onclick="addTempItem()">Add To Entry</button>
+      <div class="input-group">
+        <label>Type</label>
+        <select id="type">
+          <option>Packet</option>
+          <option>Open</option>
+          <option>Bottle</option>
+        </select>
+      </div>
+    </div>
 
-    <hr>
-
-    <h4>Selected Items</h4>
-    <ul id="tempList"></ul>
-
-    <label>Total Amount ₹</label>
-    <input type="number" id="totalAmount">
-
-    <button onclick="saveKitchenEntry()">Save Entry</button>
+    <button class="primary-btn" onclick="addTempItem()">➕ Add Item</button>
 
   </div>
 
-  <h3>Total Kitchen Expense: ₹ <span id="kitchenTotal">0</span></h3>
-  <h4>Monthly Summary: ₹ <span id="monthlyTotal">0</span></h4>
+  <!-- Selected Items Card -->
+  <div class="modern-card">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Items</th>
-        <th>Total ₹</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="kitchenTable"></tbody>
-  </table>
+    <h4 class="sub-title">🧾 Selected Items</h4>
+    <ul id="tempList" class="modern-list"></ul>
 
-  <button onclick="shareTable()">📤 Share WhatsApp</button>
+    <div class="input-group">
+      <label>Total Amount ₹</label>
+      <input type="number" id="totalAmount">
+    </div>
+
+    <button class="success-btn" onclick="saveKitchenEntry()">💾 Save Entry</button>
+
+  </div>
+
+  <!-- Summary Card -->
+  <div class="summary-row">
+    <div class="summary-box gradient1">
+      <p>Total Kitchen</p>
+      <h2>₹ <span id="kitchenTotal">0</span></h2>
+    </div>
+
+    <div class="summary-box gradient2">
+      <p>Monthly Summary</p>
+      <h2>₹ <span id="monthlyTotal">0</span></h2>
+    </div>
+  </div>
+
+  <!-- History Table -->
+  <div class="table-card">
+    <h3>📜 Kitchen History</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total ₹</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="kitchenTable"></tbody>
+      </table>
+    </div>
+
+    <button class="share-btn-full" onclick="shareTable()">📤 Share WhatsApp</button>
+
+  </div>
+
 </section>
 
 <section id="market" class="tab">
