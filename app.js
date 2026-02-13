@@ -310,13 +310,13 @@ render();
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
-window.addEventListener("beforeinstallprompt", (e) => {
+window.addEventListener("beforeinstallprompt", (e)=>{
   e.preventDefault();
   deferredPrompt = e;
   installBtn.style.display = "block";
 });
 
-installBtn.addEventListener("click", async () => {
+installBtn.addEventListener("click", async ()=>{
   if (deferredPrompt) {
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
@@ -326,9 +326,9 @@ installBtn.addEventListener("click", async () => {
 });
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
+  window.addEventListener("load", ()=> {
     navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("SW registered"))
-      .catch(err => console.log("SW error", err));
+      .then(()=>console.log("SW registered"))
+      .catch(err=>console.log("SW error", err));
   });
 }
