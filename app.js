@@ -304,31 +304,20 @@ function render(){
   document.getElementById("marketList").innerHTML=
     market.map(i=>`<li>${i}</li>`).join("");
 }
+window.addEventListener('beforeinstallprompt', (e)=>{
+e.preventDefault();
+deferredPrompt = e;
+document.getElementById("installBtn").style.display="inline-block";
+});
 
+document.getElementById("installBtn").addEventListener("click", async ()=>{
+if(deferredPrompt){
+deferredPrompt.prompt();
+}
+});
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js");
+}
 render();
 
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt", (e)=>{
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = "inline";
-});
-
-installBtn.addEventListener("click", async ()=>{
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    installBtn.style.display = "none";
-    deferredPrompt = null;
-  }
-});
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", ()=> {
-    navigator.serviceWorker.register("./sw.js")
-      .then(()=>console.log("SW registered"))
-      .catch(err=>console.log("SW error", err));
-  });
-}
