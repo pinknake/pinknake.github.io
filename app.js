@@ -79,41 +79,28 @@ if (pdfBtn) {
   });
 
 }
+
+  document.getElementById("waPdfBtn")?.addEventListener("click", function () {
+  alert("Download PDF first, then share manually on WhatsApp.\n\nBrowser security direct PDF auto-share allow nahi karta.");
+});
 /* =========================
    SAFE IMAGE EXPORT
 ========================== */
-const imgBtn = document.getElementById("imgBtn");
+document.getElementById("imgBtn")?.addEventListener("click", function () {
 
-if (imgBtn) {
+  const tableWrapper = document.querySelector(".table-wrapper");
 
-  imgBtn.addEventListener("click", function () {
+  html2canvas(tableWrapper, { scale: 2 })
+    .then(canvas => {
 
-    if (!window.html2canvas) {
-      alert("Screenshot Library Not Loaded!");
-      return;
-    }
+      const link = document.createElement("a");
+      link.download = "Kitchen_Table.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
 
-    const section = document.getElementById("kitchen");
+    });
 
-    if (!section) {
-      alert("Kitchen section not found!");
-      return;
-    }
-
-    html2canvas(section, { scale: 2 })
-      .then(canvas => {
-
-        const link = document.createElement("a");
-        link.download = "Kitchen_Report.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-
-      })
-      .catch(() => alert("Error generating screenshot!"));
-  });
-
-}
-
+});
 
         
   /* =========================
