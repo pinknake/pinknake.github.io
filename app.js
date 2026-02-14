@@ -14,7 +14,92 @@ document.addEventListener("DOMContentLoaded", function () {
       window.open("https://wa.me/?text=" + encodeURIComponent(window.location.origin));
     }
   };
+document.getElementById("pdfBtn")?.addEventListener("click", async function () {
 
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let y = 20;
+
+  // Title
+  doc.setFontSize(18);
+  doc.setTextColor(41, 98, 255); // Blue
+  doc.text("GHAR MANAGER", 20, y);
+
+  y += 10;
+  doc.setFontSize(14);
+  doc.setTextColor(0, 150, 136); // Teal
+  doc.text("Kitchen Expense Report", 20, y);
+
+  y += 15;
+  doc.setFontSize(11);
+  doc.setTextColor(0, 0, 0);
+
+  const rows = document.querySelectorAll("#kitchenTable tr");
+
+  if (rows.length === 0) {
+    alert("No data available!");
+    return;
+  }
+
+  let grandTotal = 0;
+
+  rows.forEach(row => {
+
+    const cols = row.querySelectorAll("td");
+
+    if (cols.length >= 3) {
+
+      const date = cols[0].innerText;
+      const items = cols[1].innerText;
+      const total = cols[2].innerText;
+
+      grandTotal += Number(total.replace(/[^\d]/g, ""));
+
+      doc.setTextColor(120, 0, 200); // Purple
+      doc.text("Date: " + date, 20, y);
+      y += 8;
+
+      doc.setTextColor(0, 0, 0);
+      doc.text("Items:", 20, y);
+      y += 6;
+
+      doc.text(items, 25, y);
+      y += 10;
+
+      doc.setTextColor(200, 0, 0); // Red
+      doc.text("Total: " + total, 20, y);
+      y += 12;
+    }
+  });
+
+  doc.setFontSize(14);
+  doc.setTextColor(0, 128, 0); // Green
+  doc.text("Grand Total: ₹ " + grandTotal, 20, y + 5);
+
+  doc.save("Ghar_Manager_Kitchen_Report.pdf");
+
+});
+
+document.getElementById("imgBtn")?.addEventListener("click", function () {
+
+  const section = document.getElementById("kitchen");
+
+  html2canvas(section, {
+    scale: 2,
+    backgroundColor: null
+  }).then(canvas => {
+
+    const link = document.createElement("a");
+    link.download = "Ghar_Manager_Kitchen_Report.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+  });
+
+});
+
+        
   /* =========================
      MASTER ITEMS
   ========================== */
