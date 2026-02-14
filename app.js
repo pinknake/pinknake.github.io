@@ -22,83 +22,88 @@ const pdfBtn = document.getElementById("pdfBtn");
 
 if (pdfBtn) {
 
-  pdfBtn.addEventListener("click", async function () {
+  pdfBtn?.addEventListener("click", async function () {
 
-    const invoice = document.getElementById("invoiceTemplate");
-    const invoiceTableBody = invoice.querySelector("tbody");
+  const rows = document.querySelectorAll("#kitchenTable tr");
 
-    invoiceTableBody.innerHTML = "";
+  if (rows.length === 0) {
+    alert("No data available!");
+    return;
+  }
 
-    const rows = document.querySelectorAll("#kitchenTable tr");
-    let grandTotal = 0;
+  const invoice = document.getElementById("invoiceTemplate");
+  const tbody = invoice.querySelector("tbody");
+  tbody.innerHTML = "";
 
-    rows.forEach(row => {
+  let grandTotal = 0;
 
-      const cols = row.querySelectorAll("td");
-      if (cols.length < 3) return;
+  rows.forEach(row => {
 
-      const date = cols[0].innerText;
-      const items = cols[1].innerText;
-      const total = cols[2].innerText;
+    const cols = row.querySelectorAll("td");
+    if (cols.length < 3) return;
 
-      grandTotal += Number(total.replace(/[^\d]/g, ""));
+    const date = cols[0].innerText;
+    const items = cols[1].innerText;
+    const total = cols[2].innerText;
 
-      invoiceTableBody.innerHTML += `
-        <tr>
-          <td style="padding:8px; border:1px solid #ccc;">${date}</td>
-          <td style="padding:8px; border:1px solid #ccc;">${items}</td>
-          <td style="padding:8px; border:1px solid #ccc; color:red;">${total}</td>
-        </tr>
-      `;
-    });
+    grandTotal += Number(total.replace(/[^\d]/g, ""));
 
-    document.getElementById("invoiceDate").innerText =
-      "Date: " + new Date().toLocaleString();
-
-    document.getElementById("invoiceGrandTotal").innerText =
-      "Grand Total: ₹ " + grandTotal;
-
-    invoice.style.display = "block";
-
-    const canvas = await html2canvas(invoice, { scale: 2 });
-
-    const imgData = canvas.toDataURL("image/png");
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
-
-    const imgWidth = 190;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-
-    doc.save("Ghar_Manager_Invoice.pdf");
-
-    invoice.style.display = "none";
-
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="border:1px solid #ccc;padding:6px;">${date}</td>
+      <td style="border:1px solid #ccc;padding:6px;">${items}</td>
+      <td style="border:1px solid #ccc;padding:6px;color:red;">${total}</td>
+    `;
+    tbody.appendChild(tr);
   });
 
-}
+  document.getElementById("invoiceDate").innerText =
+    "Generated: " + new Date().toLocaleString();
 
+  document.getElementById("invoiceGrandTotal").innerText =
+    "Grand Total: ₹ " + grandTotal;
+
+  await new Promise(resolve => setTimeout(resolve, 300));
+
+  const canvas = await html2canvas(invoice, { scale: 2 });
+
+  const imgData = canvas.toDataURL("image/png");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  const imgWidth = 190;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+  doc.save("Ghar_Manager_Invoice.pdf");
+
+});
+
+  
   document.getElementById("waPdfBtn")?.addEventListener("click", function () {
   alert("Download PDF first, then share manually on WhatsApp.\n\nBrowser security direct PDF auto-share allow nahi karta.");
 });
 /* =========================
    SAFE IMAGE EXPORT
 ========================== */
-document.getElementById("imgBtn")?.addEventListener("click", function () {
+document.getElementById("imgBtn")?.addEventListener("click", async function () {
 
-  const tableWrapper = document.querySelector(".table-wrapper");
+  const table = document.querySelector("#kitchenTable");
 
-  html2canvas(tableWrapper, { scale: 2 })
-    .then(canvas => {
+  if (!table || table.innerHTML.trim() === "") {
+    alert("No data to capture!");
+    return;
+  }
 
-      const link = document.createElement("a");
-      link.download = "Kitchen_Table.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+  await new Promise(resolve => setTimeout(resolve, 200));
 
-    });
+  const canvas = await html2canvas(table, { scale: 2 });
+
+  const link = document.createElement("a");
+  link.download = "Kitchen_Table.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 
 });
 
