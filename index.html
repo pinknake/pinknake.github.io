@@ -133,7 +133,43 @@
     <button class="share-btn-full" onclick="shareTable()">📤 Share WhatsApp</button>
 
   </div>
-<div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+
+  <div id="invoiceTemplate" style="display:none; padding:20px; width:800px; background:white; font-family:Poppins;">
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <img src="logo.png" width="120">
+    <div style="text-align:right;">
+      <h2 style="margin:0;color:#1e3c72;">GHAR MANAGER</h2>
+      <p style="margin:0;">Kitchen Expense Invoice</p>
+      <p id="invoiceDate"></p>
+    </div>
+  </div>
+
+  <hr>
+
+  <table id="invoiceTable" style="width:100%; border-collapse:collapse;">
+    <thead style="background:#2a5298; color:white;">
+      <tr>
+        <th style="padding:8px;">Date</th>
+        <th style="padding:8px;">Items</th>
+        <th style="padding:8px;">Total ₹</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h3 id="invoiceGrandTotal" style="text-align:right; margin-top:20px;"></h3>
+
+  <div style="margin-top:40px; text-align:right;">
+    <p>Authorized Signature</p>
+    <img src="signature.png" width="150">
+  </div>
+
+</div>
+  <div>
+  <button id="waPdfBtn">📤 WhatsApp Invoice</button>
+</div>
+  <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
 
   <button id="pdfBtn" class="primary-btn">
     📄 Download PDF
