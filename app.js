@@ -22,58 +22,14 @@ const pdfBtn = document.getElementById("pdfBtn");
 
 if (pdfBtn) {
 
-  pdfBtn.addEventListener("click", function () {
+  pdfBtn.addEventListener("click", async function () {
 
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      alert("PDF Library Not Loaded Properly!");
-      return;
-    }
+    const invoice = document.getElementById("invoiceTemplate");
+    const invoiceTableBody = invoice.querySelector("tbody");
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    let y = 20;
-
-    /* ===== HEADER BOX ===== */
-    doc.setFillColor(30, 60, 114); // Dark Blue
-    doc.rect(0, 0, pageWidth, 30, "F");
-
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(18);
-    doc.text("GHAR MANAGER", pageWidth / 2, 18, { align: "center" });
-
-    y = 40;
-
-    /* ===== INVOICE INFO ===== */
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(12);
-    doc.text("Invoice Type: Kitchen Expense Report", 20, y);
-    y += 8;
-    doc.text("Generated On: " + new Date().toLocaleString(), 20, y);
-    y += 12;
-
-    /* ===== TABLE HEADER ===== */
-    doc.setFillColor(42, 82, 152);
-    doc.rect(20, y - 6, pageWidth - 40, 8, "F");
-
-    doc.setTextColor(255, 255, 255);
-    doc.text("Date", 25, y);
-    doc.text("Items", 70, y);
-    doc.text("Total", pageWidth - 40, y);
-
-    y += 10;
-    doc.setTextColor(0, 0, 0);
+    invoiceTableBody.innerHTML = "";
 
     const rows = document.querySelectorAll("#kitchenTable tr");
-
-    if (rows.length === 0) {
-      alert("No data available!");
-      return;
-    }
-
     let grandTotal = 0;
 
     rows.forEach(row => {
@@ -87,37 +43,42 @@ if (pdfBtn) {
 
       grandTotal += Number(total.replace(/[^\d]/g, ""));
 
-      if (y > pageHeight - 20) {
-        doc.addPage();
-        y = 20;
-      }
-
-      doc.text(date, 25, y);
-
-      const splitItems = doc.splitTextToSize(items, 60);
-      doc.text(splitItems, 70, y);
-
-      doc.setTextColor(200, 0, 0);
-      doc.text(total, pageWidth - 40, y);
-      doc.setTextColor(0, 0, 0);
-
-      y += splitItems.length * 6 + 5;
+      invoiceTableBody.innerHTML += `
+        <tr>
+          <td style="padding:8px; border:1px solid #ccc;">${date}</td>
+          <td style="padding:8px; border:1px solid #ccc;">${items}</td>
+          <td style="padding:8px; border:1px solid #ccc; color:red;">${total}</td>
+        </tr>
+      `;
     });
 
-    /* ===== GRAND TOTAL BOX ===== */
-    doc.setFillColor(0, 128, 0);
-    doc.rect(20, y + 5, pageWidth - 40, 10, "F");
+    document.getElementById("invoiceDate").innerText =
+      "Date: " + new Date().toLocaleString();
 
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(14);
-    doc.text("Grand Total: ₹ " + grandTotal, pageWidth / 2, y + 12, { align: "center" });
+    document.getElementById("invoiceGrandTotal").innerText =
+      "Grand Total: ₹ " + grandTotal;
+
+    invoice.style.display = "block";
+
+    const canvas = await html2canvas(invoice, { scale: 2 });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("p", "mm", "a4");
+
+    const imgWidth = 190;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
 
     doc.save("Ghar_Manager_Invoice.pdf");
+
+    invoice.style.display = "none";
 
   });
 
 }
-
 /* =========================
    SAFE IMAGE EXPORT
 ========================== */
