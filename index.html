@@ -134,38 +134,40 @@
 
   </div>
 
-  <div id="invoiceTemplate" style="display:none; padding:20px; width:800px; background:white; font-family:Poppins;">
+<div id="invoiceTemplate" style="
+position:absolute;
+left:-9999px;
+top:0;
+width:800px;
+background:white;
+padding:30px;
+font-family:Arial;
+">
 
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <img src="logo.png" width="120">
-    <div style="text-align:right;">
-      <h2 style="margin:0;color:#1e3c72;">GHAR MANAGER</h2>
-      <p style="margin:0;">Kitchen Expense Invoice</p>
-      <p id="invoiceDate"></p>
-    </div>
-  </div>
+  <h1 style="color:#2a5298;">🏠 GHAR MANAGER</h1>
+  <p id="invoiceDate"></p>
 
   <hr>
 
-  <table id="invoiceTable" style="width:100%; border-collapse:collapse;">
-    <thead style="background:#2a5298; color:white;">
-      <tr>
+  <table style="width:100%; border-collapse:collapse;">
+    <thead>
+      <tr style="background:#2a5298;color:white;">
         <th style="padding:8px;">Date</th>
         <th style="padding:8px;">Items</th>
-        <th style="padding:8px;">Total ₹</th>
+        <th style="padding:8px;">Total</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <h3 id="invoiceGrandTotal" style="text-align:right; margin-top:20px;"></h3>
+  <h2 id="invoiceGrandTotal" style="margin-top:20px;color:#d32f2f;"></h2>
 
-  <div style="margin-top:40px; text-align:right;">
-    <p>Authorized Signature</p>
-    <img src="signature.png" width="150">
-  </div>
+  <p style="margin-top:40px;">
+    Signature: ______________________
+  </p>
 
 </div>
+
   <div>
   <button id="waPdfBtn">📤 WhatsApp Invoice</button>
 </div>
@@ -224,39 +226,6 @@
   <button onclick="showTab('history')">📜<span>History</span></button>
 </nav>
 
-<div id="invoiceTemplate" style="
-position:absolute;
-left:-9999px;
-top:0;
-width:800px;
-background:white;
-padding:30px;
-font-family:Arial;
-">
-
-  <h1 style="color:#2a5298;">🏠 GHAR MANAGER</h1>
-  <p id="invoiceDate"></p>
-
-  <hr>
-
-  <table style="width:100%; border-collapse:collapse;">
-    <thead>
-      <tr style="background:#2a5298;color:white;">
-        <th style="padding:8px;">Date</th>
-        <th style="padding:8px;">Items</th>
-        <th style="padding:8px;">Total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2 id="invoiceGrandTotal" style="margin-top:20px;color:#d32f2f;"></h2>
-
-  <p style="margin-top:40px;">
-    Signature: ______________________
-  </p>
-
-</div>
 
   
 <!-- PDF Library -->
