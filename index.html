@@ -133,7 +133,19 @@
     <button class="share-btn-full" onclick="shareTable()">📤 Share WhatsApp</button>
 
   </div>
+<div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
 
+  <button id="pdfBtn" class="primary-btn">
+    📄 Download PDF
+  </button>
+
+  <button id="imgBtn" class="success-btn">
+    🖼 Download Image
+  </button>
+
+</div>
+
+  
 </section>
 
 <section id="market" class="tab">
@@ -175,7 +187,8 @@
   <button onclick="showTab('lenden')">💰<span>LenDen</span></button>
   <button onclick="showTab('history')">📜<span>History</span></button>
 </nav>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
