@@ -136,54 +136,152 @@
 
 <div id="invoiceTemplate" style="
 position:absolute;
-left:-9999px;
-top:0;
-width:800px;
-background:white;
-padding:30px;
-font-family:Arial;
-">
+<section id="kitchen" class="tab">
 
-  <h1 style="color:#2a5298;">🏠 GHAR MANAGER</h1>
-  <p id="invoiceDate"></p>
+  <div class="section-title">
+    <h3>🍳 Kitchen Portfolio</h3>
+    <p>Manage your kitchen expenses smartly ❤️</p>
+  </div>
 
-  <hr>
+  <!-- Entry Card -->
+  <div class="modern-card">
 
-  <table style="width:100%; border-collapse:collapse;">
-    <thead>
-      <tr style="background:#2a5298;color:white;">
-        <th style="padding:8px;">Date</th>
-        <th style="padding:8px;">Items</th>
-        <th style="padding:8px;">Total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <div class="input-group">
+      <label for="category">Category</label>
+      <select id="category"></select>
+    </div>
 
-  <h2 id="invoiceGrandTotal" style="margin-top:20px;color:#d32f2f;"></h2>
+    <div class="input-group">
+      <label for="itemSelect">Select Item</label>
+      <select id="itemSelect"></select>
+    </div>
 
-  <p style="margin-top:40px;">
-    Signature: ______________________
-  </p>
+    <div class="row-2">
+      <div class="input-group">
+        <label for="qty">Quantity</label>
+        <input id="qty" type="text" placeholder="250g / 1kg / 2 Pack">
+      </div>
 
-</div>
+      <div class="input-group">
+        <label for="type">Type</label>
+        <select id="type">
+          <option value="Packet">Packet</option>
+          <option value="Open">Open</option>
+          <option value="Bottle">Bottle</option>
+        </select>
+      </div>
+    </div>
 
-  <div>
-  <button id="waPdfBtn">📤 WhatsApp Invoice</button>
-</div>
+    <button type="button" class="primary-btn" onclick="addTempItem()">
+      ➕ Add Item
+    </button>
+
+  </div>
+
+  <!-- Selected Items Card -->
+  <div class="modern-card">
+
+    <h4 class="sub-title">🧾 Selected Items</h4>
+    <ul id="tempList" class="modern-list"></ul>
+
+    <div class="input-group">
+      <label for="totalAmount">Total Amount ₹</label>
+      <input type="number" id="totalAmount" min="0">
+    </div>
+
+    <button type="button" class="success-btn" onclick="saveKitchenEntry()">
+      💾 Save Entry
+    </button>
+
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-row">
+    <div class="summary-box gradient1">
+      <p>Total Kitchen</p>
+      <h2>₹ <span id="kitchenTotal">0</span></h2>
+    </div>
+
+    <div class="summary-box gradient2">
+      <p>Monthly Summary</p>
+      <h2>₹ <span id="monthlyTotal">0</span></h2>
+    </div>
+  </div>
+
+  <!-- History Table -->
+  <div class="table-card">
+    <h3>📜 Kitchen History</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total ₹</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="kitchenTable"></tbody>
+      </table>
+    </div>
+
+    <button type="button" class="share-btn-full" onclick="shareTable()">
+      📤 Share WhatsApp
+    </button>
+  </div>
+
+  <!-- Hidden Invoice Template -->
+  <div id="invoiceTemplate" style="
+    position:absolute;
+    left:-9999px;
+    top:0;
+    width:800px;
+    background:white;
+    padding:30px;
+    font-family:'Poppins', sans-serif;
+  ">
+
+    <h1 style="color:#2a5298;">🏠 GHAR MANAGER</h1>
+    <p id="invoiceDate"></p>
+    <hr>
+
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr style="background:#2a5298;color:white;">
+          <th style="padding:8px;">Date</th>
+          <th style="padding:8px;">Items</th>
+          <th style="padding:8px;">Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2 id="invoiceGrandTotal"
+        style="margin-top:20px;color:#d32f2f;"></h2>
+
+    <p style="margin-top:40px;">
+      Signature: ______________________
+    </p>
+  </div>
+
+  <!-- Export Buttons -->
   <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
 
-  <button id="pdfBtn" class="primary-btn">
-    📄 Download PDF
-  </button>
+    <button type="button" id="waPdfBtn" class="primary-btn">
+      📤 WhatsApp Invoice
+    </button>
 
-  <button id="imgBtn" class="success-btn">
-    🖼 Download Image
-  </button>
+    <button type="button" id="pdfBtn" class="primary-btn">
+      📄 Download PDF
+    </button>
 
-</div>
+    <button type="button" id="imgBtn" class="success-btn">
+      🖼 Download Image
+    </button>
 
-  
+  </div>
+
 </section>
 
 <section id="market" class="tab">
