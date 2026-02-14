@@ -197,7 +197,7 @@ window.shareTable = function () {
 
   const table = document.getElementById("kitchenTable");
   if (!table) {
-    alert("Table not found!");
+    alert("No table found!");
     return;
   }
 
@@ -208,34 +208,49 @@ window.shareTable = function () {
     return;
   }
 
-  let message = "🍳 *Kitchen Expense Report*\n\n";
+  let totalAmount = 0;
+
+  let message =
+"━━━━━━━━━━━━━━━━━━━━\n" +
+"🏠 *GHAR MANAGER*\n" +
+"🍳 *Kitchen Expense Report*\n" +
+"━━━━━━━━━━━━━━━━━━━━\n\n";
 
   rows.forEach(row => {
     const cols = row.querySelectorAll("td");
 
     if (cols.length >= 3) {
+
+      const date = cols[0].innerText;
+      const items = cols[1].innerText;
+      const total = cols[2].innerText;
+
+      totalAmount += Number(total.replace(/[^\d]/g, ""));
+
       message += 
-        "📅 Date: " + cols[0].innerText + "\n" +
-        "🛒 Items:\n" + cols[1].innerText + "\n" +
-        "💰 Total: " + cols[2].innerText + "\n\n";
+        "📅 *Date:* " + date + "\n" +
+        "🛒 *Items:*\n" + items + "\n" +
+        "💰 *Total:* " + total + "\n" +
+        "──────────────────\n\n";
     }
   });
 
-  message += "📊 Generated from Ghar Manager App";
+  message +=
+"━━━━━━━━━━━━━━━━━━━━\n" +
+"💎 *Grand Total: ₹" + totalAmount + "*\n" +
+"📊 Managed by Ghar Manager App\n" +
+"━━━━━━━━━━━━━━━━━━━━";
 
   const encodedMessage = encodeURIComponent(message);
 
-  // Mobile WhatsApp
-  const mobileURL = `https://wa.me/?text=${encodedMessage}`;
-
-  // Desktop fallback
-  const desktopURL = `https://web.whatsapp.com/send?text=${encodedMessage}`;
-
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  window.open(isMobile ? mobileURL : desktopURL, "_blank");
-};
+  const url = isMobile
+    ? `https://wa.me/?text=${encodedMessage}`
+    : `https://web.whatsapp.com/send?text=${encodedMessage}`;
 
+  window.open(url, "_blank");
+};
 
   /* =========================
      UTIL
