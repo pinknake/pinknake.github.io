@@ -44,7 +44,48 @@ document.addEventListener("DOMContentLoaded", function () {
   ========================== */
   let kitchenData = JSON.parse(localStorage.getItem("kitchenData")) || [];
   let tempItems = [];
+/* =========================
+     MASTER ITEMS
+  ========================== */
 
+  const masterItems = {
+    Spices: ["Mirch/मिर्च","Haldi/हल्दी","Dhaniya/धनिया","Jeera/जीरा","Garam Masala/गरम मसाला","कड़ी पत्ता","बेसन","मैदा"],
+    Oils: ["Mustard Oil/सरसों तेल 1L","Mustard Oil 5L","Refined Oil/रिफाइंड 1L"],
+    Grains: ["Rice/चावल","Atta/आटा","सफेद चना","काले छोले","मूंग दाल","चना दाल","काली दाल"],
+    Shabji: ["टमाटर","मटर","गोभी","आलू","प्याज","बैंगन","पत्ता गोभी"],
+    Dairy: ["देसी घी","पनीर","दूध","दही"],
+    Snacks: ["बिस्कुट","चिप्स","भुजिया","समोसा"],
+    Bathroom: ["Soap 2 Pack","Soap 4 Pack","Surf Excel","Vanish"]
+  };
+
+  const categoryEl = $("category");
+  const itemEl = $("itemSelect");
+
+  function loadCategories() {
+    if (!categoryEl) return;
+
+    categoryEl.innerHTML =
+      `<option disabled selected>Select Category</option>` +
+      Object.keys(masterItems)
+        .map(cat => `<option value="${cat}">${cat}</option>`)
+        .join("");
+
+    loadItems();
+  }
+
+  function loadItems() {
+    if (!itemEl) return;
+
+    const selectedCategory = categoryEl.value;
+    if (!masterItems[selectedCategory]) return;
+
+    itemEl.innerHTML = masterItems[selectedCategory]
+      .map(item => `<option value="${item}">${item}</option>`)
+      .join("");
+  }
+
+  categoryEl?.addEventListener("change", loadItems);
+  
   /* =========================
      PDF EXPORT
   ========================== */
