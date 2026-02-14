@@ -225,45 +225,48 @@ position:absolute;
         <tbody id="kitchenTable"></tbody>
       </table>
     </div>
+<!-- Hidden Invoice Template -->
+<div id="invoiceTemplate" style="
+  position:absolute;
+  left:-9999px;
+  top:0;
+  width:800px;
+  background:white;
+  padding:30px;
+  font-family:'Poppins', sans-serif;
+">
 
+  <h1 style="color:#2a5298;">🏠 GHAR MANAGER</h1>
+  <p id="invoiceDate"></p>
+  <hr>
+
+  <table style="width:100%; border-collapse:collapse;">
+    <thead>
+      <tr style="background:#2a5298;color:white;">
+        <th style="padding:8px;">Date</th>
+        <th style="padding:8px;">Items</th>
+        <th style="padding:8px;">Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2 id="invoiceGrandTotal"
+      style="margin-top:20px;color:#d32f2f;"></h2>
+
+  <p style="margin-top:40px;">
+    Signature: ______________________
+  </p>
+</div>
+
+    
     <button type="button" class="share-btn-full" onclick="shareTable()">
       📤 Share WhatsApp
     </button>
   </div>
 
   <!-- Hidden Invoice Template -->
-  <div id="invoiceTemplate" style="
-    position:absolute;
-    left:-9999px;
-    top:0;
-    width:800px;
-    background:white;
-    padding:30px;
-    font-family:'Poppins', sans-serif;
-  ">
-
-    <h1 style="color:#2a5298;">🏠 GHAR MANAGER</h1>
-    <p id="invoiceDate"></p>
-    <hr>
-
-    <table style="width:100%; border-collapse:collapse;">
-      <thead>
-        <tr style="background:#2a5298;color:white;">
-          <th style="padding:8px;">Date</th>
-          <th style="padding:8px;">Items</th>
-          <th style="padding:8px;">Total</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <h2 id="invoiceGrandTotal"
-        style="margin-top:20px;color:#d32f2f;"></h2>
-
-    <p style="margin-top:40px;">
-      Signature: ______________________
-    </p>
-  </div>
+  
 
   <!-- Export Buttons -->
   <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
