@@ -264,5 +264,5 @@ document.addEventListener("DOMContentLoaded", function () {
   ========================== */
   showTab("dashboard");   // default tab
   renderKitchen();
-
+  loadCategories();
 });
