@@ -1,3 +1,11 @@
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
