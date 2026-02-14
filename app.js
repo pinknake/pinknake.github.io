@@ -14,41 +14,52 @@ document.addEventListener("DOMContentLoaded", function () {
       window.open("https://wa.me/?text=" + encodeURIComponent(window.location.origin));
     }
   };
-document.getElementById("pdfBtn")?.addEventListener("click", async function () {
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+  /* =========================
+   SAFE PDF EXPORT
+========================== */
+const pdfBtn = document.getElementById("pdfBtn");
 
-  let y = 20;
+if (pdfBtn) {
+  pdfBtn.addEventListener("click", function () {
 
-  // Title
-  doc.setFontSize(18);
-  doc.setTextColor(41, 98, 255); // Blue
-  doc.text("GHAR MANAGER", 20, y);
+    if (!window.jspdf) {
+      alert("PDF library not loaded!");
+      return;
+    }
 
-  y += 10;
-  doc.setFontSize(14);
-  doc.setTextColor(0, 150, 136); // Teal
-  doc.text("Kitchen Expense Report", 20, y);
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-  y += 15;
-  doc.setFontSize(11);
-  doc.setTextColor(0, 0, 0);
+    let y = 20;
+    const pageHeight = doc.internal.pageSize.height;
 
-  const rows = document.querySelectorAll("#kitchenTable tr");
+    doc.setFontSize(18);
+    doc.setTextColor(0, 102, 204);
+    doc.text("GHAR MANAGER", 20, y);
 
-  if (rows.length === 0) {
-    alert("No data available!");
-    return;
-  }
+    y += 10;
+    doc.setFontSize(14);
+    doc.setTextColor(0, 150, 136);
+    doc.text("Kitchen Expense Report", 20, y);
 
-  let grandTotal = 0;
+    y += 15;
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
 
-  rows.forEach(row => {
+    const rows = document.querySelectorAll("#kitchenTable tr");
 
-    const cols = row.querySelectorAll("td");
+    if (rows.length === 0) {
+      alert("No data available!");
+      return;
+    }
 
-    if (cols.length >= 3) {
+    let grandTotal = 0;
+
+    rows.forEach(row => {
+
+      const cols = row.querySelectorAll("td");
+      if (cols.length < 3) return;
 
       const date = cols[0].innerText;
       const items = cols[1].innerText;
@@ -56,48 +67,69 @@ document.getElementById("pdfBtn")?.addEventListener("click", async function () {
 
       grandTotal += Number(total.replace(/[^\d]/g, ""));
 
-      doc.setTextColor(120, 0, 200); // Purple
+      if (y > pageHeight - 20) {
+        doc.addPage();
+        y = 20;
+      }
+
+      doc.setTextColor(120, 0, 200);
       doc.text("Date: " + date, 20, y);
-      y += 8;
+      y += 7;
 
       doc.setTextColor(0, 0, 0);
-      doc.text("Items:", 20, y);
-      y += 6;
 
-      doc.text(items, 25, y);
-      y += 10;
+      const splitItems = doc.splitTextToSize("Items: " + items, 160);
+      doc.text(splitItems, 20, y);
+      y += splitItems.length * 6;
 
-      doc.setTextColor(200, 0, 0); // Red
+      doc.setTextColor(200, 0, 0);
       doc.text("Total: " + total, 20, y);
       y += 12;
+    });
+
+    doc.setFontSize(14);
+    doc.setTextColor(0, 128, 0);
+    doc.text("Grand Total: ₹ " + grandTotal, 20, y);
+
+    doc.save("Ghar_Manager_Kitchen_Report.pdf");
+
+  });
+}
+
+/* =========================
+   SAFE IMAGE EXPORT
+========================== */
+const imgBtn = document.getElementById("imgBtn");
+
+if (imgBtn) {
+  imgBtn.addEventListener("click", function () {
+
+    if (!window.html2canvas) {
+      alert("Image library not loaded!");
+      return;
     }
-  });
 
-  doc.setFontSize(14);
-  doc.setTextColor(0, 128, 0); // Green
-  doc.text("Grand Total: ₹ " + grandTotal, 20, y + 5);
+    const section = document.getElementById("kitchen");
 
-  doc.save("Ghar_Manager_Kitchen_Report.pdf");
+    if (!section) {
+      alert("Kitchen section not found!");
+      return;
+    }
 
-});
+    html2canvas(section, { scale: 2 }).then(canvas => {
 
-document.getElementById("imgBtn")?.addEventListener("click", function () {
+      const link = document.createElement("a");
+      link.download = "Ghar_Manager_Kitchen_Report.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
 
-  const section = document.getElementById("kitchen");
-
-  html2canvas(section, {
-    scale: 2,
-    backgroundColor: null
-  }).then(canvas => {
-
-    const link = document.createElement("a");
-    link.download = "Ghar_Manager_Kitchen_Report.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    }).catch(() => {
+      alert("Error generating image!");
+    });
 
   });
+}
 
-});
 
         
   /* =========================
