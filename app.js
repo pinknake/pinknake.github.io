@@ -129,15 +129,15 @@ document.addEventListener("DOMContentLoaded", function () {
     doc.addImage(img,"PNG",10,10,190,0);
     doc.save("Kitchen_Report.pdf");
   };
-function shareApp() {
-  if (navigator.share) {
+function shareApp(){
+  if(navigator.share){
     navigator.share({
-      title: "Ghar Kitchen Manager",
-      text: "Install my Kitchen Manager App",
+      title: "Ghar Manager",
+      text: "Check out my Ghar Manager App 🔥",
       url: window.location.href
     });
   } else {
-    alert("Sharing not supported in this browser.");
+    window.open("https://wa.me/?text=" + encodeURIComponent(window.location.href));
   }
 }
 
