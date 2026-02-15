@@ -129,7 +129,41 @@ document.addEventListener("DOMContentLoaded", function () {
     doc.addImage(img,"PNG",10,10,190,0);
     doc.save("Kitchen_Report.pdf");
   };
+function shareApp() {
+  if (navigator.share) {
+    navigator.share({
+      title: "Ghar Kitchen Manager",
+      text: "Install my Kitchen Manager App",
+      url: window.location.href
+    });
+  } else {
+    alert("Sharing not supported in this browser.");
+  }
+}
 
+  let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installBtn").style.display = "block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt = null;
+  }
+});
+
+  // PWA Register
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js")
+      .then(() => console.log("PWA Ready"))
+      .catch(err => console.log("SW Error", err));
+  });
+}
   renderTable();
 
 });
