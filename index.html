@@ -18,35 +18,48 @@
 <section class="container">
 
   <!-- ENTRY CARD -->
-  <div class="card">
+<div class="card">
 
-    <label>Category Type</label>
-    <select id="typeCategory">
-      <option value="Open">Open</option>
-      <option value="Packet">Packet</option>
-      <option value="Bottle">Bottle</option>
-    </select>
+  <div class="row-2">
+    <div class="form-group">
+      <label>Category Type</label>
+      <select id="typeCategory">
+        <option value="Open">Open</option>
+        <option value="Packet">Packet</option>
+        <option value="Bottle">Bottle</option>
+      </select>
+    </div>
 
-    <label>Item Category</label>
-    <select id="mainCategory">
-      <option value="Vegetable">Vegetable</option>
-      <option value="Spices">Spices</option>
-      <option value="Dairy">Dairy</option>
-    </select>
-
-    <label>Select Item</label>
-    <select id="itemSelect"></select>
-
-    <label>Quantity</label>
-    <input type="text" id="quantity" placeholder="Eg: 2 kg / 1 litre">
-
-    <label>Total Amount ₹</label>
-    <input type="number" id="amount">
-
-    <button onclick="addKitchenEntry()">Add Entry</button>
-
+    <div class="form-group">
+      <label>Item Category</label>
+      <select id="mainCategory">
+        <option value="Vegetable">Vegetable</option>
+        <option value="Spices">Spices</option>
+        <option value="Dairy">Dairy</option>
+      </select>
+    </div>
   </div>
 
+  <div class="form-group">
+    <label>Select Item</label>
+    <select id="itemSelect"></select>
+  </div>
+
+  <div class="row-2">
+    <div class="form-group">
+      <label>Quantity</label>
+      <input type="text" id="quantity" placeholder="Eg: 2 kg">
+    </div>
+
+    <div class="form-group">
+      <label>Total Amount ₹</label>
+      <input type="number" id="amount">
+    </div>
+  </div>
+
+  <button onclick="addKitchenEntry()">➕ Add Entry</button>
+
+</div>
   <!-- HISTORY -->
   <div class="card">
     <h3>History</h3>
