@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghar Manager</title>
+<title>Ghar Manager - Kitchen</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -12,37 +12,44 @@
 <body>
 
 <header class="topbar">
-  <h2>🏠 Ghar Manager</h2>
+  <h2>🍳 Kitchen Manager</h2>
 </header>
 
-<main>
+<section class="container">
 
-<!-- ================= DASHBOARD ================= -->
-<section id="dashboard" class="tab active">
-  <h3>Dashboard</h3>
-
-  <div class="summary-grid">
-    <div class="summary-card blue">
-      <p>Total</p>
-      <h2>₹ <span id="grandTotal">0</span></h2>
-    </div>
-  </div>
-</section>
-
-<!-- ================= KITCHEN ================= -->
-<section id="kitchen" class="tab">
-
-  <h3>🍳 Kitchen Entry</h3>
-
+  <!-- ENTRY CARD -->
   <div class="card">
-    <input id="itemName" placeholder="Item name">
-    <input id="qty" placeholder="Quantity">
-    <input id="totalAmount" type="number" placeholder="Total ₹">
-    <button onclick="addEntry()">Add Entry</button>
+
+    <label>Category Type</label>
+    <select id="typeCategory">
+      <option value="Open">Open</option>
+      <option value="Packet">Packet</option>
+      <option value="Bottle">Bottle</option>
+    </select>
+
+    <label>Item Category</label>
+    <select id="mainCategory">
+      <option value="Vegetable">Vegetable</option>
+      <option value="Spices">Spices</option>
+      <option value="Dairy">Dairy</option>
+    </select>
+
+    <label>Select Item</label>
+    <select id="itemSelect"></select>
+
+    <label>Quantity</label>
+    <input type="text" id="quantity" placeholder="Eg: 2 kg / 1 litre">
+
+    <label>Total Amount ₹</label>
+    <input type="number" id="amount">
+
+    <button onclick="addKitchenEntry()">Add Entry</button>
+
   </div>
 
+  <!-- HISTORY -->
   <div class="card">
-    <h4>History</h4>
+    <h3>History</h3>
 
     <div class="table-wrapper">
       <table>
@@ -51,30 +58,21 @@
             <th>Date</th>
             <th>Item</th>
             <th>Qty</th>
+            <th>Type</th>
             <th>Total ₹</th>
-            <th>Action</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody id="kitchenTable"></tbody>
       </table>
     </div>
 
-    <button onclick="shareWhatsApp()">📤 Share WhatsApp</button>
-    <button id="pdfBtn">📄 Download PDF</button>
-    <button id="imgBtn">🖼 Download Image</button>
+    <button onclick="shareWhatsApp()">📤 WhatsApp Share</button>
+    <button onclick="downloadPDF()">📄 Download PDF</button>
 
   </div>
 
 </section>
-
-</main>
-
-<!-- Bottom Nav -->
-<nav class="bottom-nav">
-  <button onclick="showTab('dashboard')">🏠 Home</button>
-  <button onclick="showTab('kitchen')">🍳 Kitchen</button>
-</nav>
-
 
 <!-- Hidden Invoice -->
 <div id="invoiceTemplate">
@@ -86,14 +84,14 @@
         <th>Date</th>
         <th>Item</th>
         <th>Qty</th>
+        <th>Type</th>
         <th>Total</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
-  <h3 id="invoiceGrandTotal"></h3>
+  <h3 id="invoiceTotal"></h3>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
