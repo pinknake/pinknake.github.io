@@ -109,3 +109,71 @@ td {
   padding:20px;
   width:800px;
 }
+
+/* ===============================
+   📱 MOBILE RESPONSIVE PERFECT
+================================ */
+
+@media (max-width: 768px) {
+
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  /* Two column becomes single column */
+  .row-2 {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  select, input {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  button {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 6px;
+  }
+
+  /* Make table scroll smooth */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent invoice overflow */
+  #invoiceTemplate {
+    width: 100%;
+  }
+
+}
+
+button {
+  min-height: 45px;
+}
+
+select, input {
+  min-height: 45px;
+}
+
+                   input:focus, select:focus {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
+}
