@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: white;
+  padding-bottom: 80px;
+}
+
+.topbar {
+  padding: 15px;
+  text-align: center;
+  background: rgba(0,0,0,0.2);
+}
+
+.tab {
+  display: none;
+  padding: 20px;
+}
+
+.tab.active {
+  display: block;
+}
+
+.summary-grid {
+  margin-top: 20px;
+}
+
+.summary-card {
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.blue {
+  background: linear-gradient(135deg,#36d1dc,#5b86e5);
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #36d1dc;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+  font-size: 13px;
+}
+
+th {
+  background: rgba(0,0,0,0.3);
+}
+
+td {
+  background: rgba(255,255,255,0.1);
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+}
+
+#invoiceTemplate {
+  position: absolute;
+  left: -9999px;
+  background: white;
+  color: black;
+  padding: 20px;
+  width: 800px;
+}
