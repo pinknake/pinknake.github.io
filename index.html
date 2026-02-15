@@ -7,11 +7,19 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#667eea">
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
 <header class="topbar">
+  <button id="installBtn" style="display:none;">📲 Install App</button>
+  <h2><span class="iconify" data-icon="mdi:food-apple"></span> Kitchen Manager</h2>
+ <button id="installBtn">
+  <i class="fas fa-download"></i> Install App
+</button>
   <h2>🍳 Kitchen Manager</h2>
 </header>
 
@@ -105,7 +113,8 @@
   </table>
   <h3 id="invoiceTotal"></h3>
 </div>
-
+  
+<button onclick="shareApp()">📤 Share App</button>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="app.js"></script>
