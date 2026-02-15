@@ -20,39 +20,69 @@ body {
   padding:20px;
 }
 
+./* FORM CARD IMPROVED */
+
 .card {
-  background:rgba(255,255,255,0.1);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
+  background: rgba(255,255,255,0.12);
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  backdrop-filter: blur(15px);
 }
 
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Two column layout */
+.row-2 {
+  display: flex;
+  gap: 15px;
+}
+
+.row-2 .form-group {
+  flex: 1;
+}
+
+/* Better button */
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg,#36d1dc,#5b86e5);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
 label {
   font-size:13px;
   margin-top:10px;
   display:block;
 }
 
-select, input {
-  width:100%;
-  padding:10px;
-  margin-top:5px;
-  border:none;
-  border-radius:8px;
-  margin-bottom:10px;
-}
-
-button {
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#36d1dc;
-  color:white;
-  font-weight:600;
-  margin-top:5px;
-  cursor:pointer;
-}
 
 .table-wrapper {
   overflow-x:auto;
