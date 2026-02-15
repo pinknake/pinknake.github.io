@@ -129,18 +129,19 @@ document.addEventListener("DOMContentLoaded", function () {
     doc.addImage(img,"PNG",10,10,190,0);
     doc.save("Kitchen_Report.pdf");
   };
-function shareApp(){
-  if(navigator.share){
-    navigator.share({
-      title: "Ghar Manager",
-      text: "Check out my Ghar Manager App 🔥",
-      url: window.location.href
-    });
-  } else {
-    window.open("https://wa.me/?text=" + encodeURIComponent(window.location.href));
-  }
-}
+window.shareApp = function () {
+    const url = window.location.origin;
 
+    if (navigator.share) {
+      navigator.share({
+        title: "Ghar Manager",
+        text: "Check out my Ghar Manager App 🔥",
+        url
+      }).catch(() => {});
+    } else {
+      window.open("https://wa.me/?text=" + encodeURIComponent(url));
+    }
+  };
   let deferredPrompt;
 
 window.addEventListener("beforeinstallprompt", (e) => {
