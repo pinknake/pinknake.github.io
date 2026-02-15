@@ -20,7 +20,7 @@ body {
   padding:20px;
 }
 
-./* FORM CARD IMPROVED */
+/* FORM CARD IMPROVED */
 
 .card {
   background: rgba(255,255,255,0.12);
@@ -60,7 +60,6 @@ select, input {
   flex: 1;
 }
 
-/* Better button */
 button {
   width: 100%;
   padding: 12px;
@@ -77,12 +76,6 @@ button {
 button:hover {
   transform: scale(1.03);
 }
-label {
-  font-size:13px;
-  margin-top:10px;
-  display:block;
-}
-
 
 .table-wrapper {
   overflow-x:auto;
