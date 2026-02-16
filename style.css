@@ -234,19 +234,22 @@ body.dark button {
 /* Updated */ 
 #updateBanner {
   position: fixed;
-  top: -60px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg,#36d1dc,#5b86e5);
+  background: linear-gradient(135deg,#ff512f,#dd2476);
   color: white;
-  padding: 12px 25px;
-  border-radius: 30px;
+  padding: 12px 20px;
+  border-radius: 12px;
   font-size: 14px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  transition: 0.5s ease;
-  z-index: 9999;
+  z-index: 999;
 }
 
-#updateBanner.show {
-  top: 20px;
+#updateBanner button {
+  margin-left: 10px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
