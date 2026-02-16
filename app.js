@@ -158,7 +158,33 @@ themeBtn.addEventListener("click", () => {
   setTheme(current === "dark" ? "light" : "dark");
 }); 
   
+//UpdateApp
+let newWorker;
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+
+    reg.addEventListener('updatefound', () => {
+      newWorker = reg.installing;
+
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          document.getElementById("updateBanner").style.display = "block";
+        }
+      });
+    });
+
+  });
+}
+
+function updateApp() {
+  if (newWorker) {
+    newWorker.postMessage({ action: 'skipWaiting' });
+  }
+  window.location.reload();
+}
+  
+  
   //ShareApp
 window.shareApp = function () {
     const url = window.location.origin;
