@@ -226,18 +226,56 @@ function checkSubscription(sub) {
 }
 
 function isPremiumUser(){
-  try{
-    const sub = JSON.parse(localStorage.getItem("subscriptionData"));
-    return sub?.isPremium === true;
-  } catch {
-    return false;
-  }
+  const sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  if (!sub?.isPremium) return false;
+
+  const start = new Date(sub.premiumStart);
+  const today = new Date();
+  const diffDays = Math.floor((today - start) / (1000*60*60*24));
+
+  return diffDays < (sub.premiumDays || 30);
 }
 
 window.showUpgrade = function(){
   alert("💎 Premium Plan ₹99\n\nPay via UPI: yourupi@bank\n\nAfter payment contact on WhatsApp.");
 };
 
+
+
+window.activatePremium = function(days = 30){
+  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
+
+  sub.isPremium = true;
+  sub.premiumStart = new Date().toISOString();
+  sub.premiumDays = days;
+
+  localStorage.setItem("subscriptionData", JSON.stringify(sub));
+
+  alert("Premium Activated for " + days + " Days!");
+  location.reload();
+};
+
+
+
+  let tapCount = 0;
+
+document.getElementById("premiumBox")?.addEventListener("click", function(){
+  tapCount++;
+
+  if(tapCount >= 5){
+    const pass = prompt("Enter Admin Password");
+
+    if(pass === "ankush123"){   // apna password yahan change karo
+      activatePremium(30);
+    } else {
+      alert("Wrong Password");
+    }
+
+    tapCount = 0;
+  }
+
+  setTimeout(() => { tapCount = 0; }, 3000);
+});
   
   /* ================= THEME ================= */
 
