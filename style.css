@@ -172,6 +172,23 @@ td{
   width:800px;
 }
 
+/* ================= PREMIUM-BOX ==============*/
+.premium-box{
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.15);
+  text-align:center;
+  display:none;
+}
+
+.premium-box h4{
+  margin-bottom:5px;
+}
+
+.premium-box button{
+  background:linear-gradient(135deg,#ff9966,#ff5e62);
+}
 /* ================= UPDATE BANNER ================= */
 
 #updateBanner{
