@@ -117,10 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.downloadPDF = async () => {
 
-    if (!kitchenData.length) {
-      alert("No data available!");
-      return;
-    }
+  if (!isPremiumUser()) {
+    alert("PDF is Premium Feature. Please Upgrade.");
+    return;
+  }
 
     const invoice = $("invoiceTemplate");
     const tbody = invoice?.querySelector("tbody");
@@ -155,6 +155,50 @@ document.addEventListener("DOMContentLoaded", () => {
     doc.save("Kitchen_Invoice.pdf");
   };
 
+
+  /* ================= SUBSCRIPTION ================= */
+
+const TRIAL_DAYS = 7;
+
+function initSubscription() {
+  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
+
+  if (!sub) {
+    sub = {
+      trialStart: new Date().toISOString(),
+      isPremium: false
+    };
+    localStorage.setItem("subscriptionData", JSON.stringify(sub));
+  }
+
+  checkSubscription(sub);
+}
+
+function checkSubscription(sub) {
+  const trialStart = new Date(sub.trialStart);
+  const today = new Date();
+  const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
+
+  if (sub.isPremium) {
+    document.getElementById("premiumBox").style.display = "none";
+    return;
+  }
+
+  if (diffDays >= TRIAL_DAYS) {
+    document.getElementById("premiumBox").style.display = "block";
+  }
+}
+
+function isPremiumUser(){
+  const sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  return sub?.isPremium;
+}
+
+window.showUpgrade = function(){
+  alert("💎 Premium Plan ₹99\n\nPay via UPI: yourupi@bank\n\nAfter payment contact on WhatsApp.");
+};
+
+  
   /* ================= THEME ================= */
 
   const themeBtn = $("themeToggle");
@@ -251,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Background sync check...");
     }
   }, 30000);
-
+  initSubscription();
   renderTable();
 
 });
