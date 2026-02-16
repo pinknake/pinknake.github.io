@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let kitchenData = safeJSONParse("kitchenData");
 
   const itemsData = {
-    Vegetable: ["Tomato", "Potato", "Onion"],
+    Vegetable: ["Tomato/टमाटर", "Potato", "Onion"],
     Spices: ["Haldi", "Mirch", "Jeera"],
     Dairy: ["Milk", "Paneer", "Curd"]
   };
