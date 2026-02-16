@@ -192,8 +192,8 @@ function checkSubscription(sub) {
   const trialStart = new Date(sub.trialStart);
   const today = new Date();
   const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
-  const daysLeft = TRIAL_DAYS - diffDays;
 
+  // Premium User
   if (sub.isPremium) {
     premiumBox.style.display = "none";
     pdfBtn.innerText = "📄 Download PDF";
@@ -201,16 +201,17 @@ function checkSubscription(sub) {
     return;
   }
 
-  if (diffDays >= TRIAL_DAYS) {
-    premiumBox.style.display = "block";
-    premiumBox.querySelector("p").innerText = 
-      "Trial Expired! Unlock PDF Feature";
-
+  // Trial Active
+  if (diffDays < TRIAL_DAYS) {
+    premiumBox.style.display = "none";   // 👈 BOX HIDE
+    pdfBtn.innerText = "📄 Download PDF";
+    pdfBtn.style.opacity = "1";
+  }
+  // Trial Expired
+  else {
+    premiumBox.style.display = "block";  // 👈 BOX SHOW
     pdfBtn.innerText = "🔒 PDF (Premium)";
     pdfBtn.style.opacity = "0.6";
-  } else {
-    premiumBox.style.display = "none";
-    pdfBtn.innerText = `📄 PDF (${daysLeft} days left)`;
   }
 }
 
