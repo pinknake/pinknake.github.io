@@ -159,23 +159,6 @@ themeBtn.addEventListener("click", () => {
 }); 
   
 //UpdateApp
-let newWorker;
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(reg => {
-
-    reg.addEventListener('updatefound', () => {
-      newWorker = reg.installing;
-
-      newWorker.addEventListener('statechange', () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          document.getElementById("updateBanner").style.display = "block";
-        }
-      });
-    });
-
-  });
-}
 
 function updateApp() {
   if (newWorker) {
@@ -215,13 +198,24 @@ document.getElementById("installBtn").addEventListener("click", async () => {
 });
 
   // PWA Register
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js")
-      .then(() => console.log("PWA Ready"))
-      .catch(err => console.log("SW Error", err));
+let newWorker;
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+
+    reg.addEventListener('updatefound', () => {
+      newWorker = reg.installing;
+
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          document.getElementById("updateBanner").style.display = "block";
+        }
+      });
+    });
+
   });
 }
+
   renderTable();
 
 });
