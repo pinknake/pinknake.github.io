@@ -164,7 +164,13 @@ if (!kitchenData.length) {
 const TRIAL_DAYS = 7;
 
 function initSubscription() {
-  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  let sub;
+
+  try {
+    sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  } catch {
+    sub = null;
+  }
 
   if (!sub) {
     sub = {
@@ -178,23 +184,43 @@ function initSubscription() {
 }
 
 function checkSubscription(sub) {
+  const premiumBox = document.getElementById("premiumBox");
+  const pdfBtn = document.getElementById("pdfBtn");
+
+  if (!premiumBox || !pdfBtn) return;
+
   const trialStart = new Date(sub.trialStart);
   const today = new Date();
   const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
+  const daysLeft = TRIAL_DAYS - diffDays;
 
   if (sub.isPremium) {
-    document.getElementById("premiumBox").style.display = "none";
+    premiumBox.style.display = "none";
+    pdfBtn.innerText = "📄 Download PDF";
+    pdfBtn.style.opacity = "1";
     return;
   }
 
   if (diffDays >= TRIAL_DAYS) {
-    document.getElementById("premiumBox").style.display = "block";
+    premiumBox.style.display = "block";
+    premiumBox.querySelector("p").innerText = 
+      "Trial Expired! Unlock PDF Feature";
+
+    pdfBtn.innerText = "🔒 PDF (Premium)";
+    pdfBtn.style.opacity = "0.6";
+  } else {
+    premiumBox.style.display = "none";
+    pdfBtn.innerText = `📄 PDF (${daysLeft} days left)`;
   }
 }
 
 function isPremiumUser(){
-  const sub = JSON.parse(localStorage.getItem("subscriptionData"));
-  return sub?.isPremium;
+  try{
+    const sub = JSON.parse(localStorage.getItem("subscriptionData"));
+    return sub?.isPremium === true;
+  } catch {
+    return false;
+  }
 }
 
 window.showUpgrade = function(){
