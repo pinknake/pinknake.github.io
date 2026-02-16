@@ -117,14 +117,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.downloadPDF = async () => {
 
-  if (!isPremiumUser()) {
+  const sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  const trialStart = new Date(sub?.trialStart);
+  const today = new Date();
+  const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
+
+  const trialActive = diffDays < TRIAL_DAYS;
+  const premiumActive = sub?.isPremium === true;
+
+  // Allow if trial OR premium
+  if (!trialActive && !premiumActive) {
     alert("PDF is Premium Feature. Please Upgrade.");
     return;
   }
-if (!kitchenData.length) {
-  alert("No Data to Export!");
-  return;
-}
+
+  if (!kitchenData.length) {
+    alert("No Data to Export!");
+    return;
+  }
     const invoice = $("invoiceTemplate");
     const tbody = invoice?.querySelector("tbody");
     if (!invoice || !tbody) return;
