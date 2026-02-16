@@ -129,6 +129,28 @@ document.addEventListener("DOMContentLoaded", function () {
     doc.addImage(img,"PNG",10,10,190,0);
     doc.save("Kitchen_Report.pdf");
   };
+
+// Theme System
+const themeBtn = document.getElementById("themeToggle");
+
+function setTheme(theme) {
+  document.body.classList.remove("light","dark");
+  document.body.classList.add(theme);
+  localStorage.setItem("theme", theme);
+  themeBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
+setTheme(savedTheme);
+
+themeBtn.addEventListener("click", () => {
+  const current = document.body.classList.contains("dark") ? "dark" : "light";
+  setTheme(current === "dark" ? "light" : "dark");
+}); 
+  
+
+  //ShareApp
 window.shareApp = function () {
     const url = window.location.origin;
 
