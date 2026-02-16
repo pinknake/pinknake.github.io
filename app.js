@@ -158,15 +158,7 @@ themeBtn.addEventListener("click", () => {
   setTheme(current === "dark" ? "light" : "dark");
 }); 
   
-//UpdateApp
 
-function updateApp() {
-  if (newWorker) {
-    newWorker.postMessage({ action: 'skipWaiting' });
-  }
-  window.location.reload();
-}
-  
   
   //ShareApp
 window.shareApp = function () {
@@ -198,17 +190,21 @@ document.getElementById("installBtn").addEventListener("click", async () => {
 });
 
   // PWA Register
-let newWorker;
-
 if ('serviceWorker' in navigator) {
+
   navigator.serviceWorker.register('sw.js').then(reg => {
 
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      showUpdateBanner();
+    }
+
     reg.addEventListener('updatefound', () => {
-      newWorker = reg.installing;
+      const newWorker = reg.installing;
 
       newWorker.addEventListener('statechange', () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          document.getElementById("updateBanner").style.display = "block";
+        if (newWorker.state === 'installed') {
+          showUpdateBanner();
         }
       });
     });
@@ -216,6 +212,15 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+function showUpdateBanner() {
+  const banner = document.getElementById("updateBanner");
+  banner.classList.add("show");
+
+  setTimeout(() => {
+    banner.classList.remove("show");
+    window.location.reload();
+  }, 2500);
+}
   renderTable();
 
 });
