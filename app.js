@@ -121,7 +121,10 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("PDF is Premium Feature. Please Upgrade.");
     return;
   }
-
+if (!kitchenData.length) {
+  alert("No Data to Export!");
+  return;
+}
     const invoice = $("invoiceTemplate");
     const tbody = invoice?.querySelector("tbody");
     if (!invoice || !tbody) return;
