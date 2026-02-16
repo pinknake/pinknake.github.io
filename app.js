@@ -99,37 +99,46 @@ document.addEventListener("DOMContentLoaded", function () {
   // PDF
   window.downloadPDF = async function () {
 
-    const invoice = $("invoiceTemplate");
-    const tbody = invoice.querySelector("tbody");
+  if (!kitchenData.length) {
+    alert("No data available!");
+    return;
+  }
 
-    tbody.innerHTML = "";
-    let total = 0;
+  const invoice = document.getElementById("invoiceTemplate");
+  const tbody = invoice.querySelector("tbody");
 
-    kitchenData.forEach(e=>{
-      total += e.amount;
-      tbody.innerHTML += `
-        <tr>
-          <td>${e.date}</td>
-          <td>${e.item}</td>
-          <td>${e.qty}</td>
-          <td>${e.type}</td>
-          <td>₹ ${e.amount}</td>
-        </tr>
-      `;
-    });
+  tbody.innerHTML = "";
+  let total = 0;
 
-    $("invoiceDate").innerText = new Date().toLocaleString();
-    $("invoiceTotal").innerText = "Grand Total ₹ " + total;
+  kitchenData.forEach(e=>{
+    total += e.amount;
+    tbody.innerHTML += `
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.item}</td>
+        <td>${e.qty}</td>
+        <td>${e.type}</td>
+        <td>₹ ${e.amount}</td>
+      </tr>
+    `;
+  });
 
-    const canvas = await html2canvas(invoice);
-    const img = canvas.toDataURL("image/png");
+  document.getElementById("invoiceDate").innerText =
+    "Date: " + new Date().toLocaleString();
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.addImage(img,"PNG",10,10,190,0);
-    doc.save("Kitchen_Report.pdf");
-  };
+  document.getElementById("invoiceTotal").innerText =
+    "Grand Total ₹ " + total;
 
+  const canvas = await html2canvas(invoice, { scale: 2 });
+  const img = canvas.toDataURL("image/png");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p","mm","a4");
+
+  doc.addImage(img,"PNG",10,10,190,0);
+  doc.save("Kitchen_Invoice.pdf");
+};
+  
 // Theme System
 const themeBtn = document.getElementById("themeToggle");
 
