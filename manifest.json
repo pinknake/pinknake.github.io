@@ -1,0 +1,16 @@
+{
+  "name": "Ghar Kitchen Manager",
+  "short_name": "KitchenApp",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#764ba2",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1046/1046857.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
