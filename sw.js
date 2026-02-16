@@ -1,4 +1,4 @@
-const CACHE_NAME = "kitchen-app-v3";
+const CACHE_NAME = "kitchen-app-v4";
 
 const urlsToCache = [
   "index.html",
