@@ -115,72 +115,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= PDF ================= */
 
-  window.downloadPDF = async () => {
+  /* ================= PDF DOWNLOAD ================= */
+
+window.downloadPDF = async () => {
 
   const sub = JSON.parse(localStorage.getItem("subscriptionData"));
-  const trialStart = new Date(sub?.trialStart);
   const today = new Date();
-  const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
 
-  const trialActive = diffDays < TRIAL_DAYS;
-  const premiumActive = sub?.isPremium === true;
-    
+  if (!sub) {
+    alert("Subscription Error");
+    return;
+  }
 
-  // Allow if trial OR premium
+  // ===== CHECK TRIAL =====
+  const trialStart = new Date(sub.trialStart);
+  const trialDiff = Math.floor((today - trialStart) / (1000*60*60*24));
+  const trialActive = trialDiff < TRIAL_DAYS;
+
+  // ===== CHECK PREMIUM =====
+  let premiumActive = false;
+
+  if (sub.isPremium && sub.premiumStart) {
+    const start = new Date(sub.premiumStart);
+    const diff = Math.floor((today - start) / (1000*60*60*24));
+    premiumActive = diff < (sub.premiumDays || 30);
+  }
+
   if (!trialActive && !premiumActive) {
-  const btn = document.getElementById("pdfBtn");
-  btn.classList.add("locked");
+    const btn = document.getElementById("pdfBtn");
+    btn.classList.add("locked");
 
-  setTimeout(()=>{
-    btn.classList.remove("locked");
-  },500);
+    setTimeout(() => {
+      btn.classList.remove("locked");
+    }, 500);
 
-  alert("Premium Required");
-  return;
-}
+    alert("Premium Required");
+    return;
+  }
 
-    
   if (!kitchenData.length) {
     alert("No Data to Export!");
     return;
   }
-    const invoice = $("invoiceTemplate");
-    const tbody = invoice?.querySelector("tbody");
-    if (!invoice || !tbody) return;
 
-    tbody.innerHTML = "";
-    let total = 0;
+  const invoice = $("invoiceTemplate");
+  const tbody = invoice?.querySelector("tbody");
+  if (!invoice || !tbody) return;
 
-    kitchenData.forEach(e => {
-      total += e.amount;
-      tbody.innerHTML += `
-        <tr>
-          <td>${e.date}</td>
-          <td>${e.item}</td>
-          <td>${e.qty}</td>
-          <td>${e.type}</td>
-          <td>₹ ${e.amount}</td>
-        </tr>
-      `;
-    });
+  tbody.innerHTML = "";
+  let total = 0;
 
-    $("invoiceDate").innerText = "Date: " + new Date().toLocaleString();
-    $("invoiceTotal").innerText = "Grand Total ₹ " + total;
+  kitchenData.forEach(e => {
+    total += e.amount;
+    tbody.innerHTML += `
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.item}</td>
+        <td>${e.qty}</td>
+        <td>${e.type}</td>
+        <td>₹ ${e.amount}</td>
+      </tr>
+    `;
+  });
 
-    const canvas = await html2canvas(invoice, { scale: 2 });
-    const img = canvas.toDataURL("image/png");
+  $("invoiceDate").innerText = "Date: " + new Date().toLocaleString();
+  $("invoiceTotal").innerText = "Grand Total ₹ " + total;
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
+  const canvas = await html2canvas(invoice, { scale: 2 });
+  const img = canvas.toDataURL("image/png");
 
-    doc.addImage(img, "PNG", 10, 10, 190, 0);
-    doc.save("Kitchen_Invoice.pdf");
-  };
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  doc.addImage(img, "PNG", 10, 10, 190, 0);
+  doc.save("Kitchen_Invoice.pdf");
+};
 
 
-  /* ================= SUBSCRIPTION ================= */
+/* ================= SUBSCRIPTION ================= */
 
-const TRIAL_DAYS = 7;
 const TRIAL_DAYS = 7;
 
 function initSubscription() {
@@ -206,6 +219,7 @@ function initSubscription() {
 }
 
 function updateSubscription(sub) {
+
   const premiumBox = document.getElementById("premiumBox");
   const pdfBtn = document.getElementById("pdfBtn");
 
@@ -225,7 +239,6 @@ function updateSubscription(sub) {
       pdfBtn.style.opacity = "1";
       return;
     } else {
-      // Auto Expire
       sub.isPremium = false;
       localStorage.setItem("subscriptionData", JSON.stringify(sub));
     }
@@ -246,47 +259,12 @@ function updateSubscription(sub) {
     pdfBtn.style.opacity = "0.6";
   }
 }
-  
-  // Premium User
-  if (sub.isPremium) {
-    premiumBox.style.display = "none";
-    pdfBtn.innerText = "📄 Download PDF";
-    pdfBtn.style.opacity = "1";
-    return;
-  }
-
-  // Trial Active
-  if (diffDays < TRIAL_DAYS) {
-    premiumBox.style.display = "none";   // 👈 BOX HIDE
-    pdfBtn.innerText = "📄 Download PDF";
-    pdfBtn.style.opacity = "1";
-  }
-  // Trial Expired
-  else {
-    premiumBox.style.display = "block";  // 👈 BOX SHOW
-    pdfBtn.innerText = "🔒 PDF (Premium)";
-    pdfBtn.style.opacity = "0.6";
-  }
-}
-
-function isPremiumUser(){
-  const sub = JSON.parse(localStorage.getItem("subscriptionData"));
-  if (!sub?.isPremium) return false;
-
-  const start = new Date(sub.premiumStart);
-  const today = new Date();
-  const diffDays = Math.floor((today - start) / (1000*60*60*24));
-
-  return diffDays < (sub.premiumDays || 30);
-}
-
-window.showUpgrade = function(){
-  alert("💎 Premium Plan ₹99\n\nPay via UPI: yourupi@bank\n\nAfter payment contact on WhatsApp.");
-};
 
 
+/* ================= PREMIUM ACTIVATION ================= */
 
 window.activatePremium = function(days = 30){
+
   let sub = JSON.parse(localStorage.getItem("subscriptionData"));
 
   sub.isPremium = true;
@@ -295,30 +273,23 @@ window.activatePremium = function(days = 30){
 
   localStorage.setItem("subscriptionData", JSON.stringify(sub));
 
-  // 💰 Revenue Add
-  let revenue = parseInt(localStorage.getItem("totalRevenue") || 0);
-  revenue += 10;
-  localStorage.setItem("totalRevenue", revenue);
-
   alert("Premium Activated for " + days + " Days!");
   location.reload();
 };
 
-function showRevenue(){
-  const rev = localStorage.getItem("totalRevenue") || 0;
-  alert("Total Revenue ₹ " + rev);
-}
 
+/* ================= ADMIN TAP ================= */
 
-  let tapCount = 0;
+let tapCount = 0;
 
 document.getElementById("premiumBox")?.addEventListener("click", function(){
+
   tapCount++;
 
   if(tapCount >= 5){
     const pass = prompt("Enter Admin Password");
 
-    if(pass === "ankush123"){   // apna password yahan change karo
+    if(pass === "ankush123"){
       activatePremium(30);
     } else {
       alert("Wrong Password");
@@ -329,7 +300,11 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
 
   setTimeout(() => { tapCount = 0; }, 3000);
 });
-  
+
+
+/* ================= INIT ================= */
+
+
   /* ================= THEME ================= */
 
   const themeBtn = $("themeToggle");
@@ -428,7 +403,5 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
   }, 30000);
 
 initSubscription();
-updateSubscriptionUI();
-  renderTable();
-
+renderTable();
 });
