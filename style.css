@@ -134,6 +134,46 @@ button:hover{
   flex-wrap:wrap;
 }
 
+/* ====== premium button ====*/
+.pay-btn,
+.whatsapp-btn,
+.community-btn,
+.telegram-btn {
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.pay-btn{
+  background:linear-gradient(135deg,#00c853,#009624);
+}
+
+.whatsapp-btn{
+  background:#25D366;
+}
+
+.community-btn{
+  background:#128C7E;
+}
+
+.telegram-btn{
+  background:#0088cc;
+}
+
+.pay-btn:hover,
+.whatsapp-btn:hover,
+.community-btn:hover,
+.telegram-btn:hover{
+  transform:scale(1.03);
+}
+
+
 /* ================= TABLE ================= */
 
 .table-wrapper{
