@@ -123,14 +123,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
 
   const trialActive = diffDays < TRIAL_DAYS;
-  const premiumActive = sub?.isPremium === true;
+  let premiumActive = false;
+
+if(sub?.isPremium && sub?.premiumStart){
+  const start = new Date(sub.premiumStart);
+  const diff = Math.floor((today - start) / (1000*60*60*24));
+  premiumActive = diff < (sub.premiumDays || 30);
+}
+    
 
   // Allow if trial OR premium
   if (!trialActive && !premiumActive) {
-    alert("PDF is Premium Feature. Please Upgrade.");
-    return;
-  }
+  const btn = document.getElementById("pdfBtn");
+  btn.classList.add("locked");
 
+  setTimeout(()=>{
+    btn.classList.remove("locked");
+  },500);
+
+  alert("Premium Required");
+  return;
+}
+
+    
   if (!kitchenData.length) {
     alert("No Data to Export!");
     return;
@@ -171,7 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= SUBSCRIPTION ================= */
 
-const TRIAL_DAYS = 0;
+const TRIAL_DAYS = 7;
+const TRIAL_DAYS = 7;
 
 function initSubscription() {
   let sub;
@@ -185,24 +201,58 @@ function initSubscription() {
   if (!sub) {
     sub = {
       trialStart: new Date().toISOString(),
-      isPremium: false
+      isPremium: false,
+      premiumStart: null,
+      premiumDays: 30
     };
     localStorage.setItem("subscriptionData", JSON.stringify(sub));
   }
 
-  checkSubscription(sub);
+  updateSubscription(sub);
 }
 
-function checkSubscription(sub) {
+function updateSubscription(sub) {
   const premiumBox = document.getElementById("premiumBox");
   const pdfBtn = document.getElementById("pdfBtn");
 
   if (!premiumBox || !pdfBtn) return;
 
-  const trialStart = new Date(sub.trialStart);
   const today = new Date();
-  const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
 
+  // ===== CHECK PREMIUM =====
+  if (sub.isPremium && sub.premiumStart) {
+    const start = new Date(sub.premiumStart);
+    const diff = Math.floor((today - start) / (1000*60*60*24));
+    const daysLeft = (sub.premiumDays || 30) - diff;
+
+    if (daysLeft > 0) {
+      premiumBox.style.display = "none";
+      pdfBtn.innerText = `📄 Download PDF (${daysLeft} Days Left)`;
+      pdfBtn.style.opacity = "1";
+      return;
+    } else {
+      // Auto Expire
+      sub.isPremium = false;
+      localStorage.setItem("subscriptionData", JSON.stringify(sub));
+    }
+  }
+
+  // ===== CHECK TRIAL =====
+  const trialStart = new Date(sub.trialStart);
+  const trialDiff = Math.floor((today - trialStart) / (1000*60*60*24));
+  const trialLeft = TRIAL_DAYS - trialDiff;
+
+  if (trialLeft > 0) {
+    premiumBox.style.display = "none";
+    pdfBtn.innerText = `📄 Download PDF (${trialLeft} Trial Days Left)`;
+    pdfBtn.style.opacity = "1";
+  } else {
+    premiumBox.style.display = "block";
+    pdfBtn.innerText = "🔒 PDF (Premium)";
+    pdfBtn.style.opacity = "0.6";
+  }
+}
+  
   // Premium User
   if (sub.isPremium) {
     premiumBox.style.display = "none";
@@ -251,10 +301,19 @@ window.activatePremium = function(days = 30){
 
   localStorage.setItem("subscriptionData", JSON.stringify(sub));
 
+  // 💰 Revenue Add
+  let revenue = parseInt(localStorage.getItem("totalRevenue") || 0);
+  revenue += 10;
+  localStorage.setItem("totalRevenue", revenue);
+
   alert("Premium Activated for " + days + " Days!");
   location.reload();
 };
 
+function showRevenue(){
+  const rev = localStorage.getItem("totalRevenue") || 0;
+  alert("Total Revenue ₹ " + rev);
+}
 
 
   let tapCount = 0;
@@ -373,7 +432,9 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
       console.log("Background sync check...");
     }
   }, 30000);
-  initSubscription();
+
+initSubscription();
+updateSubscriptionUI();
   renderTable();
 
 });
