@@ -123,13 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const diffDays = Math.floor((today - trialStart) / (1000*60*60*24));
 
   const trialActive = diffDays < TRIAL_DAYS;
-  let premiumActive = false;
-
-if(sub?.isPremium && sub?.premiumStart){
-  const start = new Date(sub.premiumStart);
-  const diff = Math.floor((today - start) / (1000*60*60*24));
-  premiumActive = diff < (sub.premiumDays || 30);
-}
+  const premiumActive = sub?.isPremium === true;
     
 
   // Allow if trial OR premium
