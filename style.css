@@ -304,6 +304,55 @@ body.dark .small-btn{
   background:rgba(255,255,255,0.1);
 }
 
+/* ================= BADGES ================= */
+.premium-badge{
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  background:#ccc;
+  color:#000;
+  margin-left:8px;
+}
+
+.premium-active{
+  background:gold;
+  color:#000;
+}
+
+.trial-active{
+  background:#4caf50;
+  color:#fff;
+}
+
+.expired{
+  background:#f44336;
+  color:#fff;
+}
+
+/* ================= SUB-CARD =============== */ 
+.sub-card{
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:15px;
+  background:rgba(255,255,255,0.1);
+  font-size:14px;
+}
+
+/* ================= ANIMATED LOCK SYTEM ==== */ 
+.locked{
+  animation: shake 0.5s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  75%{transform:translateX(-5px);}
+  100%{transform:translateX(0);}
+}
+
+
 /* ================= MOBILE ================= */
 
 @media(max-width:768px){
