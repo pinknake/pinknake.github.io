@@ -373,23 +373,59 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
     }
   };
 
-  /* ================= INSTALL APP ================= */
+  
+/* ================= PWA INSTALL ================= */
 
-  let deferredPrompt;
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    $("installBtn").style.display = "block";
-  });
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) installBtn.style.display = "inline-block";
+});
 
-  $("installBtn")?.addEventListener("click", async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt = null;
-    }
-  });
+installBtn?.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
 
+  deferredPrompt.prompt();
+
+  const result = await deferredPrompt.userChoice;
+
+  if (result.outcome === "accepted") {
+    console.log("App Installed");
+  }
+
+  deferredPrompt = null;
+  installBtn.style.display = "none";
+});
+
+window.addEventListener("appinstalled", () => {
+  console.log("PWA Installed Successfully");
+  installBtn.style.display = "none";
+});
+
+  /* iOS Install Detection */
+
+function isIos(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function isInStandaloneMode(){
+  return ('standalone' in window.navigator) && window.navigator.standalone;
+}
+
+if(isIos() && !isInStandaloneMode()){
+  if(installBtn){
+    installBtn.style.display = "inline-block";
+    installBtn.innerText = "📲 Add to Home";
+
+    installBtn.addEventListener("click", () => {
+      alert("Tap Share ➜ Add to Home Screen");
+    });
+  }
+}
+  
   /* ================= SERVICE WORKER ================= */
 
   if ("serviceWorker" in navigator) {
