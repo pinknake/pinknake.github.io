@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<meta name="description" content="Kitchen Manager helps track kitchen expenses, manage entries, export PDF invoices, and manage monthly household budgeting easily.">
+
+<title>Kitchen Manager - Track Kitchen Expenses Easily</title>
+
+<!-- Prevent White Flash -->
+<style>
+  body {
+    margin:0;
+    background:#667eea;
+  }
+</style>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#667eea">
+
+<!-- iOS Support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KitchenApp">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Icons -->
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- AdSense (Keep disabled until approval if applying) -->
+<!--
+<script async 
+src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3689994270580853"
+crossorigin="anonymous"></script>
+-->
+
+</head>
+
+<body class="light">
+
+<!-- ================= HEADER ================= -->
+<header class="topbar">
+  <div class="header-left">
+    <span id="premiumBadge" class="premium-badge">FREE</span>
+    <h2>
+      <span class="iconify" data-icon="mdi:food-apple"></span>
+      Kitchen Manager
+    </h2>
+  </div>
+
+  <div class="header-right">
+    <button id="installBtn" class="small-btn">
+      <i class="fas fa-download"></i>
+    </button>
+
+    <button id="themeToggle" class="small-btn">🌙</button>
+
+    <button id="manualRefresh" class="small-btn">🔄</button>
+  </div>
+</header>
+
+<!-- ================= UPDATE BANNER ================= -->
+<div id="updateBanner" style="display:none;">
+  🚀 App Updated Successfully!
+</div>
+
+<!-- ================= MAIN CONTAINER ================= -->
+<section class="container">
+
+  <div class="card">
+
+    <div class="row-2">
+      <div class="form-group">
+        <label>Category Type</label>
+        <select id="typeCategory">
+          <option value="Open">Open</option>
+          <option value="Packet">Packet</option>
+          <option value="Bottle">Bottle</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Item Category</label>
+        <select id="mainCategory">
+          <option value="Vegetable">Vegetable</option>
+          <option value="Spices">Spices</option>
+          <option value="Dairy">Dairy</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Select Item</label>
+      <select id="itemSelect"></select>
+    </div>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="text" id="quantity" placeholder="Eg: 2 kg">
+      </div>
+
+      <div class="form-group">
+        <label>Total Amount ₹</label>
+        <input type="number" id="amount" min="0">
+      </div>
+    </div>
+
+    <button onclick="addKitchenEntry()">➕ Add Entry</button>
+
+  </div>
+
+  <!-- ================= HISTORY ================= -->
+  <div class="card">
+    <h3>History</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Type</th>
+            <th>Total ₹</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="kitchenTable"></tbody>
+      </table>
+    </div>
+
+    <div class="action-buttons">
+      <button onclick="shareWhatsApp()">📤 WhatsApp</button>
+      <button id="pdfBtn" onclick="downloadPDF()">📄 PDF (Premium)</button>
+      <button onclick="shareApp()">📲 Share App</button>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= INVOICE TEMPLATE (Hidden) ================= -->
+<div id="invoiceTemplate" style="display:none;">
+  <div style="text-align:center;">
+    <h2 style="color:#764ba2;">GHAR KITCHEN MANAGER</h2>
+    <p id="invoiceDate"></p>
+  </div>
+
+  <table border="1" width="100%" cellspacing="0" cellpadding="8">
+    <thead style="background:#667eea;color:white;">
+      <tr>
+        <th>Date</th>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Type</th>
+        <th>Total ₹</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h3 id="invoiceTotal" style="text-align:right;margin-top:20px;"></h3>
+</div>
+
+<footer style="text-align:center;margin-top:20px;padding:15px;">
+  <a href="privacy.html">Privacy Policy</a> |
+  <a href="about.html">About</a> |
+  <a href="contact.html">Contact</a>
+</footer>
+
+<!-- Floating Share Button -->
+<button onclick="shareApp()" class="fab share-btn">📤</button>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<!-- App JS -->
+<script src="app.js"></script>
+
+<!-- Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js');
+  });
+}
+</script>
+
+</body>
+</html>
