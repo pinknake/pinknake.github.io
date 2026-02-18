@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= DATA ================= */
 
-  let kitchenData = safeJSONParse("kitchenData", []);
-
+  window.kitchenData = safeJSONParse("kitchenData", []);
+  
   const itemsData = {
     Vegetable: ["Tomato", "Potato", "Onion"],
     Spices: ["Haldi", "Mirch", "Jeera"],
@@ -58,9 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addKitchenEntry = () => {
 
     const item = $("itemSelect")?.value || "";
-    const qty = $("quantity")?.value.trim();
+    const qty = $("quantity") && ($("quantity").value = "");
     const type = $("typeCategory")?.value || "";
-    const amount = Number($("amount")?.value);
+    const amount = Number($("amount") && ($("amount").value = ""));
 
     if (!qty || isNaN(amount) || amount <= 0) {
       alert("Enter valid quantity and amount!");
@@ -273,7 +273,7 @@ function updateBadge(status, daysLeft = 0) {
     badge.classList.add("expired");
   }
 }
-
+activatePremium(999);
 /* ================= PDF DOWNLOAD ================= */
 
 window.downloadPDF = async () => {
