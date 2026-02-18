@@ -4,8 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-  <meta name="description" content="Kitchen Manager helps track kitchen expenses, manage entries, and export PDF invoices easily.">
-  <title>Ghar Manager - Kitchen</title>
+<meta name="description" content="Kitchen Manager helps track kitchen expenses, manage entries, and export PDF invoices easily.">
+
+<title>Ghar Manager - Kitchen</title>
+
+<!-- Prevent White Flash -->
+<style>
+  body {
+    margin:0;
+    background:#667eea;
+  }
+</style>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#667eea">
+
+<!-- iOS Support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KitchenApp">
+
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -13,19 +33,17 @@
 <!-- Styles -->
 <link rel="stylesheet" href="style.css">
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#667eea">
-
 <!-- Icons -->
 <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- AdSense -->
+<script async 
+src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3689994270580853"
+crossorigin="anonymous"></script>
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3689994270580853"
-     crossorigin="anonymous"></script>
-  
 </head>
+  
 <body class="light">
 
 <!-- ================= HEADER ================= -->
@@ -39,10 +57,9 @@
   </div>
 
   <div class="header-right">
-    <button id="installBtn" class="small-btn">
-      <i class="fas fa-download"></i>
-    </button>
-<button id="installBtn" style="display:none;">📲 Install App</button>
+    <button id="installBtn" class="small-btn" style="display:none;">
+  <i class="fas fa-download"></i>
+</button>
     <button id="themeToggle" class="small-btn">🌙</button>
 
     <button id="manualRefresh" class="small-btn">
