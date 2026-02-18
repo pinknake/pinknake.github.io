@@ -194,7 +194,7 @@ window.downloadPDF = async () => {
 
 /* ================= SUBSCRIPTION ================= */
 
-const TRIAL_DAYS = 7;
+const TRIAL_DAYS = 0;
 
 function initSubscription() {
   let sub;
