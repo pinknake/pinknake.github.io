@@ -146,89 +146,248 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= PDF EXPORT ================= */
 
-  window.downloadPDF = async () => {
+  /* =====================================================
+   PRODUCTION SUBSCRIPTION + PDF SYSTEM
+===================================================== */
 
-    if (!isPremiumActive()) {
-      alert("Premium Required for PDF Export");
-      return;
-    }
+const TRIAL_DAYS = 3; // Change if needed
 
-    if (!kitchenData.length) {
-      alert("No Data to Export!");
-      return;
-    }
+function getSubscription() {
+  try {
+    return JSON.parse(localStorage.getItem("subscriptionData"));
+  } catch {
+    return null;
+  }
+}
 
-    const invoice = $("invoiceTemplate");
-    const tbody = invoice?.querySelector("tbody");
+function saveSubscription(data) {
+  localStorage.setItem("subscriptionData", JSON.stringify(data));
+}
 
-    if (!invoice || !tbody) return;
+function initSubscription() {
 
-    tbody.innerHTML = "";
+  let sub = getSubscription();
 
-    let total = 0;
-
-    kitchenData.forEach(e => {
-      total += e.amount;
-
-      tbody.innerHTML += `
-        <tr>
-          <td>${e.date}</td>
-          <td>${e.item}</td>
-          <td>${e.qty}</td>
-          <td>${e.type}</td>
-          <td>₹ ${e.amount}</td>
-        </tr>
-      `;
-    });
-
-    $("invoiceDate").innerText =
-      "Date: " + new Date().toLocaleString();
-    $("invoiceTotal").innerText =
-      "Grand Total ₹ " + total;
-
-    const canvas = await html2canvas(invoice, { scale: 2 });
-    const img = canvas.toDataURL("image/png");
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
-
-    const imgProps = doc.getImageProperties(img);
-    const pdfWidth = doc.internal.pageSize.getWidth() - 20;
-    const pdfHeight =
-      (imgProps.height * pdfWidth) / imgProps.width;
-
-    doc.addImage(img, "PNG", 10, 10, pdfWidth, pdfHeight);
-    doc.save("Kitchen_Invoice.pdf");
-  };
-
-  /* ================= PREMIUM SYSTEM ================= */
-
-  const PREMIUM_KEY = "isPremiumUser";
-
-  function isPremiumActive() {
-    return localStorage.getItem(PREMIUM_KEY) === "true";
+  if (!sub) {
+    sub = {
+      trialStart: new Date().toISOString(),
+      isPremium: false,
+      premiumStart: null,
+      premiumDays: 30
+    };
+    saveSubscription(sub);
   }
 
-  function updateBadge() {
-    const badge = $("premiumBadge");
-    if (!badge) return;
+  updateSubscriptionUI();
+}
 
-    if (isPremiumActive()) {
-      badge.textContent = "💎 PREMIUM";
-      badge.classList.add("premium-active");
+function isTrialActive(sub) {
+  if (!sub?.trialStart) return false;
+
+  const today = new Date();
+  const trialStart = new Date(sub.trialStart);
+  const diff = Math.floor((today - trialStart) / (1000*60*60*24));
+
+  return diff < TRIAL_DAYS;
+}
+
+function getPremiumDaysLeft(sub) {
+  if (!sub?.isPremium || !sub?.premiumStart) return 0;
+
+  const today = new Date();
+  const start = new Date(sub.premiumStart);
+  const diff = Math.floor((today - start) / (1000*60*60*24));
+
+  return (sub.premiumDays || 30) - diff;
+}
+
+function isPremiumActive(sub) {
+  return getPremiumDaysLeft(sub) > 0;
+}
+
+/* ================= UPDATE UI ================= */
+
+function updateSubscriptionUI() {
+
+  const sub = getSubscription();
+  if (!sub) return;
+
+  const premiumBox = document.getElementById("premiumBox");
+  const pdfBtn = document.getElementById("pdfBtn");
+
+  if (!pdfBtn) return;
+
+  const premiumDaysLeft = getPremiumDaysLeft(sub);
+
+  if (isPremiumActive(sub)) {
+
+    premiumBox && (premiumBox.style.display = "none");
+    pdfBtn.innerText = `📄 Download PDF (${premiumDaysLeft} Days Left)`;
+    pdfBtn.style.opacity = "1";
+
+    updateBadge("premium");
+    return;
+  }
+
+  if (isTrialActive(sub)) {
+
+    const today = new Date();
+    const trialStart = new Date(sub.trialStart);
+    const diff = Math.floor((today - trialStart) / (1000*60*60*24));
+    const trialLeft = TRIAL_DAYS - diff;
+
+    premiumBox && (premiumBox.style.display = "none");
+    pdfBtn.innerText = `📄 Download PDF (${trialLeft} Trial Days Left)`;
+    pdfBtn.style.opacity = "1";
+
+    updateBadge("trial", trialLeft);
+    return;
+  }
+
+  premiumBox && (premiumBox.style.display = "block");
+  pdfBtn.innerText = "🔒 PDF (Premium Required)";
+  pdfBtn.style.opacity = "0.6";
+
+  updateBadge("expired");
+}
+
+/* ================= BADGE ================= */
+
+function updateBadge(status, daysLeft = 0) {
+
+  const badge = document.getElementById("premiumBadge");
+  if (!badge) return;
+
+  badge.classList.remove("premium-active", "trial-active", "expired");
+
+  if (status === "premium") {
+    badge.innerText = "💎 PREMIUM";
+    badge.classList.add("premium-active");
+  }
+  else if (status === "trial") {
+    badge.innerText = `🟢 TRIAL (${daysLeft}d)`;
+    badge.classList.add("trial-active");
+  }
+  else {
+    badge.innerText = "🔴 EXPIRED";
+    badge.classList.add("expired");
+  }
+}
+
+/* ================= PDF DOWNLOAD ================= */
+
+window.downloadPDF = async () => {
+
+  const sub = getSubscription();
+  if (!sub) {
+    alert("Subscription Error");
+    return;
+  }
+
+  if (!isPremiumActive(sub) && !isTrialActive(sub)) {
+
+    const btn = document.getElementById("pdfBtn");
+    btn?.classList.add("locked");
+
+    setTimeout(() => {
+      btn?.classList.remove("locked");
+    }, 500);
+
+    alert("Premium Required");
+    return;
+  }
+
+  if (!window.kitchenData || !kitchenData.length) {
+    alert("No Data to Export!");
+    return;
+  }
+
+  const invoice = document.getElementById("invoiceTemplate");
+  const tbody = invoice?.querySelector("tbody");
+  if (!invoice || !tbody) return;
+
+  tbody.innerHTML = "";
+  let total = 0;
+
+  kitchenData.forEach(e => {
+    total += e.amount;
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.item}</td>
+        <td>${e.qty}</td>
+        <td>${e.type}</td>
+        <td>₹ ${e.amount}</td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("invoiceDate").innerText =
+    "Date: " + new Date().toLocaleString();
+
+  document.getElementById("invoiceTotal").innerText =
+    "Grand Total ₹ " + total;
+
+  const canvas = await html2canvas(invoice, { scale: 2 });
+  const img = canvas.toDataURL("image/png");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  const imgProps = doc.getImageProperties(img);
+  const pdfWidth = doc.internal.pageSize.getWidth() - 20;
+  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+  doc.addImage(img, "PNG", 10, 10, pdfWidth, pdfHeight);
+  doc.save("Kitchen_Invoice.pdf");
+};
+
+/* ================= PREMIUM ACTIVATION ================= */
+
+window.activatePremium = function(days = 30) {
+
+  const sub = getSubscription();
+  if (!sub) return;
+
+  sub.isPremium = true;
+  sub.premiumStart = new Date().toISOString();
+  sub.premiumDays = days;
+
+  saveSubscription(sub);
+
+  alert("Premium Activated for " + days + " Days!");
+  location.reload();
+};
+
+/* ================= ADMIN TAP (SAFER) ================= */
+
+let tapCount = 0;
+
+document.getElementById("premiumBox")?.addEventListener("click", function(){
+
+  tapCount++;
+
+  if (tapCount >= 5) {
+
+    const pass = prompt("Enter Admin Code");
+
+    // Basic obfuscated password
+    const correct = atob("YW5rdXNoMTIz"); // ankush123
+
+    if (pass === correct) {
+      activatePremium(30);
     } else {
-      badge.textContent = "FREE";
-      badge.classList.remove("premium-active");
+      alert("Wrong Code");
     }
+
+    tapCount = 0;
   }
 
-  window.activatePremium = () => {
-    localStorage.setItem(PREMIUM_KEY, "true");
-    updateBadge();
-    alert("Premium Activated!");
-  };
+  setTimeout(() => { tapCount = 0; }, 3000);
+});
 
-  updateBadge();
+
 
   /* ================= THEME ================= */
 
