@@ -237,6 +237,8 @@ function updateSubscription(sub) {
       premiumBox.style.display = "none";
       pdfBtn.innerText = `📄 Download PDF (${daysLeft} Days Left)`;
       pdfBtn.style.opacity = "1";
+
+      updateBadge("premium");
       return;
     } else {
       sub.isPremium = false;
@@ -253,14 +255,39 @@ function updateSubscription(sub) {
     premiumBox.style.display = "none";
     pdfBtn.innerText = `📄 Download PDF (${trialLeft} Trial Days Left)`;
     pdfBtn.style.opacity = "1";
+
+    updateBadge("trial", trialLeft);
   } else {
     premiumBox.style.display = "block";
     pdfBtn.innerText = "🔒 PDF (Premium)";
     pdfBtn.style.opacity = "0.6";
+
+    updateBadge("expired");
   }
 }
 
+/* ================= FUNCTION BADGES ======== */ 
+  function updateBadge(status, daysLeft = 0){
 
+  const badge = document.getElementById("premiumBadge");
+  if(!badge) return;
+
+  badge.classList.remove("premium-active","trial-active","expired");
+
+  if(status === "premium"){
+    badge.innerText = "💎 PREMIUM";
+    badge.classList.add("premium-active");
+  }
+  else if(status === "trial"){
+    badge.innerText = `🟢 TRIAL (${daysLeft}d)`;
+    badge.classList.add("trial-active");
+  }
+  else{
+    badge.innerText = "🔴 EXPIRED";
+    badge.classList.add("expired");
+  }
+}
+  
 /* ================= PREMIUM ACTIVATION ================= */
 
 window.activatePremium = function(days = 30){
