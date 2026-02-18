@@ -58,9 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addKitchenEntry = () => {
 
     const item = $("itemSelect")?.value || "";
-    const qty = $("quantity") && ($("quantity").value = "");
+    const qty = $("quantity").value = "";
     const type = $("typeCategory")?.value || "";
-    const amount = Number($("amount") && ($("amount").value = ""));
+    const amount = Number($("amount").value = "");
 
     if (!qty || isNaN(amount) || amount <= 0) {
       alert("Enter valid quantity and amount!");
@@ -273,7 +273,7 @@ function updateBadge(status, daysLeft = 0) {
     badge.classList.add("expired");
   }
 }
-activatePremium(999);
+
 /* ================= PDF DOWNLOAD ================= */
 
 window.downloadPDF = async () => {
