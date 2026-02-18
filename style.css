@@ -304,6 +304,7 @@ body.dark .small-btn{
   background:rgba(255,255,255,0.1);
 }
 
+/* ============ 
 /* ================= BADGES ================= */
 .premium-badge{
   padding:5px 10px;
@@ -376,3 +377,113 @@ body.dark .small-btn{
   }
 
 }
+
+/* ============== PRIVACY-POLICY-PAGES ========== */
+.page-container{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+  font-family:sans-serif;
+}
+
+.page-container h2{
+  margin-bottom:15px;
+}
+
+.page-container a{
+  display:inline-block;
+  margin-top:20px;
+  color:#4caf50;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* ====== GOOGLE ADS =============== */ 
+.adsbygoogle{
+  margin:15px 0;
+}
+
+body{
+  transition:0.3s ease;
+}
+
+body.light{
+  background:#f5f7fb;
+  color:#222;
+}
+
+body.dark{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;
+}
+.card{
+  background:#ffffff;
+  color:#222;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+body.dark .card{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+}
+button, .pay-btn, .whatsapp-btn, .community-btn, .telegram-btn{
+  display:block;
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  text-align:center;
+  text-decoration:none;
+  background:#667eea;
+  color:#fff;
+  transition:0.2s;
+}
+
+button:hover{
+  opacity:0.85;
+}
+.table-wrapper{
+  overflow-x:auto;
+}
+
+#premiumBadge{
+  transition:0.3s;
+}
+.sub-card{
+  background:#f0f2f8;
+  color:#222;
+}
+
+body.dark .sub-card{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+th{
+  background:#667eea;
+  color:#fff;
+}
+
+td{
+  background:#fff;
+  color:#222;
+}
+
+body.dark td{
+  background:#1e1e1e;
+  color:#fff;
+}
+body.dark{
+  background:#121212;
+  color:#f5f5f5;
+}
+
