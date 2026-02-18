@@ -57,6 +57,21 @@ body{
   background:rgba(255,255,255,0.3);
 }
 
+/* ================= Install BTN ========= */ 
+#installBtn{
+  background:#4caf50;
+  color:#fff;
+  padding:6px 10px;
+  border:none;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+  margin-right:8px;
+}
+
+#installBtn:hover{
+  opacity:0.85;
+}
 /* ================= CARD ================= */
 
 .card{
