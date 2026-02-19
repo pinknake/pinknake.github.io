@@ -230,6 +230,65 @@ themeBtn?.addEventListener("click", () => {
   setTheme(current === "dark" ? "light" : "dark");
 });
 
+  if ('serviceWorker' in navigator) {
+
+  navigator.serviceWorker.register('./sw.js')
+    .then(reg => {
+
+      reg.onupdatefound = () => {
+
+        const newWorker = reg.installing;
+
+        newWorker.onstatechange = () => {
+
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+
+            showUpdateBanner();
+
+          }
+        };
+      };
+    });
+
+}
+
+function showUpdateBanner() {
+
+  const banner = document.getElementById("updateBanner");
+
+  if (!banner) return;
+
+  banner.classList.add("show");
+
+  banner.onclick = () => {
+    window.location.reload();
+  };
+}
+
+  function triggerSync() {
+  if ('serviceWorker' in navigator && 'SyncManager' in window) {
+    navigator.serviceWorker.ready.then(sw => {
+      sw.sync.register('syncData');
+    });
+  }
+}
+
+  function enableNotifications() {
+
+  if (!("Notification" in window)) return;
+
+  Notification.requestPermission().then(permission => {
+
+    if (permission === "granted") {
+
+      navigator.serviceWorker.ready.then(reg => {
+        reg.showNotification("Notifications Enabled 🎉");
+      });
+
+    }
+
+  });
+}
 /* ================= INIT ================= */
 
 initSubscription();
