@@ -127,15 +127,10 @@ window.shareWhatsApp = () => {
 
 window.downloadPDF = async () => {
 
-  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
-  if (!sub) {
-    alert("Subscription Error");
-    return;
-  }
+  const sub = getSubscription();
 
   const today = new Date();
 
-  /* ===== CHECK ACCESS ===== */
   const trialStart = new Date(sub.trialStart);
   const trialActive =
     Math.floor((today - trialStart) / 86400000) < TRIAL_DAYS;
@@ -149,8 +144,6 @@ window.downloadPDF = async () => {
   }
 
   if (!trialActive && !premiumActive) {
-    $("pdfBtn")?.classList.add("locked");
-    setTimeout(() => $("pdfBtn")?.classList.remove("locked"), 500);
     alert("Premium Required");
     return;
   }
@@ -179,32 +172,24 @@ window.downloadPDF = async () => {
     `;
   });
 
-  $("invoiceDate").innerText =
-    "Date: " + new Date().toLocaleString();
+  $("invoiceDate").innerText = "Date: " + new Date().toLocaleString();
+  $("invoiceTotal").innerText = "Grand Total ₹ " + total;
 
-  $("invoiceTotal").innerText =
-    "Grand Total ₹ " + total;
-
-  const canvas = await html2canvas(invoice, {
-    scale: 3,
-    useCORS: true
-  });
+  const canvas = await html2canvas(invoice, { scale: 2 });
 
   const img = canvas.toDataURL("image/png");
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
+  const doc = new jsPDF();
 
-  const imgWidth = 190;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  doc.addImage(img, "PNG", 10, 10, imgWidth, imgHeight);
+  doc.addImage(img, "PNG", 10, 10, 190, 0);
   doc.save("Kitchen_Invoice.pdf");
 };
 
+
 const TRIAL_DAYS = 3;
 
-  function initSubscription() {
+function getSubscription() {
   let sub;
 
   try {
@@ -213,41 +198,39 @@ const TRIAL_DAYS = 3;
     sub = null;
   }
 
-  if (!sub) {
+  if (!sub || typeof sub !== "object") {
     sub = {
       trialStart: new Date().toISOString(),
       isPremium: false,
       premiumStart: null,
       premiumDays: 30
     };
+
     localStorage.setItem("subscriptionData", JSON.stringify(sub));
   }
 
-  updateSubscriptionUI(sub);
+  return sub;
 }
+function updateSubscriptionUI() {
+  const sub = getSubscription();
 
-  function updateSubscriptionUI(sub) {
   const badge = $("premiumBadge");
   const pdfBtn = $("pdfBtn");
   const premiumBox = $("premiumBox");
 
-  if (!badge || !pdfBtn || !premiumBox) return;
+  if (!badge) return;
 
   const today = new Date();
 
-  /* ===== CHECK PREMIUM ===== */
+  /* ===== PREMIUM CHECK ===== */
   if (sub.isPremium && sub.premiumStart) {
     const start = new Date(sub.premiumStart);
     const diff = Math.floor((today - start) / 86400000);
-    const daysLeft = (sub.premiumDays || 30) - diff;
 
-    if (daysLeft > 0) {
+    if (diff < (sub.premiumDays || 30)) {
       badge.innerText = "💎 PREMIUM";
       badge.className = "premium-badge premium-active";
-
-      pdfBtn.innerText = `📄 PDF (${daysLeft}d left)`;
-      pdfBtn.style.opacity = "1";
-
+      pdfBtn.innerText = "📄 Download PDF";
       premiumBox.style.display = "none";
       return;
     } else {
@@ -255,6 +238,24 @@ const TRIAL_DAYS = 3;
       localStorage.setItem("subscriptionData", JSON.stringify(sub));
     }
   }
+
+  /* ===== TRIAL CHECK ===== */
+  const trialStart = new Date(sub.trialStart);
+  const trialDiff = Math.floor((today - trialStart) / 86400000);
+
+  if (trialDiff < TRIAL_DAYS) {
+    badge.innerText = `🟢 TRIAL (${TRIAL_DAYS - trialDiff}d)`;
+    badge.className = "premium-badge trial-active";
+    premiumBox.style.display = "none";
+  } else {
+    badge.innerText = "🔒 FREE";
+    badge.className = "premium-badge expired";
+    premiumBox.style.display = "block";
+  }
+}
+
+
+
 
   /* ===== CHECK TRIAL ===== */
   const trialStart = new Date(sub.trialStart);
@@ -278,18 +279,19 @@ const TRIAL_DAYS = 3;
   }
 }
 
-window.activatePremium = function(days = 30) {
-  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
+window.activatePremium = function () {
+  const sub = getSubscription();
 
   sub.isPremium = true;
   sub.premiumStart = new Date().toISOString();
-  sub.premiumDays = days;
 
   localStorage.setItem("subscriptionData", JSON.stringify(sub));
 
   alert("Premium Activated 🔥");
-  location.reload();
+  updateSubscriptionUI();
 };
+
+
   
   let tapCount = 0;
 
