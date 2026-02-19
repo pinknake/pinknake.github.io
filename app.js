@@ -127,14 +127,7 @@ window.shareWhatsApp = () => {
 
 window.downloadPDF = async () => {
 
-  let sub;
-  try {
-    sub = JSON.parse(localStorage.getItem("subscriptionData"));
-  } catch {
-    alert("Subscription Error");
-    return;
-  }
-
+  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
   if (!sub) {
     alert("Subscription Error");
     return;
@@ -142,37 +135,33 @@ window.downloadPDF = async () => {
 
   const today = new Date();
 
+  /* ===== CHECK ACCESS ===== */
   const trialStart = new Date(sub.trialStart);
-  const trialDiff = Math.floor((today - trialStart) / 86400000);
-  const trialActive = trialDiff < TRIAL_DAYS;
+  const trialActive =
+    Math.floor((today - trialStart) / 86400000) < TRIAL_DAYS;
 
   let premiumActive = false;
 
   if (sub.isPremium && sub.premiumStart) {
     const start = new Date(sub.premiumStart);
-    const diff = Math.floor((today - start) / 86400000);
-    premiumActive = diff < (sub.premiumDays || 30);
+    premiumActive =
+      Math.floor((today - start) / 86400000) < (sub.premiumDays || 30);
   }
 
   if (!trialActive && !premiumActive) {
-
-    const btn = $("pdfBtn");
-    btn?.classList.add("locked");
-
-    setTimeout(() => btn?.classList.remove("locked"), 500);
-
+    $("pdfBtn")?.classList.add("locked");
+    setTimeout(() => $("pdfBtn")?.classList.remove("locked"), 500);
     alert("Premium Required");
     return;
   }
 
   if (!kitchenData.length) {
-    alert("No Data to Export!");
+    alert("No Data!");
     return;
   }
 
   const invoice = $("invoiceTemplate");
-  const tbody = invoice?.querySelector("tbody");
-  if (!invoice || !tbody) return;
+  const tbody = invoice.querySelector("tbody");
 
   tbody.innerHTML = "";
   let total = 0;
@@ -190,27 +179,217 @@ window.downloadPDF = async () => {
     `;
   });
 
-  $("invoiceDate") && ($("invoiceDate").innerText =
-    "Date: " + new Date().toLocaleString());
+  $("invoiceDate").innerText =
+    "Date: " + new Date().toLocaleString();
 
-  $("invoiceTotal") && ($("invoiceTotal").innerText =
-    "Grand Total ₹ " + total);
+  $("invoiceTotal").innerText =
+    "Grand Total ₹ " + total;
 
-  try {
-    const canvas = await html2canvas(invoice, { scale: 2 });
-    const img = canvas.toDataURL("image/png");
+  const canvas = await html2canvas(invoice, {
+    scale: 3,
+    useCORS: true
+  });
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF("p", "mm", "a4");
+  const img = canvas.toDataURL("image/png");
 
-    doc.addImage(img, "PNG", 10, 10, 190, 0);
-    doc.save("Kitchen_Invoice.pdf");
-  } catch {
-    alert("PDF Generation Failed");
-  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  const imgWidth = 190;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  doc.addImage(img, "PNG", 10, 10, imgWidth, imgHeight);
+  doc.save("Kitchen_Invoice.pdf");
 };
 
-/* ================= REST SAME (THEME, PWA, SW) ================= */
+const TRIAL_DAYS = 3;
+
+  function initSubscription() {
+  let sub;
+
+  try {
+    sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  } catch {
+    sub = null;
+  }
+
+  if (!sub) {
+    sub = {
+      trialStart: new Date().toISOString(),
+      isPremium: false,
+      premiumStart: null,
+      premiumDays: 30
+    };
+    localStorage.setItem("subscriptionData", JSON.stringify(sub));
+  }
+
+  updateSubscriptionUI(sub);
+}
+
+  function updateSubscriptionUI(sub) {
+  const badge = $("premiumBadge");
+  const pdfBtn = $("pdfBtn");
+  const premiumBox = $("premiumBox");
+
+  if (!badge || !pdfBtn || !premiumBox) return;
+
+  const today = new Date();
+
+  /* ===== CHECK PREMIUM ===== */
+  if (sub.isPremium && sub.premiumStart) {
+    const start = new Date(sub.premiumStart);
+    const diff = Math.floor((today - start) / 86400000);
+    const daysLeft = (sub.premiumDays || 30) - diff;
+
+    if (daysLeft > 0) {
+      badge.innerText = "💎 PREMIUM";
+      badge.className = "premium-badge premium-active";
+
+      pdfBtn.innerText = `📄 PDF (${daysLeft}d left)`;
+      pdfBtn.style.opacity = "1";
+
+      premiumBox.style.display = "none";
+      return;
+    } else {
+      sub.isPremium = false;
+      localStorage.setItem("subscriptionData", JSON.stringify(sub));
+    }
+  }
+
+  /* ===== CHECK TRIAL ===== */
+  const trialStart = new Date(sub.trialStart);
+  const trialDiff = Math.floor((today - trialStart) / 86400000);
+  const trialLeft = TRIAL_DAYS - trialDiff;
+
+  if (trialLeft > 0) {
+    badge.innerText = `🟢 TRIAL (${trialLeft}d)`;
+    badge.className = "premium-badge trial-active";
+
+    pdfBtn.innerText = `📄 PDF (${trialLeft} trial)`;
+    premiumBox.style.display = "none";
+  } else {
+    badge.innerText = "🔒 FREE";
+    badge.className = "premium-badge expired";
+
+    pdfBtn.innerText = "🔒 PDF (Premium)";
+    pdfBtn.style.opacity = "0.6";
+
+    premiumBox.style.display = "block";
+  }
+}
+
+window.activatePremium = function(days = 30) {
+  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
+
+  sub.isPremium = true;
+  sub.premiumStart = new Date().toISOString();
+  sub.premiumDays = days;
+
+  localStorage.setItem("subscriptionData", JSON.stringify(sub));
+
+  alert("Premium Activated 🔥");
+  location.reload();
+};
+  
+  let tapCount = 0;
+
+$("premiumBox")?.addEventListener("click", () => {
+  tapCount++;
+
+  if (tapCount >= 5) {
+    const pass = prompt("Enter Admin Password");
+
+    if (pass === "ankush123") {
+      activatePremium(30);
+    } else {
+      alert("Wrong Password");
+    }
+
+    tapCount = 0;
+  }
+
+  setTimeout(() => tapCount = 0, 3000);
+});
+
+  window.downloadPDF = async () => {
+
+  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
+  if (!sub) {
+    alert("Subscription Error");
+    return;
+  }
+
+  const today = new Date();
+
+  /* ===== CHECK ACCESS ===== */
+  const trialStart = new Date(sub.trialStart);
+  const trialActive =
+    Math.floor((today - trialStart) / 86400000) < TRIAL_DAYS;
+
+  let premiumActive = false;
+
+  if (sub.isPremium && sub.premiumStart) {
+    const start = new Date(sub.premiumStart);
+    premiumActive =
+      Math.floor((today - start) / 86400000) < (sub.premiumDays || 30);
+  }
+
+  if (!trialActive && !premiumActive) {
+    $("pdfBtn")?.classList.add("locked");
+    setTimeout(() => $("pdfBtn")?.classList.remove("locked"), 500);
+    alert("Premium Required");
+    return;
+  }
+
+  if (!kitchenData.length) {
+    alert("No Data!");
+    return;
+  }
+
+  const invoice = $("invoiceTemplate");
+  const tbody = invoice.querySelector("tbody");
+
+  tbody.innerHTML = "";
+  let total = 0;
+
+  kitchenData.forEach(e => {
+    total += e.amount;
+    tbody.innerHTML += `
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.item}</td>
+        <td>${e.qty}</td>
+        <td>${e.type}</td>
+        <td>₹ ${e.amount}</td>
+      </tr>
+    `;
+  });
+
+  $("invoiceDate").innerText =
+    "Date: " + new Date().toLocaleString();
+
+  $("invoiceTotal").innerText =
+    "Grand Total ₹ " + total;
+
+  const canvas = await html2canvas(invoice, {
+    scale: 3,
+    useCORS: true
+  });
+
+  const img = canvas.toDataURL("image/png");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
+
+  const imgWidth = 190;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  doc.addImage(img, "PNG", 10, 10, imgWidth, imgHeight);
+  doc.save("Kitchen_Invoice.pdf");
+};
+
+  
+  /* ================= REST SAME (THEME, PWA, SW) ================= */
 /* untouched except safety checks */
 
 const themeBtn = $("themeToggle");
