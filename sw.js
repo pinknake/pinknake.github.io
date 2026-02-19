@@ -1,63 +1,54 @@
-/* ================= CONFIG ================= */
-
 const CACHE_VERSION = "v3";
 const STATIC_CACHE = "km-static-" + CACHE_VERSION;
 const DYNAMIC_CACHE = "km-dynamic-" + CACHE_VERSION;
-const MAX_DYNAMIC_ITEMS = 50;
 
 const STATIC_FILES = [
   "./",
   "./index.html",
   "./style.css",
   "./app.js",
-  "./manifest.json",
   "./offline.html"
 ];
 
-/* ================= INSTALL ================= */
-
+/* INSTALL */
 self.addEventListener("install", event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then(cache => cache.addAll(STATIC_FILES))
+    caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_FILES))
   );
 });
 
-/* ================= ACTIVATE ================= */
-
+/* ACTIVATE */
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(key => key !== STATIC_CACHE && key !== DYNAMIC_CACHE)
-          .map(key => caches.delete(key))
+        keys.filter(key => key !== STATIC_CACHE && key !== DYNAMIC_CACHE)
+            .map(key => caches.delete(key))
       )
     )
   );
   self.clients.claim();
 });
 
-/* ================= FETCH ================= */
-
+/* FETCH */
 self.addEventListener("fetch", event => {
 
   if (event.request.method !== "GET") return;
 
-  const url = new URL(event.request.url);
-
-  // AdSense safe: skip external domains
-  if (url.origin !== location.origin) return;
-
-  // Navigation fallback
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request)
-        .catch(() => caches.match("./offline.html"))
-    );
-    return;
-  }
+  event.respondWith(
+    caches.match(event.request)
+      .then(cacheRes => {
+        return cacheRes || fetch(event.request).then(fetchRes => {
+          return caches.open(DYNAMIC_CACHE).then(cache => {
+            cache.put(event.request.url, fetchRes.clone());
+            return fetchRes;
+          });
+        });
+      })
+      .catch(() => caches.match("./offline.html"))
+  );
+});
 
   // Cache first for static
   event.respondWith(
