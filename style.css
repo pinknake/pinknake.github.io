@@ -1,1 +1,503 @@
+/* ================= GLOBAL ================= */
 
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;
+  transition:0.3s ease;
+}
+
+.container{
+  padding:20px;
+}
+
+/* ================= HEADER ================= */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 20px;
+  background:rgba(0,0,0,0.25);
+  backdrop-filter:blur(10px);
+}
+
+.topbar h2{
+  font-size:18px;
+  font-weight:600;
+}
+
+.header-right{
+  display:flex;
+  gap:10px;
+}
+
+/* Small icon buttons (install/theme/refresh) */
+
+.small-btn{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,0.2);
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s;
+}
+
+.small-btn:hover{
+  transform:scale(1.1);
+  background:rgba(255,255,255,0.3);
+}
+
+/* ================= Install BTN ========= */ 
+#installBtn{
+  background:#4caf50;
+  color:#fff;
+  padding:6px 10px;
+  border:none;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+  margin-right:8px;
+}
+
+#installBtn:hover{
+  opacity:0.85;
+}
+/* ================= CARD ================= */
+
+.card{
+  background:rgba(255,255,255,0.12);
+  padding:25px;
+  border-radius:18px;
+  margin-bottom:25px;
+  backdrop-filter:blur(15px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* ================= FORM ================= */
+
+.form-group{
+  margin-bottom:18px;
+}
+
+.form-group label{
+  font-size:13px;
+  margin-bottom:6px;
+  display:block;
+  opacity:0.9;
+}
+
+select,input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+  font-size:14px;
+  min-height:45px;
+}
+
+input:focus,select:focus{
+  box-shadow:0 0 0 2px rgba(255,255,255,0.4);
+}
+
+/* Two column */
+
+.row-2{
+  display:flex;
+  gap:15px;
+}
+
+.row-2 .form-group{
+  flex:1;
+}
+
+/* ================= BUTTON ================= */
+
+button{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:linear-gradient(135deg,#36d1dc,#5b86e5);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+  transition:0.3s;
+  min-height:45px;
+}
+
+button:hover{
+  transform:scale(1.03);
+}
+
+/* Action button group */
+
+.action-buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* ====== premium button ====*/
+.pay-btn,
+.whatsapp-btn,
+.community-btn,
+.telegram-btn {
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.pay-btn{
+  background:linear-gradient(135deg,#00c853,#009624);
+}
+
+.whatsapp-btn{
+  background:#25D366;
+}
+
+.community-btn{
+  background:#128C7E;
+}
+
+.telegram-btn{
+  background:#0088cc;
+}
+
+.pay-btn:hover,
+.whatsapp-btn:hover,
+.community-btn:hover,
+.telegram-btn:hover{
+  transform:scale(1.03);
+}
+.qr-img{
+  width:180px;
+  margin:10px auto;
+  display:block;
+  border-radius:12px;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrapper{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+
+th,td{
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+}
+
+th{
+  background:rgba(0,0,0,0.3);
+}
+
+td{
+  background:rgba(255,255,255,0.1);
+}
+
+/* ================= INVOICE ================= */
+
+#invoiceTemplate{
+  position:absolute;
+  left:-9999px;
+  background:#fff;
+  color:#000;
+  padding:20px;
+  width:800px;
+}
+
+/* ================= PREMIUM-BOX ==============*/
+.premium-box{
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.15);
+  text-align:center;
+  display:none;
+}
+
+.premium-box h4{
+  margin-bottom:5px;
+}
+
+.premium-box button{
+  background:linear-gradient(135deg,#ff9966,#ff5e62);
+}
+/* ================= UPDATE BANNER ================= */
+
+#updateBanner{
+  position:fixed;
+  top:-80px;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg,#ff512f,#dd2476);
+  color:#fff;
+  padding:12px 25px;
+  border-radius:30px;
+  font-size:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  transition:0.5s ease;
+  z-index:9999;
+}
+
+#updateBanner.show{
+  top:20px;
+}
+
+/* ================= FLOATING SHARE BUTTON ================= */
+
+.fab{
+  position:fixed;
+  bottom:25px;
+  right:20px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  border:none;
+  font-size:20px;
+  background:linear-gradient(135deg,#ff9966,#ff5e62);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  transition:0.3s;
+}
+
+.fab:hover{
+  transform:scale(1.1);
+}
+
+/* ================= DARK MODE ================= */
+
+body.dark{
+  background:#121212;
+  color:#f5f5f5;
+}
+
+body.dark .card{
+  background:rgba(255,255,255,0.05);
+}
+
+body.dark th{
+  background:#1e1e1e;
+}
+
+body.dark td{
+  background:rgba(255,255,255,0.03);
+}
+
+body.dark button{
+  background:linear-gradient(135deg,#ff512f,#dd2476);
+}
+
+body.dark .small-btn{
+  background:rgba(255,255,255,0.1);
+}
+
+/* ============ 
+/* ================= BADGES ================= */
+.premium-badge{
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  background:#ccc;
+  color:#000;
+  margin-left:8px;
+}
+
+.premium-active{
+  background:gold;
+  color:#000;
+}
+
+.trial-active{
+  background:#4caf50;
+  color:#fff;
+}
+
+.expired{
+  background:#f44336;
+  color:#fff;
+}
+
+/* ================= SUB-CARD =============== */ 
+.sub-card{
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:15px;
+  background:rgba(255,255,255,0.1);
+  font-size:14px;
+}
+
+/* ================= ANIMATED LOCK SYTEM ==== */ 
+.locked{
+  animation: shake 0.5s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}
+  50%{transform:translateX(5px);}
+  75%{transform:translateX(-5px);}
+  100%{transform:translateX(0);}
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+  .container{
+    padding:15px;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .row-2{
+    flex-direction:column;
+    gap:0;
+  }
+
+  th,td{
+    font-size:12px;
+    padding:6px;
+  }
+
+}
+
+/* ============== PRIVACY-POLICY-PAGES ========== */
+.page-container{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+  font-family:sans-serif;
+}
+
+.page-container h2{
+  margin-bottom:15px;
+}
+
+.page-container a{
+  display:inline-block;
+  margin-top:20px;
+  color:#4caf50;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* ====== GOOGLE ADS =============== */ 
+.adsbygoogle{
+  margin:15px 0;
+}
+
+body{
+  transition:0.3s ease;
+}
+
+body.light{
+  background:#f5f7fb;
+  color:#222;
+}
+
+body.dark{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;
+}
+.card{
+  background:#ffffff;
+  color:#222;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+body.dark .card{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+}
+button, .pay-btn, .whatsapp-btn, .community-btn, .telegram-btn{
+  display:block;
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  text-align:center;
+  text-decoration:none;
+  background:#667eea;
+  color:#fff;
+  transition:0.2s;
+}
+
+button:hover{
+  opacity:0.85;
+}
+.table-wrapper{
+  overflow-x:auto;
+}
+
+#premiumBadge{
+  transition:0.3s;
+}
+.sub-card{
+  background:#f0f2f8;
+  color:#222;
+}
+
+body.dark .sub-card{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+th{
+  background:#667eea;
+  color:#fff;
+}
+
+td{
+  background:#fff;
+  color:#222;
+}
+
+body.dark td{
+  background:#1e1e1e;
+  color:#fff;
+}
+body.dark{
+  background:#121212;
+  color:#f5f5f5;
+}
