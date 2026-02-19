@@ -96,52 +96,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= WHATSAPP SHARE ================= */
 
-  window.shareWhatsApp = () => {
+  window.shareTable = function () {
 
-  if (!kitchenData.length) return alert("No entries to share!");
+  const table = document.getElementById("kitchenTable");
+  if (!table) {
+    alert("No table found!");
+    return;
+  }
 
-  let total = 0;
+  const rows = table.querySelectorAll("tr");
+  if (rows.length === 0) {
+    alert("No data to share!");
+    return;
+  }
+
+  let totalAmount = 0;
 
   // ================= Header =================
-  let msg = "🟣 *🍳 GHAR MANAGER – Kitchen Report* 🟣\n";
-  msg += "🧾 Date | 🥘 Item | ⚖️ Qty | 📦 Type | 💰 Amount\n";
-  msg += "─────────────────────────────────────────\n";
+  let message =
+"🟣━━━━━━━━━━━━━━━━━━━━🟣\n" +
+"🏠 *GHAR MANAGER*\n" +
+"🍳 *Kitchen Expense Report*\n" +
+"🗓️ Date | 🥘 Item | ⚖️ Qty | 📦 Type | 💰 Amount\n" +
+"──────────────────────────────\n";
 
   // ================= Rows =================
-  kitchenData.forEach((e) => {
-    total += e.amount;
+  rows.forEach(row => {
+    const cols = row.querySelectorAll("td");
 
-    // Category emoji
-    let catEmoji = "";
-    if (/Tomato|Potato|Onion/i.test(e.item)) catEmoji = "🥦"; 
-    else if (/Haldi|Mirch|Jeera/i.test(e.item)) catEmoji = "🌶️"; 
-    else if (/Milk|Paneer|Curd/i.test(e.item)) catEmoji = "🥛"; 
-    else catEmoji = "🍴";
+    if (cols.length >= 5) {  // Using full table columns
+      const date = cols[0].innerText;
+      const item = cols[1].innerText;
+      const qty = cols[2].innerText;
+      const type = cols[3].innerText;
+      const amount = cols[4].innerText;
 
-    const dateStr = e.date.split(",")[0].padEnd(12, " ");
-    const itemStr = (catEmoji + " " + e.item).padEnd(16, " ");
-    const qtyStr = e.qty.padEnd(7, " ");
-    const typeStr = e.type.padEnd(7, " ");
-    const amountStr = `₹${e.amount}`.padEnd(8, " ");
+      totalAmount += Number(amount.replace(/[^\d]/g, ""));
 
-    msg += `${dateStr} | ${itemStr} | ${qtyStr} | ${typeStr} | ${amountStr}\n`;
+      // Add category emoji
+      let catEmoji = "🍴"; // Default
+      if (/Tomato|Potato|Onion/i.test(item)) catEmoji = "🥦";
+      else if (/Haldi|Mirch|Jeera/i.test(item)) catEmoji = "🌶️";
+      else if (/Milk|Paneer|Curd/i.test(item)) catEmoji = "🥛";
+
+      message += 
+`${date} | ${catEmoji} ${item} | ${qty} | ${type} | ${amount}\n` +
+"──────────────────────────────\n";
+    }
   });
 
   // ================= Footer =================
-  msg += "─────────────────────────────────────────\n";
-  msg += `💎 *Grand Total:* ₹${total}\n`;
-  msg += "═════════════════════════════════════════\n";
-  msg += "✨ Generated via *Ghar Manager App* 🔥\n";
-  msg += "📲 Manage your kitchen efficiently!\n";
-  msg += "👉 Download: https://pinknake.github.io/index.html\n";
-  msg += "──────────── Thank You! 🙏─────────────";
+  message +=
+"🟣━━━━━━━━━━━━━━━━━━━━🟣\n" +
+`💎 *Grand Total: ₹${totalAmount}*\n` +
+"📊 Managed by *Ghar Manager App*\n" +
+"✨ Download: https://pinknake.github.io/index.html\n" +
+"🟣━━━━━━━━━━━━━━━━━━━━🟣";
 
-  // Monospace code block for perfect alignment in WhatsApp
-  msg = "```" + msg + "```";
+  const encodedMessage = encodeURIComponent(message);
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // Open WhatsApp
-  const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(msg);
-  window.open(whatsappUrl);
+  const url = isMobile
+    ? `https://wa.me/?text=${encodedMessage}`
+    : `https://web.whatsapp.com/send?text=${encodedMessage}`;
+
+  window.open(url, "_blank");
 };
 /* ================= PDF DOWNLOAD ================= */
 
