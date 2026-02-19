@@ -379,28 +379,22 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
   });
 
   /* ================= SHARE APP ================= */
+window.shareApp = () => {
+const url = window.location.origin;
 
-  window.shareApp = () => {
-  const url = window.location.origin;
-  const msg = 
-    "🟣 *Ghar Manager – Kitchen App* 🟣\n\n" +
-    "🍳 Manage your kitchen expenses easily!\n" +
-    "📲 Download now: " + url + "\n" +
-    "✨ Favicon icon: 🏠\n" +
-    "🔥 Stay organized & save time!";
+if (navigator.share) {  
+  navigator.share({  
+    title: "Ghar Manager",  
+    text: "Check out my Ghar Manager App 🔥",  
+    url  
+  }).catch(() => {});  
+} else {  
+  window.open("https://wa.me/?text=" + encodeURIComponent(url));  
+}
 
-  if (navigator.share) {
-    navigator.share({
-      title: "Ghar Manager",
-      text: msg,
-      url
-    }).catch(() => {});
-  } else {
-    // WhatsApp fallback
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
-  }
 };
-
+  
+  
   
 /* ================= PWA INSTALL ================= */
 
