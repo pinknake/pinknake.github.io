@@ -9,11 +9,6 @@
 
 <title>Ghar Manager - Kitchen</title>
 
-<!-- Prevent White Flash -->
-<style>
-  body { margin:0; background:#667eea; }
-</style>
-
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#667eea">
@@ -56,10 +51,9 @@ crossorigin="anonymous"></script>
   <div class="header-right">
 
     <!-- Install Button -->
-    <button id="installBtn" class="small-btn" style="display:none;">
-      <i class="fas fa-download"></i>
-    </button>
-
+  <button id="installBtn" class="small-btn">
+  <i class="fas fa-download"></i>
+</button>
     <!-- Theme Toggle -->
     <button id="themeToggle" class="small-btn">🌙</button>
 
@@ -172,12 +166,6 @@ crossorigin="anonymous"></script>
       <button type="button" onclick="shareApp()">📲 Share App</button>
 
     </div>
-    
-
-    <!-- ================= SUBSCRIPTION CARD ================= -->
-<div id="subscriptionCard" class="sub-card">
-  🔓 Free Plan Active
-</div>
 
 <!-- ================= PREMIUM BOX ================= -->
 <div id="premiumBox" class="premium-box">
