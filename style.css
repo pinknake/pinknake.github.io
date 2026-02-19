@@ -10,11 +10,15 @@
 body{
   background:linear-gradient(135deg,#667eea,#764ba2);
   color:#fff;
-  transition:0.3s ease;
+  transition:background 0.3s ease,color 0.3s ease;
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
 }
 
+/* Safe area for notch phones */
 .container{
   padding:20px;
+  padding-bottom:80px;
 }
 
 /* ================= HEADER ================= */
@@ -25,73 +29,88 @@ body{
   align-items:center;
   padding:15px 20px;
   background:rgba(0,0,0,0.25);
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(8px);
+  position:sticky;
+  top:0;
+  z-index:999;
 }
 
 .topbar h2{
   font-size:18px;
   font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
 
 .header-right{
   display:flex;
-  gap:10px;
+  align-items:center;
+  gap:8px;
 }
 
 /* Small icon buttons (install/theme/refresh) */
 
 .small-btn{
-  width:40px;
-  height:40px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   border:none;
   background:rgba(255,255,255,0.2);
   color:#fff;
   cursor:pointer;
-  font-size:16px;
-  transition:0.3s;
+  font-size:15px;
+  transition:0.25s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .small-btn:hover{
-  transform:scale(1.1);
+  transform:scale(1.08);
   background:rgba(255,255,255,0.3);
 }
 
 /* ================= Install BTN ========= */ 
+
 #installBtn{
   background:#4caf50;
   color:#fff;
-  padding:6px 10px;
+  padding:6px 12px;
   border:none;
-  border-radius:6px;
+  border-radius:8px;
   font-size:13px;
   cursor:pointer;
-  margin-right:8px;
+  margin-right:6px;
+  display:none;
+  transition:0.25s;
 }
 
 #installBtn:hover{
-  opacity:0.85;
+  opacity:0.9;
+  transform:scale(1.05);
 }
+
 /* ================= CARD ================= */
 
 .card{
-  background:rgba(255,255,255,0.12);
-  padding:25px;
-  border-radius:18px;
-  margin-bottom:25px;
-  backdrop-filter:blur(15px);
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  background:rgba(255,255,255,0.14);
+  padding:22px;
+  border-radius:16px;
+  margin-bottom:22px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
 }
 
 /* ================= FORM ================= */
 
 .form-group{
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
 
 .form-group label{
   font-size:13px;
-  margin-bottom:6px;
+  margin-bottom:5px;
   display:block;
   opacity:0.9;
 }
@@ -103,22 +122,46 @@ select,input{
   border:none;
   outline:none;
   font-size:14px;
-  min-height:45px;
+  min-height:44px;
 }
 
 input:focus,select:focus{
-  box-shadow:0 0 0 2px rgba(255,255,255,0.4);
+  box-shadow:0 0 0 2px rgba(255,255,255,0.35);
 }
 
 /* Two column */
 
 .row-2{
   display:flex;
-  gap:15px;
+  gap:12px;
 }
 
 .row-2 .form-group{
   flex:1;
+}
+
+/* ================= MOBILE FIX ================= */
+
+@media(max-width:768px){
+
+  .container{
+    padding:15px;
+  }
+
+  .row-2{
+    flex-direction:column;
+    gap:0;
+  }
+
+  .topbar h2{
+    font-size:16px;
+  }
+
+  .small-btn{
+    width:36px;
+    height:36px;
+  }
+
 }
 
 /* ================= BUTTON ================= */
@@ -133,15 +176,29 @@ button{
   font-weight:600;
   cursor:pointer;
   margin-top:10px;
-  transition:0.3s;
   min-height:45px;
+  transition:transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
 }
 
 button:hover{
-  transform:scale(1.03);
+  transform:translateY(-2px);
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
 }
 
-/* Action button group */
+button:active{
+  transform:scale(0.97);
+}
+
+button:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(255,255,255,0.4);
+}
+
+/* ================= ACTION BUTTON GROUP ================= */
 
 .action-buttons{
   display:flex;
@@ -149,11 +206,17 @@ button:hover{
   flex-wrap:wrap;
 }
 
-/* ====== premium button ====*/
+.action-buttons button{
+  flex:1;
+  min-width:120px;
+}
+
+/* ====== PREMIUM BUTTONS ====*/
+
 .pay-btn,
 .whatsapp-btn,
 .community-btn,
-.telegram-btn {
+.telegram-btn{
   display:block;
   margin:10px 0;
   padding:12px;
@@ -162,8 +225,10 @@ button:hover{
   color:#fff;
   text-decoration:none;
   font-weight:600;
-  transition:0.3s;
+  transition:transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
+
+/* Individual colors */
 
 .pay-btn{
   background:linear-gradient(135deg,#00c853,#009624);
@@ -181,17 +246,50 @@ button:hover{
   background:#0088cc;
 }
 
+/* Hover + tap */
+
 .pay-btn:hover,
 .whatsapp-btn:hover,
 .community-btn:hover,
 .telegram-btn:hover{
-  transform:scale(1.03);
+  transform:translateY(-2px);
+  box-shadow:0 5px 14px rgba(0,0,0,0.25);
 }
+
+.pay-btn:active,
+.whatsapp-btn:active,
+.community-btn:active,
+.telegram-btn:active{
+  transform:scale(0.96);
+}
+
+/* ================= QR IMAGE ================= */
+
 .qr-img{
-  width:180px;
-  margin:10px auto;
+  width:170px;
+  max-width:80%;
+  margin:12px auto;
   display:block;
   border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* ================= MOBILE FIX ================= */
+
+@media(max-width:600px){
+
+  .action-buttons{
+    flex-direction:column;
+  }
+
+  .action-buttons button{
+    width:100%;
+  }
+
+  .qr-img{
+    width:150px;
+  }
+
 }
 
 /* ================= TABLE ================= */
@@ -199,56 +297,73 @@ button:hover{
 .table-wrapper{
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
+  border-radius:12px;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
   margin-top:10px;
+  overflow:hidden;
+  border-radius:12px;
 }
 
 th,td{
-  padding:8px;
+  padding:10px 8px;
   text-align:center;
   font-size:13px;
+  white-space:nowrap;
 }
 
 th{
-  background:rgba(0,0,0,0.3);
+  background:rgba(0,0,0,0.35);
+  font-weight:600;
 }
 
 td{
-  background:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.12);
 }
 
-/* ================= INVOICE ================= */
+tr:nth-child(even) td{
+  background:rgba(255,255,255,0.08);
+}
+
+/* ================= INVOICE (PDF SAFE) ================= */
 
 #invoiceTemplate{
-  position:absolute;
+  position:fixed;
+  top:-9999px;
   left:-9999px;
   background:#fff;
   color:#000;
   padding:20px;
   width:800px;
+  font-size:14px;
 }
 
-/* ================= PREMIUM-BOX ==============*/
+/* ================= PREMIUM BOX ================= */
+
 .premium-box{
   margin-top:15px;
-  padding:15px;
+  padding:16px;
   border-radius:12px;
-  background:rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.18);
   text-align:center;
   display:none;
+  backdrop-filter:blur(10px);
+  box-shadow:0 6px 18px rgba(0,0,0,0.2);
 }
 
 .premium-box h4{
-  margin-bottom:5px;
+  margin-bottom:6px;
+  font-size:15px;
 }
 
 .premium-box button{
   background:linear-gradient(135deg,#ff9966,#ff5e62);
+  margin-top:8px;
 }
+
 /* ================= UPDATE BANNER ================= */
 
 #updateBanner{
@@ -262,7 +377,7 @@ td{
   border-radius:30px;
   font-size:14px;
   box-shadow:0 10px 25px rgba(0,0,0,0.3);
-  transition:0.5s ease;
+  transition:top 0.4s ease;
   z-index:9999;
 }
 
@@ -276,8 +391,8 @@ td{
   position:fixed;
   bottom:25px;
   right:20px;
-  width:55px;
-  height:55px;
+  width:56px;
+  height:56px;
   border-radius:50%;
   border:none;
   font-size:20px;
@@ -285,13 +400,38 @@ td{
   color:#fff;
   cursor:pointer;
   box-shadow:0 10px 25px rgba(0,0,0,0.3);
-  transition:0.3s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .fab:hover{
-  transform:scale(1.1);
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(0,0,0,0.35);
 }
 
+.fab:active{
+  transform:scale(0.95);
+}
+
+/* ================= MOBILE FIX ================= */
+
+@media(max-width:600px){
+
+  th,td{
+    font-size:12px;
+    padding:8px 6px;
+  }
+
+  .fab{
+    bottom:18px;
+    right:15px;
+    width:50px;
+    height:50px;
+  }
+
+}
 /* ================= DARK MODE ================= */
 
 body.dark{
@@ -300,7 +440,7 @@ body.dark{
 }
 
 body.dark .card{
-  background:rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.06);
 }
 
 body.dark th{
@@ -308,7 +448,11 @@ body.dark th{
 }
 
 body.dark td{
-  background:rgba(255,255,255,0.03);
+  background:rgba(255,255,255,0.04);
+}
+
+body.dark tr:nth-child(even) td{
+  background:rgba(255,255,255,0.02);
 }
 
 body.dark button{
@@ -319,20 +463,24 @@ body.dark .small-btn{
   background:rgba(255,255,255,0.1);
 }
 
-/* ============ 
+body.dark .sub-card{
+  background:rgba(255,255,255,0.05);
+}
+
 /* ================= BADGES ================= */
+
 .premium-badge{
-  padding:5px 10px;
+  padding:5px 12px;
   border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
+  font-size:11px;
+  font-weight:600;
   background:#ccc;
   color:#000;
   margin-left:8px;
 }
 
 .premium-active{
-  background:gold;
+  background:linear-gradient(135deg,#FFD700,#FFA500);
   color:#000;
 }
 
@@ -346,39 +494,40 @@ body.dark .small-btn{
   color:#fff;
 }
 
-/* ================= SUB-CARD =============== */ 
+/* ================= SUB CARD ================= */
+
 .sub-card{
   padding:12px;
   border-radius:12px;
   margin-bottom:15px;
-  background:rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.12);
   font-size:14px;
+  backdrop-filter:blur(8px);
 }
 
-/* ================= ANIMATED LOCK SYTEM ==== */ 
+/* ================= LOCK ANIMATION ================= */
+
 .locked{
-  animation: shake 0.5s;
+  animation: shake 0.45s ease;
 }
 
 @keyframes shake{
   0%{transform:translateX(0);}
-  25%{transform:translateX(-5px);}
-  50%{transform:translateX(5px);}
-  75%{transform:translateX(-5px);}
+  30%{transform:translateX(-4px);}
+  60%{transform:translateX(4px);}
   100%{transform:translateX(0);}
 }
-
 
 /* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
   .container{
-    padding:15px;
+    padding:14px;
   }
 
   .card{
-    padding:18px;
+    padding:16px;
   }
 
   .row-2{
@@ -388,17 +537,19 @@ body.dark .small-btn{
 
   th,td{
     font-size:12px;
-    padding:6px;
+    padding:7px 5px;
   }
 
 }
 
-/* ============== PRIVACY-POLICY-PAGES ========== */
+/* ================= POLICY / ABOUT PAGES ================= */
+
 .page-container{
-  max-width:600px;
+  max-width:650px;
   margin:auto;
   padding:20px;
-  font-family:sans-serif;
+  line-height:1.6;
+  font-family:'Poppins',sans-serif;
 }
 
 .page-container h2{
@@ -410,94 +561,93 @@ body.dark .small-btn{
   margin-top:20px;
   color:#4caf50;
   text-decoration:none;
-  font-weight:bold;
+  font-weight:600;
 }
 
-/* ====== GOOGLE ADS =============== */ 
+/* ================= GOOGLE ADS (CLS SAFE) ================= */
+
 .adsbygoogle{
-  margin:15px 0;
+  display:block;
+  min-height:90px; /* CLS safe */
+  margin:18px 0;
+  text-align:center;
 }
+
+
+
+
+/* ================= THEME TRANSITION ================= */
 
 body{
-  transition:0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
+
+/* ================= LIGHT MODE ================= */
 
 body.light{
   background:#f5f7fb;
   color:#222;
 }
 
-body.dark{
-  background:linear-gradient(135deg,#667eea,#764ba2);
-  color:#fff;
-}
-.card{
+body.light .card{
   background:#ffffff;
   color:#222;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:20px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  box-shadow:0 5px 15px rgba(0,0,0,0.08);
 }
 
-body.dark .card{
-  background:rgba(255,255,255,0.08);
-  color:#fff;
-}
-button, .pay-btn, .whatsapp-btn, .community-btn, .telegram-btn{
-  display:block;
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-  text-align:center;
-  text-decoration:none;
-  background:#667eea;
-  color:#fff;
-  transition:0.2s;
-}
-
-button:hover{
-  opacity:0.85;
-}
-.table-wrapper{
-  overflow-x:auto;
-}
-
-#premiumBadge{
-  transition:0.3s;
-}
-.sub-card{
+body.light .sub-card{
   background:#f0f2f8;
   color:#222;
 }
 
-body.dark .sub-card{
-  background:rgba(255,255,255,0.08);
-  color:#fff;
+body.light td{
+  background:#fff;
+  color:#222;
 }
-a{
-  text-decoration:none;
-  color:inherit;
-}
-th{
+
+body.light th{
   background:#667eea;
   color:#fff;
 }
 
-td{
-  background:#fff;
-  color:#222;
+/* ================= DARK MODE FIX ================= */
+
+body.dark{
+  background:#121212;
+  color:#f5f5f5;
+}
+
+body.dark .card{
+  background:rgba(255,255,255,0.07);
+  color:#fff;
+}
+
+body.dark .sub-card{
+  background:rgba(255,255,255,0.06);
+  color:#fff;
 }
 
 body.dark td{
   background:#1e1e1e;
   color:#fff;
 }
-body.dark{
-  background:#121212;
-  color:#f5f5f5;
+
+body.dark th{
+  background:#333;
+  color:#fff;
+}
+
+/* ================= COMMON ================= */
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+#premiumBadge{
+  transition:0.3s ease;
+}
+
+.table-wrapper{
+  overflow-x:auto;
 }
