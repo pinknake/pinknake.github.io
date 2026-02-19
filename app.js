@@ -98,24 +98,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.shareWhatsApp = () => {
 
-    if (!kitchenData.length) return alert("No Data!");
+  if (!kitchenData.length) return alert("No entries to share!");
 
-    let total = 0;
-    let msg = "🍳 GHAR MANAGER\n\n";
+  let total = 0;
 
-    kitchenData.forEach(e => {
-      total += e.amount;
-      msg += `${e.date}\n${e.item} (${e.qty}) - ${e.type}\n₹ ${e.amount}\n\n`;
-    });
+  // ================= Header =================
+  let msg = "🟣 *🍳 GHAR MANAGER – Kitchen Report* 🟣\n";
+  msg += "🧾 Date | 🥘 Item | ⚖️ Qty | 📦 Type | 💰 Amount\n";
+  msg += "─────────────────────────────────────────\n";
 
-    msg += `Total ₹ ${total}`;
+  // ================= Rows =================
+  kitchenData.forEach((e) => {
+    total += e.amount;
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
-  };
+    // Category emoji
+    let catEmoji = "";
+    if (/Tomato|Potato|Onion/i.test(e.item)) catEmoji = "🥦"; 
+    else if (/Haldi|Mirch|Jeera/i.test(e.item)) catEmoji = "🌶️"; 
+    else if (/Milk|Paneer|Curd/i.test(e.item)) catEmoji = "🥛"; 
+    else catEmoji = "🍴";
 
-  /* ================= PDF ================= */
+    const dateStr = e.date.split(",")[0].padEnd(12, " ");
+    const itemStr = (catEmoji + " " + e.item).padEnd(16, " ");
+    const qtyStr = e.qty.padEnd(7, " ");
+    const typeStr = e.type.padEnd(7, " ");
+    const amountStr = `₹${e.amount}`.padEnd(8, " ");
 
-  /* ================= PDF DOWNLOAD ================= */
+    msg += `${dateStr} | ${itemStr} | ${qtyStr} | ${typeStr} | ${amountStr}\n`;
+  });
+
+  // ================= Footer =================
+  msg += "─────────────────────────────────────────\n";
+  msg += `💎 *Grand Total:* ₹${total}\n`;
+  msg += "═════════════════════════════════════════\n";
+  msg += "✨ Generated via *Ghar Manager App* 🔥\n";
+  msg += "📲 Manage your kitchen efficiently!\n";
+  msg += "👉 Download: https://pinknake.github.io/index.html\n";
+  msg += "──────────── Thank You! 🙏─────────────";
+
+  // Monospace code block for perfect alignment in WhatsApp
+  msg = "```" + msg + "```";
+
+  // Open WhatsApp
+  const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(whatsappUrl);
+};
+/* ================= PDF DOWNLOAD ================= */
 
 window.downloadPDF = async () => {
 
