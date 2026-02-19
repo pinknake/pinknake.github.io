@@ -380,20 +380,32 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
 
   /* ================= SHARE APP ================= */
 window.shareApp = () => {
-const url = window.location.origin;
 
-if (navigator.share) {  
-  navigator.share({  
-    title: "Ghar Manager",  
-    text: "Check out my Ghar Manager App 🔥",  
-    url  
-  }).catch(() => {});  
-} else {  
-  window.open("https://wa.me/?text=" + encodeURIComponent(url));  
-}
+  const url = "https://pinknake.github.io/";
+
+  const text =
+`🍳 *GHAR MANAGER APP*
+
+✅ Track kitchen expenses
+📄 Export beautiful PDF invoices
+📊 Manage daily grocery easily
+📲 Install & use offline
+
+🚀 Try now:
+${url}`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: "Ghar Manager App",
+      text: "Manage kitchen expenses easily 🍳",
+      url
+    }).catch(() => {});
+  } else {
+    const wa = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(wa, "_blank");
+  }
 
 };
-  
   
   
 /* ================= PWA INSTALL ================= */
