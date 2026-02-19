@@ -96,72 +96,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= WHATSAPP SHARE ================= */
 
-  window.shareTable = function () {
+  window.shareWhatsApp = () => {
 
-  const table = document.getElementById("kitchenTable");
-  if (!table) {
-    alert("No table found!");
-    return;
-  }
+  if (!kitchenData.length) return alert("No entries to share!");
 
-  const rows = table.querySelectorAll("tr");
-  if (rows.length === 0) {
-    alert("No data to share!");
-    return;
-  }
-
-  let totalAmount = 0;
+  let total = 0;
 
   // ================= Header =================
-  let message =
-"🟣━━━━━━━━━━━━━━━━━━━━🟣\n" +
-"🏠 *GHAR MANAGER*\n" +
-"🍳 *Kitchen Expense Report*\n" +
-"🗓️ Date | 🥘 Item | ⚖️ Qty | 📦 Type | 💰 Amount\n" +
-"──────────────────────────────\n";
+  let msg = "🏠🟣 *Ghar Manager – Kitchen Report* 🟣🏠\n\n";
 
   // ================= Rows =================
-  rows.forEach(row => {
-    const cols = row.querySelectorAll("td");
+  kitchenData.forEach((e) => {
+    total += e.amount;
 
-    if (cols.length >= 5) {  // Using full table columns
-      const date = cols[0].innerText;
-      const item = cols[1].innerText;
-      const qty = cols[2].innerText;
-      const type = cols[3].innerText;
-      const amount = cols[4].innerText;
+    // Category emoji
+    let catEmoji = "";
+    if (/Tomato|Potato|Onion/i.test(e.item)) catEmoji = "🥦"; 
+    else if (/Haldi|Mirch|Jeera/i.test(e.item)) catEmoji = "🌶️"; 
+    else if (/Milk|Paneer|Curd/i.test(e.item)) catEmoji = "🥛"; 
+    else catEmoji = "🍴";
 
-      totalAmount += Number(amount.replace(/[^\d]/g, ""));
-
-      // Add category emoji
-      let catEmoji = "🍴"; // Default
-      if (/Tomato|Potato|Onion/i.test(item)) catEmoji = "🥦";
-      else if (/Haldi|Mirch|Jeera/i.test(item)) catEmoji = "🌶️";
-      else if (/Milk|Paneer|Curd/i.test(item)) catEmoji = "🥛";
-
-      message += 
-`${date} | ${catEmoji} ${item} | ${qty} | ${type} | ${amount}\n` +
-"──────────────────────────────\n";
-    }
+    msg += `${catEmoji} *${e.item}*\n`;
+    msg += `📅 Date: ${e.date.split(",")[0]}\n`;
+    msg += `⚖️ Qty: ${e.qty}\n`;
+    msg += `📦 Type: ${e.type}\n`;
+    msg += `💰 Amount: ₹${e.amount}\n`;
+    msg += "────────────────────────\n";
   });
 
   // ================= Footer =================
-  message +=
-"🟣━━━━━━━━━━━━━━━━━━━━🟣\n" +
-`💎 *Grand Total: ₹${totalAmount}*\n` +
-"📊 Managed by *Ghar Manager App*\n" +
-"✨ Download: https://pinknake.github.io/index.html\n" +
-"🟣━━━━━━━━━━━━━━━━━━━━🟣";
+  msg += `💎 *Grand Total:* ₹${total}\n`;
+  msg += "✨ Generated via *Ghar Manager App* 🔥\n";
+  msg += "📲 Download: https://pinknake.github.io/index.html\n";
+  msg += "🏠🏠 Thank You! 🏠🏠";
 
-  const encodedMessage = encodeURIComponent(message);
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  const url = isMobile
-    ? `https://wa.me/?text=${encodedMessage}`
-    : `https://web.whatsapp.com/send?text=${encodedMessage}`;
-
-  window.open(url, "_blank");
+  // Open WhatsApp
+  const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(whatsappUrl);
 };
+
+  
 /* ================= PDF DOWNLOAD ================= */
 
 window.downloadPDF = async () => {
@@ -407,18 +381,25 @@ document.getElementById("premiumBox")?.addEventListener("click", function(){
   /* ================= SHARE APP ================= */
 
   window.shareApp = () => {
-    const url = window.location.origin;
+  const url = window.location.origin;
+  const msg = 
+    "🟣 *Ghar Manager – Kitchen App* 🟣\n\n" +
+    "🍳 Manage your kitchen expenses easily!\n" +
+    "📲 Download now: " + url + "\n" +
+    "✨ Favicon icon: 🏠\n" +
+    "🔥 Stay organized & save time!";
 
-    if (navigator.share) {
-      navigator.share({
-        title: "Ghar Manager",
-        text: "Check out my Ghar Manager App 🔥",
-        url
-      }).catch(() => {});
-    } else {
-      window.open("https://wa.me/?text=" + encodeURIComponent(url));
-    }
-  };
+  if (navigator.share) {
+    navigator.share({
+      title: "Ghar Manager",
+      text: msg,
+      url
+    }).catch(() => {});
+  } else {
+    // WhatsApp fallback
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+  }
+};
 
   
 /* ================= PWA INSTALL ================= */
