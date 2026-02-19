@@ -1,160 +1,166 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-/* ================= HELPERS ================= */
+  /* ================= HELPERS ================= */
 
-const $ = (id) => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
 
-const safeJSONParse = (key, fallback = []) => {
-  try {
-    const data = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(data) ? data : fallback;
-  } catch {
-    return fallback;
-  }
-};
+  const safeJSONParse = (key) => {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || [];
+    } catch {
+      return [];
+    }
+  };
 
-let kitchenData = safeJSONParse("kitchenData", []);
+  let kitchenData = safeJSONParse("kitchenData");
 
-const saveKitchen = () =>
-  localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
+  const itemsData = {
+    Vegetable: ["Tomato/टमाटर", "Potato", "Onion"],
+    Spices: ["Haldi", "Mirch", "Jeera"],
+    Dairy: ["Milk", "Paneer", "Curd"]
+  };
 
-/* ================= ITEMS ================= */
+  /* ================= LOAD ITEMS ================= */
 
-const itemsData = {
-  Vegetable: ["Tomato/टमाटर", "Potato", "Onion"],
-  Spices: ["Haldi", "Mirch", "Jeera"],
-  Dairy: ["Milk", "Paneer", "Curd"]
-};
+  function loadItems() {
+    const category = $("mainCategory")?.value;
+    const itemSelect = $("itemSelect");
+    if (!category || !itemSelect) return;
 
-function loadItems() {
-  const category = $("mainCategory")?.value;
-  const itemSelect = $("itemSelect");
-  if (!category || !itemSelect) return;
+    itemSelect.innerHTML = "";
 
-  itemSelect.innerHTML = "";
-
-  const list = itemsData[category] || [];
-
-  list.forEach(item => {
-    const option = document.createElement("option");
-    option.value = item;
-    option.textContent = item;
-    itemSelect.appendChild(option);
-  });
-}
-
-$("mainCategory")?.addEventListener("change", loadItems);
-loadItems();
-
-/* ================= ADD ENTRY ================= */
-
-window.addKitchenEntry = () => {
-
-  const item = $("itemSelect")?.value || "";
-  const qty = $("quantity")?.value?.trim();
-  const type = $("typeCategory")?.value || "";
-  const amount = Number($("amount")?.value);
-
-  if (!qty || isNaN(amount) || amount <= 0) {
-    alert("Fill valid quantity and amount!");
-    return;
+    itemsData[category].forEach(item => {
+      const option = document.createElement("option");
+      option.value = item;
+      option.textContent = item;
+      itemSelect.appendChild(option);
+    });
   }
 
-  kitchenData.push({
-    date: new Date().toLocaleString(),
-    item,
-    qty,
-    type,
-    amount
-  });
+  $("mainCategory")?.addEventListener("change", loadItems);
+  loadItems();
 
-  saveKitchen();
+  /* ================= ADD ENTRY ================= */
 
-  if ($("quantity")) $("quantity").value = "";
-  if ($("amount")) $("amount").value = "";
+  window.addKitchenEntry = () => {
 
-  renderTable();
-};
+    const item = $("itemSelect")?.value;
+    const qty = $("quantity")?.value.trim();
+    const type = $("typeCategory")?.value;
+    const amount = Number($("amount")?.value);
 
-/* ================= TABLE ================= */
+    if (!qty || !amount) {
+      alert("Fill quantity and amount!");
+      return;
+    }
 
-function renderTable() {
-  const table = $("kitchenTable");
-  if (!table) return;
+    kitchenData.push({
+      date: new Date().toLocaleString(),
+      item,
+      qty,
+      type,
+      amount
+    });
 
-  table.innerHTML = kitchenData.map((e, i) => `
-    <tr>
-      <td>${e.date}</td>
-      <td>${e.item}</td>
-      <td>${e.qty}</td>
-      <td>${e.type}</td>
-      <td>₹ ${e.amount}</td>
-      <td><button onclick="deleteEntry(${i})">❌</button></td>
-    </tr>
-  `).join("");
-}
+    localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
 
-window.deleteEntry = (i) => {
-  if (i < 0 || i >= kitchenData.length) return;
-  kitchenData.splice(i, 1);
-  saveKitchen();
-  renderTable();
-};
+    $("quantity").value = "";
+    $("amount").value = "";
 
-/* ================= WHATSAPP ================= */
+    renderTable();
+  };
 
-window.shareWhatsApp = () => {
+  /* ================= RENDER TABLE ================= */
 
-  if (!kitchenData.length) {
-    alert("No Data!");
-    return;
+  function renderTable() {
+    const table = $("kitchenTable");
+    if (!table) return;
+
+    table.innerHTML = kitchenData.map((e, i) => `
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.item}</td>
+        <td>${e.qty}</td>
+        <td>${e.type}</td>
+        <td>₹ ${e.amount}</td>
+        <td><button onclick="deleteEntry(${i})">❌</button></td>
+      </tr>
+    `).join("");
   }
 
-  let total = 0;
-  let msg = "🍳 GHAR MANAGER\n\n";
+  window.deleteEntry = (i) => {
+    kitchenData.splice(i, 1);
+    localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
+    renderTable();
+  };
 
-  kitchenData.forEach(e => {
-    total += e.amount;
-    msg += `${e.date}\n${e.item} (${e.qty}) - ${e.type}\n₹ ${e.amount}\n\n`;
-  });
+  /* ================= WHATSAPP SHARE ================= */
 
-  msg += `Total ₹ ${total}`;
+  window.shareWhatsApp = () => {
 
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg));
-};
+    if (!kitchenData.length) return alert("No Data!");
 
-/* ================= PDF ================= */
+    let total = 0;
+    let msg = "🍳 GHAR MANAGER\n\n";
+
+    kitchenData.forEach(e => {
+      total += e.amount;
+      msg += `${e.date}\n${e.item} (${e.qty}) - ${e.type}\n₹ ${e.amount}\n\n`;
+    });
+
+    msg += `Total ₹ ${total}`;
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+  };
+
+  /* ================= PDF ================= */
+
+  /* ================= PDF DOWNLOAD ================= */
 
 window.downloadPDF = async () => {
 
-  const sub = getSubscription();
-
+  const sub = JSON.parse(localStorage.getItem("subscriptionData"));
   const today = new Date();
 
-  const trialStart = new Date(sub.trialStart);
-  const trialActive =
-    Math.floor((today - trialStart) / 86400000) < TRIAL_DAYS;
+  if (!sub) {
+    alert("Subscription Error");
+    return;
+  }
 
+  // ===== CHECK TRIAL =====
+  const trialStart = new Date(sub.trialStart);
+  const trialDiff = Math.floor((today - trialStart) / (1000*60*60*24));
+  const trialActive = trialDiff < TRIAL_DAYS;
+
+  // ===== CHECK PREMIUM =====
   let premiumActive = false;
 
   if (sub.isPremium && sub.premiumStart) {
     const start = new Date(sub.premiumStart);
-    premiumActive =
-      Math.floor((today - start) / 86400000) < (sub.premiumDays || 30);
+    const diff = Math.floor((today - start) / (1000*60*60*24));
+    premiumActive = diff < (sub.premiumDays || 30);
   }
 
   if (!trialActive && !premiumActive) {
+    const btn = document.getElementById("pdfBtn");
+    btn.classList.add("locked");
+
+    setTimeout(() => {
+      btn.classList.remove("locked");
+    }, 500);
+
     alert("Premium Required");
     return;
   }
 
   if (!kitchenData.length) {
-    alert("No Data!");
+    alert("No Data to Export!");
     return;
   }
 
   const invoice = $("invoiceTemplate");
-  const tbody = invoice.querySelector("tbody");
+  const tbody = invoice?.querySelector("tbody");
+  if (!invoice || !tbody) return;
 
   tbody.innerHTML = "";
   let total = 0;
@@ -176,20 +182,21 @@ window.downloadPDF = async () => {
   $("invoiceTotal").innerText = "Grand Total ₹ " + total;
 
   const canvas = await html2canvas(invoice, { scale: 2 });
-
   const img = canvas.toDataURL("image/png");
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+  const doc = new jsPDF("p", "mm", "a4");
 
   doc.addImage(img, "PNG", 10, 10, 190, 0);
   doc.save("Kitchen_Invoice.pdf");
 };
 
 
-const TRIAL_DAYS = 3;
+/* ================= SUBSCRIPTION ================= */
 
-function getSubscription() {
+const TRIAL_DAYS = 0;
+
+function initSubscription() {
   let sub;
 
   try {
@@ -198,40 +205,40 @@ function getSubscription() {
     sub = null;
   }
 
-  if (!sub || typeof sub !== "object") {
+  if (!sub) {
     sub = {
       trialStart: new Date().toISOString(),
       isPremium: false,
       premiumStart: null,
       premiumDays: 30
     };
-
     localStorage.setItem("subscriptionData", JSON.stringify(sub));
   }
 
-  return sub;
+  updateSubscription(sub);
 }
-function updateSubscriptionUI() {
-  const sub = getSubscription();
 
-  const badge = $("premiumBadge");
-  const pdfBtn = $("pdfBtn");
-  const premiumBox = $("premiumBox");
+function updateSubscription(sub) {
 
-  if (!badge) return;
+  const premiumBox = document.getElementById("premiumBox");
+  const pdfBtn = document.getElementById("pdfBtn");
+
+  if (!premiumBox || !pdfBtn) return;
 
   const today = new Date();
 
-  /* ===== PREMIUM CHECK ===== */
+  // ===== CHECK PREMIUM =====
   if (sub.isPremium && sub.premiumStart) {
     const start = new Date(sub.premiumStart);
-    const diff = Math.floor((today - start) / 86400000);
+    const diff = Math.floor((today - start) / (1000*60*60*24));
+    const daysLeft = (sub.premiumDays || 30) - diff;
 
-    if (diff < (sub.premiumDays || 30)) {
-      badge.innerText = "💎 PREMIUM";
-      badge.className = "premium-badge premium-active";
-      pdfBtn.innerText = "📄 Download PDF";
+    if (daysLeft > 0) {
       premiumBox.style.display = "none";
+      pdfBtn.innerText = `📄 Download PDF (${daysLeft} Days Left)`;
+      pdfBtn.style.opacity = "1";
+
+      updateBadge("premium");
       return;
     } else {
       sub.isPremium = false;
@@ -239,69 +246,77 @@ function updateSubscriptionUI() {
     }
   }
 
-  /* ===== TRIAL CHECK ===== */
+  // ===== CHECK TRIAL =====
   const trialStart = new Date(sub.trialStart);
-  const trialDiff = Math.floor((today - trialStart) / 86400000);
-
-  if (trialDiff < TRIAL_DAYS) {
-    badge.innerText = `🟢 TRIAL (${TRIAL_DAYS - trialDiff}d)`;
-    badge.className = "premium-badge trial-active";
-    premiumBox.style.display = "none";
-  } else {
-    badge.innerText = "🔒 FREE";
-    badge.className = "premium-badge expired";
-    premiumBox.style.display = "block";
-  }
-}
-
-
-
-
-  /* ===== CHECK TRIAL ===== */
-  const trialStart = new Date(sub.trialStart);
-  const trialDiff = Math.floor((today - trialStart) / 86400000);
+  const trialDiff = Math.floor((today - trialStart) / (1000*60*60*24));
   const trialLeft = TRIAL_DAYS - trialDiff;
 
   if (trialLeft > 0) {
-    badge.innerText = `🟢 TRIAL (${trialLeft}d)`;
-    badge.className = "premium-badge trial-active";
-
-    pdfBtn.innerText = `📄 PDF (${trialLeft} trial)`;
     premiumBox.style.display = "none";
-  } else {
-    badge.innerText = "🔒 FREE";
-    badge.className = "premium-badge expired";
+    pdfBtn.innerText = `📄 Download PDF (${trialLeft} Trial Days Left)`;
+    pdfBtn.style.opacity = "1";
 
+    updateBadge("trial", trialLeft);
+  } else {
+    premiumBox.style.display = "block";
     pdfBtn.innerText = "🔒 PDF (Premium)";
     pdfBtn.style.opacity = "0.6";
 
-    premiumBox.style.display = "block";
+    updateBadge("expired");
   }
 }
 
-window.activatePremium = function () {
-  const sub = getSubscription();
+/* ================= FUNCTION BADGES ======== */ 
+  function updateBadge(status, daysLeft = 0){
+
+  const badge = document.getElementById("premiumBadge");
+  if(!badge) return;
+
+  badge.classList.remove("premium-active","trial-active","expired");
+
+  if(status === "premium"){
+    badge.innerText = "💎 PREMIUM";
+    badge.classList.add("premium-active");
+  }
+  else if(status === "trial"){
+    badge.innerText = `🟢 TRIAL (${daysLeft}d)`;
+    badge.classList.add("trial-active");
+  }
+  else{
+    badge.innerText = "🔴 EXPIRED";
+    badge.classList.add("expired");
+  }
+}
+  
+/* ================= PREMIUM ACTIVATION ================= */
+
+window.activatePremium = function(days = 30){
+
+  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
 
   sub.isPremium = true;
   sub.premiumStart = new Date().toISOString();
+  sub.premiumDays = days;
 
   localStorage.setItem("subscriptionData", JSON.stringify(sub));
 
-  alert("Premium Activated 🔥");
-  updateSubscriptionUI();
+  alert("Premium Activated for " + days + " Days!");
+  location.reload();
 };
 
 
-  
-  let tapCount = 0;
+/* ================= ADMIN TAP ================= */
 
-$("premiumBox")?.addEventListener("click", () => {
+let tapCount = 0;
+
+document.getElementById("premiumBox")?.addEventListener("click", function(){
+
   tapCount++;
 
-  if (tapCount >= 5) {
+  if(tapCount >= 5){
     const pass = prompt("Enter Admin Password");
 
-    if (pass === "ankush123") {
+    if(pass === "ankush123"){
       activatePremium(30);
     } else {
       alert("Wrong Password");
@@ -310,169 +325,146 @@ $("premiumBox")?.addEventListener("click", () => {
     tapCount = 0;
   }
 
-  setTimeout(() => tapCount = 0, 3000);
+  setTimeout(() => { tapCount = 0; }, 3000);
 });
 
-  window.downloadPDF = async () => {
 
-  let sub = JSON.parse(localStorage.getItem("subscriptionData"));
-  if (!sub) {
-    alert("Subscription Error");
-    return;
+/* ================= INIT ================= */
+
+
+  /* ================= THEME ================= */
+
+  const themeBtn = $("themeToggle");
+
+  function setTheme(theme) {
+    document.body.classList.remove("light", "dark");
+    document.body.classList.add(theme);
+    localStorage.setItem("theme", theme);
+    if (themeBtn)
+      themeBtn.textContent = theme === "dark" ? "☀️" : "🌙";
   }
 
-  const today = new Date();
+  setTheme(localStorage.getItem("theme") || "light");
 
-  /* ===== CHECK ACCESS ===== */
-  const trialStart = new Date(sub.trialStart);
-  const trialActive =
-    Math.floor((today - trialStart) / 86400000) < TRIAL_DAYS;
-
-  let premiumActive = false;
-
-  if (sub.isPremium && sub.premiumStart) {
-    const start = new Date(sub.premiumStart);
-    premiumActive =
-      Math.floor((today - start) / 86400000) < (sub.premiumDays || 30);
-  }
-
-  if (!trialActive && !premiumActive) {
-    $("pdfBtn")?.classList.add("locked");
-    setTimeout(() => $("pdfBtn")?.classList.remove("locked"), 500);
-    alert("Premium Required");
-    return;
-  }
-
-  if (!kitchenData.length) {
-    alert("No Data!");
-    return;
-  }
-
-  const invoice = $("invoiceTemplate");
-  const tbody = invoice.querySelector("tbody");
-
-  tbody.innerHTML = "";
-  let total = 0;
-
-  kitchenData.forEach(e => {
-    total += e.amount;
-    tbody.innerHTML += `
-      <tr>
-        <td>${e.date}</td>
-        <td>${e.item}</td>
-        <td>${e.qty}</td>
-        <td>${e.type}</td>
-        <td>₹ ${e.amount}</td>
-      </tr>
-    `;
+  themeBtn?.addEventListener("click", () => {
+    const current = document.body.classList.contains("dark") ? "dark" : "light";
+    setTheme(current === "dark" ? "light" : "dark");
   });
 
-  $("invoiceDate").innerText =
-    "Date: " + new Date().toLocaleString();
+  /* ================= MANUAL REFRESH ================= */
 
-  $("invoiceTotal").innerText =
-    "Grand Total ₹ " + total;
-
-  const canvas = await html2canvas(invoice, {
-    scale: 3,
-    useCORS: true
+  $("manualRefresh")?.addEventListener("click", () => {
+    location.reload(true);
   });
 
-  const img = canvas.toDataURL("image/png");
+  /* ================= SHARE APP ================= */
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
+  window.shareApp = () => {
+    const url = window.location.origin;
 
-  const imgWidth = 190;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  doc.addImage(img, "PNG", 10, 10, imgWidth, imgHeight);
-  doc.save("Kitchen_Invoice.pdf");
-};
+    if (navigator.share) {
+      navigator.share({
+        title: "Ghar Manager",
+        text: "Check out my Ghar Manager App 🔥",
+        url
+      }).catch(() => {});
+    } else {
+      window.open("https://wa.me/?text=" + encodeURIComponent(url));
+    }
+  };
 
   
-  /* ================= REST SAME (THEME, PWA, SW) ================= */
-/* untouched except safety checks */
+/* ================= PWA INSTALL ================= */
 
-const themeBtn = $("themeToggle");
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
 
-function setTheme(theme) {
-  document.body.classList.remove("light", "dark");
-  document.body.classList.add(theme);
-  localStorage.setItem("theme", theme);
-  if (themeBtn)
-    themeBtn.textContent = theme === "dark" ? "☀️" : "🌙";
-}
-
-setTheme(localStorage.getItem("theme") || "light");
-
-themeBtn?.addEventListener("click", () => {
-  const current = document.body.classList.contains("dark") ? "dark" : "light";
-  setTheme(current === "dark" ? "light" : "dark");
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) installBtn.style.display = "inline-block";
 });
 
-  if ('serviceWorker' in navigator) {
+installBtn?.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
 
-  navigator.serviceWorker.register('./sw.js')
-    .then(reg => {
+  deferredPrompt.prompt();
 
-      reg.onupdatefound = () => {
+  const result = await deferredPrompt.userChoice;
 
-        const newWorker = reg.installing;
+  if (result.outcome === "accepted") {
+    console.log("App Installed");
+  }
 
-        newWorker.onstatechange = () => {
+  deferredPrompt = null;
+  installBtn.style.display = "none";
+});
 
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+window.addEventListener("appinstalled", () => {
+  console.log("PWA Installed Successfully");
+  installBtn.style.display = "none";
+});
 
-            showUpdateBanner();
+  /* iOS Install Detection */
 
-          }
-        };
-      };
-    });
-
+function isIos(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }
 
-function showUpdateBanner() {
-
-  const banner = document.getElementById("updateBanner");
-
-  if (!banner) return;
-
-  banner.classList.add("show");
-
-  banner.onclick = () => {
-    window.location.reload();
-  };
+function isInStandaloneMode(){
+  return ('standalone' in window.navigator) && window.navigator.standalone;
 }
 
-  function triggerSync() {
-  if ('serviceWorker' in navigator && 'SyncManager' in window) {
-    navigator.serviceWorker.ready.then(sw => {
-      sw.sync.register('syncData');
+if(isIos() && !isInStandaloneMode()){
+  if(installBtn){
+    installBtn.style.display = "inline-block";
+    installBtn.innerText = "📲 Add to Home";
+
+    installBtn.addEventListener("click", () => {
+      alert("Tap Share ➜ Add to Home Screen");
     });
   }
 }
+  
+  /* ================= SERVICE WORKER ================= */
 
-  function enableNotifications() {
+  if ("serviceWorker" in navigator) {
 
-  if (!("Notification" in window)) return;
+    navigator.serviceWorker.register("sw.js").then(reg => {
 
-  Notification.requestPermission().then(permission => {
+      reg.addEventListener("updatefound", () => {
+        const newWorker = reg.installing;
 
-    if (permission === "granted") {
-
-      navigator.serviceWorker.ready.then(reg => {
-        reg.showNotification("Notifications Enabled 🎉");
+        newWorker.addEventListener("statechange", () => {
+          if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+          }
+        });
       });
 
-    }
+    }).catch(err => console.log("SW Error:", err));
+  }
 
-  });
-}
-/* ================= INIT ================= */
+  function showUpdateBanner() {
+    const banner = $("updateBanner");
+    if (!banner) return;
+
+    banner.classList.add("show");
+
+    setTimeout(() => {
+      banner.classList.remove("show");
+      window.location.reload();
+    }, 2500);
+  }
+
+  /* ================= BACKGROUND AUTO REFRESH ================= */
+
+  setInterval(() => {
+    if (navigator.onLine) {
+      console.log("Background sync check...");
+    }
+  }, 30000);
 
 initSubscription();
 renderTable();
-
 });
