@@ -329,18 +329,16 @@ tr:nth-child(even) td{
 }
 
 /* ================= INVOICE (PDF SAFE) ================= */
-
 #invoiceTemplate{
   position:fixed;
   top:0;
   left:0;
   opacity:0;
   pointer-events:none;
+  z-index:-1;
+  width:800px;
   background:#fff;
   color:#000;
-  padding:20px;
-  width:800px;
-  font-size:14px;
 }
 
 /* LIGHT */
