@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  /* ================= HELPERS ================= */
+ document.addEventListener("DOMContentLoaded", () => {
 
   const $ = (id) => document.getElementById(id);
 
@@ -14,18 +12,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let kitchenData = safeJSONParse("kitchenData");
 
+  /* ================= MASTER ITEMS ================= */
   const masterItems = {
-  Spices: ["Mirch/मिर्च", "Haldi/हल्दी", "Dhaniya/धनिया", "Jeera/जीरा", "Garam Masala/ गरम मसाला", "कड़ी पत्ता", "बेसन", "मेधा" ],
-  Oils: ["Mustard Oil/ सरसों तेल 1L", "Mustard Oil 5L", "Refined Oil/ रिफाइंड 1L" ],
-  Grains: ["Rice/ चावल", "Atta/आटा ", "Chane White 250g/ सफेद चना", "काले छोले", " मूंग दाल", "चना दाल", "मां दाल", "काली दाल", "मुंगी मश्री दाल" ],  
-  Shabji: ["Shabji/ सब्जी", "Tamato/टमाटर", "pea/ मटर", "Colefolower/गोबी", "Patato/अल्लू", " प्याज", "बैंगन", "पत्ता गोभी" ," शिमला मिर्च", " हरी मिर्च", " लहसुन", " गाजर", " मूली"],
-  Dairy: ["Ghee/ देसीघी kg", " पनीर", "milk/दूध", "curd/दही" ],
-Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीराम भुजिया ", "Samoosa/ समोसा" ],
-  Bathroom: ["Soap/ शैंपू 2 Pack", "Soap/ गोदरेज साबुन 4 Pack", "Clinic Plus/ क्लीनिंग प्लस शैंपू ", "Surf Excel/ सर्फ एक्सेल ", "Vanish/ वेनिस", "Ezzy/ ईजी"]
-};
+    Spices: ["Mirch/मिर्च","Haldi/हल्दी","Dhaniya/धनिया","Jeera/जीरा","Garam Masala","कड़ी पत्ता","बेसन"],
+    Oils: ["Mustard Oil 1L","Mustard Oil 5L","Refined Oil 1L"],
+    Grains: ["Rice/चावल","Atta/आटा","चना दाल","मूंग दाल","काली दाल"],
+    Shabji: ["टमाटर","मटर","गोबी","आलू","प्याज","बैंगन"],
+    Dairy: ["Ghee","पनीर","दूध","दही"],
+    Snacks: ["Biscuits","Chips","Samosa"],
+    Bathroom: ["Soap","Shampoo","Surf Excel","Vanish"]
+  };
 
   /* ================= LOAD ITEMS ================= */
-
   function loadItems() {
     const category = $("mainCategory")?.value;
     const itemSelect = $("itemSelect");
@@ -33,7 +31,7 @@ Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीरा�
 
     itemSelect.innerHTML = "";
 
-    itemsData[category].forEach(item => {
+    masterItems[category]?.forEach(item => {
       const option = document.createElement("option");
       option.value = item;
       option.textContent = item;
@@ -45,25 +43,17 @@ Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीरा�
   loadItems();
 
   /* ================= ADD ENTRY ================= */
-
   window.addKitchenEntry = () => {
-
     const item = $("itemSelect")?.value;
     const qty = $("quantity")?.value.trim();
     const type = $("typeCategory")?.value;
     const amount = Number($("amount")?.value);
 
-    if (!qty || !amount) {
-      alert("Fill quantity and amount!");
-      return;
-    }
+    if (!qty || !amount) return alert("Fill quantity and amount!");
 
     kitchenData.push({
       date: new Date().toLocaleString(),
-      item,
-      qty,
-      type,
-      amount
+      item, qty, type, amount
     });
 
     localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
@@ -75,12 +65,11 @@ Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीरा�
   };
 
   /* ================= RENDER TABLE ================= */
-
   function renderTable() {
     const table = $("kitchenTable");
     if (!table) return;
 
-    table.innerHTML = kitchenData.map((e, i) => `
+    table.innerHTML = kitchenData.map((e,i)=>`
       <tr>
         <td>${e.date}</td>
         <td>${e.item}</td>
@@ -93,10 +82,12 @@ Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीरा�
   }
 
   window.deleteEntry = (i) => {
-    kitchenData.splice(i, 1);
+    kitchenData.splice(i,1);
     localStorage.setItem("kitchenData", JSON.stringify(kitchenData));
     renderTable();
   };
+
+
 
   /* ================= WHATSAPP SHARE ================= */
 
