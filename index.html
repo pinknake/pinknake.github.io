@@ -210,15 +210,16 @@ crossorigin="anonymous"></script>
 </section>
 
 <!-- ================= INVOICE TEMPLATE ================= -->
-<div id="invoiceTemplate" class="invoice light-invoice">
-  <div style="text-align:center;">
-    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" width="70">
-    <h2 style="color:#764ba2;">GHAR KITCHEN MANAGER</h2>
+<div id="invoiceTemplate">
+
+  <div class="invoice-header">
+    <img class="invoice-logo" src="logo.png">
+    <h2>GHAR KITCHEN MANAGER</h2>
     <p id="invoiceDate"></p>
   </div>
 
-  <table border="1" width="100%" cellspacing="0" cellpadding="8">
-    <thead style="background:#667eea;color:white;">
+  <table class="invoice-table">
+    <thead>
       <tr>
         <th>Date</th>
         <th>Item</th>
@@ -230,12 +231,13 @@ crossorigin="anonymous"></script>
     <tbody id="invoiceBody"></tbody>
   </table>
 
-  <h3 id="invoiceTotal" style="text-align:right;margin-top:20px;"></h3>
+  <h3 id="invoiceTotal" class="invoice-total"></h3>
 
-  <div style="margin-top:40px;text-align:right;">
+  <div class="invoice-sign">
     <p>Authorized Signature</p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Signature.png" width="120">
+    <img src="sign.png" width="120">
   </div>
+
 </div>
 
   
