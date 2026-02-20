@@ -137,25 +137,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
 /* ================= PDF DOWNLOAD ================= */
-
 window.downloadPDF = async () => {
 
   const sub = JSON.parse(localStorage.getItem("subscriptionData"));
   const today = new Date();
 
-  if (!sub) {
-    alert("Subscription Error");
-    return;
-  }
+  if (!sub) return alert("Subscription Error");
 
-  // ===== CHECK TRIAL =====
+  // ===== TRIAL =====
   const trialStart = new Date(sub.trialStart);
   const trialDiff = Math.floor((today - trialStart) / (1000*60*60*24));
   const trialActive = trialDiff < TRIAL_DAYS;
 
-  // ===== CHECK PREMIUM =====
+  // ===== PREMIUM =====
   let premiumActive = false;
-
   if (sub.isPremium && sub.premiumStart) {
     const start = new Date(sub.premiumStart);
     const diff = Math.floor((today - start) / (1000*60*60*24));
@@ -163,31 +158,23 @@ window.downloadPDF = async () => {
   }
 
   if (!trialActive && !premiumActive) {
-    const btn = document.getElementById("pdfBtn");
-    btn.classList.add("locked");
-
-    setTimeout(() => {
-      btn.classList.remove("locked");
-    }, 500);
-
-    alert("Premium Required");
-    return;
+    document.getElementById("pdfBtn")?.classList.add("locked");
+    setTimeout(()=>document.getElementById("pdfBtn")?.classList.remove("locked"),500);
+    return alert("Premium Required");
   }
 
-  if (!kitchenData.length) {
-    alert("No Data to Export!");
-    return;
-  }
+  if (!kitchenData?.length) return alert("No Data to Export!");
 
-  const invoice = $("invoiceTemplate");
-  const tbody = invoice?.querySelector("tbody");
+  const invoice = document.getElementById("invoiceTemplate");
+  const tbody = document.getElementById("invoiceBody");
   if (!invoice || !tbody) return;
 
+  // ===== Fill table =====
   tbody.innerHTML = "";
   let total = 0;
 
-  kitchenData.forEach(e => {
-    total += e.amount;
+  kitchenData.forEach(e=>{
+    total += Number(e.amount);
     tbody.innerHTML += `
       <tr>
         <td>${e.date}</td>
@@ -195,42 +182,45 @@ window.downloadPDF = async () => {
         <td>${e.qty}</td>
         <td>${e.type}</td>
         <td>₹ ${e.amount}</td>
-      </tr>
-    `;
+      </tr>`;
   });
 
-  $("invoiceDate").innerText = "Date: " + new Date().toLocaleString();
-  $("invoiceTotal").innerText = "Grand Total ₹ " + total;
+  document.getElementById("invoiceDate").innerText =
+    "Date: " + new Date().toLocaleString();
 
-// Theme apply
-const isDark = document.body.classList.contains("dark");
+  document.getElementById("invoiceTotal").innerText =
+    "Grand Total ₹ " + total;
 
-// theme class
-invoice.classList.remove("light-invoice","dark-invoice");
-invoice.classList.add(isDark ? "dark-invoice" : "light-invoice");
+  // ===== Theme =====
+  const isDark = document.body.classList.contains("dark");
+  invoice.classList.remove("light-invoice","dark-invoice");
+  invoice.classList.add(isDark ? "dark-invoice" : "light-invoice");
 
-// 👇 ONLY visible for capture
-invoice.style.visibility = "visible";
-invoice.style.pointerEvents = "auto";
+  // ===== SHOW OFFSCREEN =====
+  invoice.style.opacity = "1";
+  invoice.style.pointerEvents = "auto";
 
-// Capture
-const canvas = await html2canvas(invoice,{
-  scale:2,
-  backgroundColor: isDark ? "#121212" : "#ffffff",
-  useCORS:true
-});
+  await new Promise(r=>setTimeout(r,300)); // render wait
 
-const img = canvas.toDataURL("image/png");
+  // ===== CAPTURE =====
+  const canvas = await html2canvas(invoice,{
+    scale:2,
+    useCORS:true,
+    backgroundColor: isDark ? "#121212" : "#ffffff"
+  });
 
-const { jsPDF } = window.jspdf;
-const doc = new jsPDF("p","mm","a4");
+  const img = canvas.toDataURL("image/png");
 
-doc.addImage(img,"PNG",10,10,190,0);
-doc.save("Kitchen_Invoice.pdf");
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p","mm","a4");
 
-// 👇 hide again
-invoice.style.visibility = "hidden";
-invoice.style.pointerEvents = "none";
+  doc.addImage(img,"PNG",10,10,190,0);
+  doc.save("Kitchen_Invoice.pdf");
+
+  // ===== HIDE AGAIN =====
+  invoice.style.opacity = "0";
+  invoice.style.pointerEvents = "none";
+};
 
 /* ================= SUBSCRIPTION ================= */
 
