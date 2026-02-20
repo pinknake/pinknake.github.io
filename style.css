@@ -677,3 +677,28 @@ a{
   text-decoration:none;
   font-weight:bold;
 }
+
+/* ============== Blog Section =========== */ 
+.blog-card{
+  background: linear-gradient(135deg,#ff9966,#ff5e62);
+  color:#fff;
+  padding:20px;
+  margin:15px;
+  border-radius:15px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  transition:0.3s;
+  animation:fadeIn 1s ease;
+}
+.blog-card:hover{
+  transform:translateY(-5px) scale(1.02);
+}
+.blog-icon{
+  font-size:40px;
+  margin-bottom:10px;
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
