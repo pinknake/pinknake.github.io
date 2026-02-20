@@ -1,5 +1,5 @@
 /* ================= VERSION ================= */
-const CACHE_NAME = "kitchen-manager-v4";
+const CACHE_NAME = "kitchen-manager-v5";
 
 /* ================= APP SHELL ================= */
 const APP_SHELL = [
