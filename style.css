@@ -344,44 +344,84 @@ tr:nth-child(even) td{
   font-size:14px;
 }
 
+.invoice-title{
+  text-align:center;
+  margin-bottom:5px;
+}
+
+.dark-invoice .invoice-title{
+  color:#ff9800 !important;
+}
 /* ================= LIGHT ================= */
-.light-invoice{
-  background:#ffffff !important;
-  color:#000 !important;
-  font-weight:600;
-}
-
 .light-invoice th{
-  background:#4CAF50 !important;
-  color:#fff !important;
+  background:linear-gradient(135deg,#667eea,#764ba2) !important;
 }
 
-.light-invoice td{
-  border-bottom:1px solid #ddd !important;
+.light-invoice tbody tr:nth-child(even){
+  background:#f6f8ff;
 }
 
-/* ================= DARK ================= */
+.light-invoice #invoiceTotal{
+  color:#4CAF50 !important;
+  font-size:18px;
+  font-weight:700;
+}
+/* ================= DARK PDF PRO ================= */
 .dark-invoice{
   background:#121212 !important;
-  color:#fff !important;
+  color:#f5f5f5 !important;
   font-weight:600;
 }
 
-/* Override inline styles */
-.dark-invoice h2,
-.dark-invoice p,
-.dark-invoice td,
-.dark-invoice th{
-  color:#fff !important;
+/* Header title */
+.dark-invoice .invoice-title{
+  color:#ff9800 !important;
+  text-shadow:0 0 6px rgba(255,152,0,0.3);
 }
 
+/* Table */
+.dark-invoice table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+/* Header row */
 .dark-invoice th{
-  background:#ff9800 !important;
+  background:linear-gradient(135deg,#ff9800,#ff5722) !important;
   color:#000 !important;
+  padding:10px;
+  font-size:13px;
 }
 
+/* Body rows */
 .dark-invoice td{
-  border-bottom:1px solid #333 !important;
+  padding:9px;
+  border-bottom:1px solid #2c2c2c !important;
+  color:#eee !important;
+}
+
+/* Zebra effect */
+.dark-invoice tbody tr:nth-child(even){
+  background:#1a1a1a;
+}
+
+.dark-invoice tbody tr:nth-child(odd){
+  background:#161616;
+}
+
+/* Total */
+.dark-invoice #invoiceTotal{
+  color:#00e676 !important;
+  font-size:18px;
+  font-weight:700;
+}
+
+/* Signature */
+.dark-invoice .signature{
+  color:#aaa !important;
 }
 
 /* ================= PREMIUM BOX ================= */
