@@ -407,8 +407,11 @@ ${url}`;
 
 };
   
-  /* =========== Blog ================== */ 
-  function openBlog(){
+  /* helper */
+const $ = (id) => document.getElementById(id);
+
+/* =========== Blog ================== */ 
+window.openBlog = function(){
   window.location.href="blog.html";
 }
   
