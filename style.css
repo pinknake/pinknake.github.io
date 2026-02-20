@@ -340,6 +340,50 @@ tr:nth-child(even) td{
   width:800px;
   font-size:14px;
 }
+/* ================== Invoice Light ============= */ 
+/* ===== LIGHT PDF ===== */
+.light-invoice{
+  background:#ffffff;
+  color:#000;
+  padding:20px;
+  font-weight:600;
+}
+
+.light-invoice table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.light-invoice th{
+  background:#4CAF50;
+  color:#fff;
+  padding:8px;
+}
+
+.light-invoice td{
+  padding:8px;
+  border-bottom:1px solid #ddd;
+}
+
+/* ===== DARK PDF ===== */
+.dark-invoice{
+  background:#121212;
+  color:#fff;
+  padding:20px;
+  font-weight:600;
+}
+
+.dark-invoice th{
+  background:#ff9800;
+  color:#000;
+  padding:8px;
+}
+
+.dark-invoice td{
+  padding:8px;
+  border-bottom:1px solid #333;
+}
+
 
 /* ================= PREMIUM BOX ================= */
 
