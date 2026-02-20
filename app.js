@@ -407,8 +407,6 @@ ${url}`;
 
 };
   
-  /* helper */
-const $ = (id) => document.getElementById(id);
 
 /* =========== Blog ================== */ 
 window.openBlog = function(){
