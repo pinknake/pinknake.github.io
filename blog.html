@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kitchen Blog</title>
+<style>
+body{font-family:sans-serif;background:#f5f5f5;padding:15px;}
+.blog{
+  background:#fff;
+  margin-bottom:15px;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>📚 Kitchen Manager Blog</h2>
+
+<div class="blog" onclick="openArticle(1)">
+<h3>How to Use Kitchen Manager</h3>
+<p>Step by step beginner guide</p>
+</div>
+
+<div class="blog" onclick="openArticle(2)">
+<h3>Common Problems & Fix</h3>
+<p>Quick troubleshooting guide</p>
+</div>
+
+<div class="blog" onclick="openArticle(3)">
+<h3>Copyright & Usage Policy</h3>
+<p>Rules & safety information</p>
+</div>
+
+<script>
+function openArticle(id){
+  window.location.href="blog-detail.html?id="+id;
+}
+</script>
+
+</body>
+</html>
