@@ -329,6 +329,7 @@ tr:nth-child(even) td{
 }
 
 /* ================= INVOICE (PDF SAFE) ================= */
+
 #invoiceTemplate{
   position:fixed;
   top:0;
@@ -339,54 +340,49 @@ tr:nth-child(even) td{
   width:800px;
   background:#fff;
   color:#000;
+  padding:20px;
+  font-size:14px;
 }
 
-/* LIGHT */
+/* ================= LIGHT ================= */
 .light-invoice{
-  background:#ffffff;
-  color:#000;
+  background:#ffffff !important;
+  color:#000 !important;
   font-weight:600;
-}
-
-.light-invoice table{
-  width:100%;
-  border-collapse:collapse;
 }
 
 .light-invoice th{
-  background:#4CAF50;
-  color:#fff;
-  padding:8px;
+  background:#4CAF50 !important;
+  color:#fff !important;
 }
 
 .light-invoice td{
-  padding:8px;
-  border-bottom:1px solid #ddd;
+  border-bottom:1px solid #ddd !important;
 }
 
-/* DARK */
+/* ================= DARK ================= */
 .dark-invoice{
-  background:#121212;
-  color:#fff;
+  background:#121212 !important;
+  color:#fff !important;
   font-weight:600;
 }
 
-.dark-invoice table{
-  width:100%;
-  border-collapse:collapse;
+/* Override inline styles */
+.dark-invoice h2,
+.dark-invoice p,
+.dark-invoice td,
+.dark-invoice th{
+  color:#fff !important;
 }
 
 .dark-invoice th{
-  background:#ff9800;
-  color:#000;
-  padding:8px;
+  background:#ff9800 !important;
+  color:#000 !important;
 }
 
 .dark-invoice td{
-  padding:8px;
-  border-bottom:1px solid #333;
+  border-bottom:1px solid #333 !important;
 }
-
 
 /* ================= PREMIUM BOX ================= */
 
