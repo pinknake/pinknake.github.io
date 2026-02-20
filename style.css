@@ -173,3 +173,45 @@ body.light th{background:#667eea;color:#fff;}
 @media(max-width:600px){
   .fab{width:50px;height:50px;}
 }
+
+/* =========== invoice header ========= */ 
+.invoice-header{
+  text-align:center;
+}
+
+.invoice-logo{
+  width:70px;
+}
+
+.invoice-header h2{
+  color:#764ba2;
+  margin:5px 0;
+}
+
+.invoice-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+.invoice-table th{
+  background:#667eea;
+  color:#fff;
+  padding:8px;
+  border:1px solid #ddd;
+}
+
+.invoice-table td{
+  padding:8px;
+  border:1px solid #ddd;
+}
+
+.invoice-total{
+  text-align:right;
+  margin-top:20px;
+}
+
+.invoice-sign{
+  margin-top:40px;
+  text-align:right;
+}
