@@ -202,15 +202,23 @@ window.downloadPDF = async () => {
   $("invoiceDate").innerText = "Date: " + new Date().toLocaleString();
   $("invoiceTotal").innerText = "Grand Total ₹ " + total;
 
-  // Theme apply for PDF
+// Theme apply
 const isDark = document.body.classList.contains("dark");
+
 invoice.classList.remove("light-invoice","dark-invoice");
 invoice.classList.add(isDark ? "dark-invoice" : "light-invoice");
+
+// Force visible for capture
+invoice.style.display = "block";
+
+// Force colors (important)
+invoice.style.background = isDark ? "#121212" : "#ffffff";
+invoice.style.color = isDark ? "#ffffff" : "#000000";
 
 // Capture
 const canvas = await html2canvas(invoice, {
   scale: 2,
-  backgroundColor: null
+  backgroundColor: isDark ? "#121212" : "#ffffff"
 });
 
 const img = canvas.toDataURL("image/png");
@@ -221,6 +229,9 @@ const doc = new jsPDF("p", "mm", "a4");
 doc.addImage(img, "PNG", 10, 10, 190, 0);
 doc.save("Kitchen_Invoice.pdf");
 
+// Hide again
+invoice.style.display = "none";
+  
 
 /* ================= SUBSCRIPTION ================= */
 
