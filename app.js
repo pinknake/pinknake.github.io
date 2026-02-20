@@ -205,33 +205,32 @@ window.downloadPDF = async () => {
 // Theme apply
 const isDark = document.body.classList.contains("dark");
 
+// theme class
 invoice.classList.remove("light-invoice","dark-invoice");
 invoice.classList.add(isDark ? "dark-invoice" : "light-invoice");
 
-// Force visible for capture
-invoice.style.display = "block";
-
-// Force colors (important)
-invoice.style.background = isDark ? "#121212" : "#ffffff";
-invoice.style.color = isDark ? "#ffffff" : "#000000";
+// 👇 ONLY visible for capture
+invoice.style.visibility = "visible";
+invoice.style.pointerEvents = "auto";
 
 // Capture
-const canvas = await html2canvas(invoice, {
-  scale: 2,
-  backgroundColor: isDark ? "#121212" : "#ffffff"
+const canvas = await html2canvas(invoice,{
+  scale:2,
+  backgroundColor: isDark ? "#121212" : "#ffffff",
+  useCORS:true
 });
 
 const img = canvas.toDataURL("image/png");
 
 const { jsPDF } = window.jspdf;
-const doc = new jsPDF("p", "mm", "a4");
+const doc = new jsPDF("p","mm","a4");
 
-doc.addImage(img, "PNG", 10, 10, 190, 0);
+doc.addImage(img,"PNG",10,10,190,0);
 doc.save("Kitchen_Invoice.pdf");
 
-// Hide again
-invoice.style.display = "none";
-  
+// 👇 hide again
+invoice.style.visibility = "hidden";
+invoice.style.pointerEvents = "none";
 
 /* ================= SUBSCRIPTION ================= */
 
