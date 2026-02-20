@@ -202,15 +202,24 @@ window.downloadPDF = async () => {
   $("invoiceDate").innerText = "Date: " + new Date().toLocaleString();
   $("invoiceTotal").innerText = "Grand Total ₹ " + total;
 
-  const canvas = await html2canvas(invoice, { scale: 2 });
-  const img = canvas.toDataURL("image/png");
+  // Theme apply for PDF
+const isDark = document.body.classList.contains("dark");
+invoice.classList.remove("light-invoice","dark-invoice");
+invoice.classList.add(isDark ? "dark-invoice" : "light-invoice");
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
+// Capture
+const canvas = await html2canvas(invoice, {
+  scale: 2,
+  backgroundColor: null
+});
 
-  doc.addImage(img, "PNG", 10, 10, 190, 0);
-  doc.save("Kitchen_Invoice.pdf");
-};
+const img = canvas.toDataURL("image/png");
+
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF("p", "mm", "a4");
+
+doc.addImage(img, "PNG", 10, 10, 190, 0);
+doc.save("Kitchen_Invoice.pdf");
 
 
 /* ================= SUBSCRIPTION ================= */
