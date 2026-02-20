@@ -407,6 +407,10 @@ ${url}`;
 
 };
   
+  /* =========== Blog ================== */ 
+  function openBlog(){
+  window.location.href="blog.html";
+}
   
 /* ================= PWA INSTALL ================= */
 
