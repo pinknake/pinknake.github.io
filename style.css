@@ -331,7 +331,6 @@ tr:nth-child(even) td{
 /* ================= INVOICE (PDF SAFE) ================= */
 
 #invoiceTemplate{
-#invoiceTemplate{
   position:fixed;
   top:0;
   left:0;
