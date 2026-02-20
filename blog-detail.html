@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Blog Detail</title>
+<style>
+body{font-family:sans-serif;background:#fff;padding:20px;}
+</style>
+</head>
+<body>
+
+<h1 id="title"></h1>
+<p id="content"></p>
+
+<script>
+const params=new URLSearchParams(window.location.search);
+const id=params.get("id");
+
+const blogs={
+1:{
+title:"How to Use Kitchen Manager",
+content:"Step1: Add items... Step2: Export PDF... Step3: Share..."
+},
+2:{
+title:"Common Problems & Fix",
+content:"Problem: PDF not export → Fix: allow storage permission..."
+},
+3:{
+title:"Copyright & Usage Policy",
+content:"Do not copy content without permission..."
+}
+};
+
+document.getElementById("title").innerText=blogs[id].title;
+document.getElementById("content").innerText=blogs[id].content;
+</script>
+
+</body>
+</html>
