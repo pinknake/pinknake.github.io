@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const masterItems = {
   Spices: ["Mirch/मिर्च", "Haldi/हल्दी", "Dhaniya/धनिया", "Jeera/जीरा", "Garam Masala/ गरम मसाला", "कड़ी पत्ता", "बेसन", "मेधा" ],
-  Oils: ["Mustard Oil/ सरसों तेल 1L", "Mustard Oil 5L", "Refined Oil/ रिफाइंड 1L"],
-  Grains: ["Rice/ चावल", "Atta/आटा ", "Chane White 250g/ सफेद चना", "काले छोले", " मूंग दाल", "चना दाल", " मां दाल", " काली दाल" "मुंगी मश्री दाल","  ],  
-  Shabji: ["Shabji/ सब्जी", "Tamato/टमाटर", "pea/ मटर", "Colefolower/गोबी", "Patato/अल्लू", " प्याज", "बैंगन", " पत्ता गोभी" ," शिमला मिर्च", " हरी मिर्च", " लहसुन", " गाजर", " मूली"],
+  Oils: ["Mustard Oil/ सरसों तेल 1L", "Mustard Oil 5L", "Refined Oil/ रिफाइंड 1L" ],
+  Grains: ["Rice/ चावल", "Atta/आटा ", "Chane White 250g/ सफेद चना", "काले छोले", " मूंग दाल", "चना दाल", "मां दाल", "काली दाल", "मुंगी मश्री दाल" ],  
+  Shabji: ["Shabji/ सब्जी", "Tamato/टमाटर", "pea/ मटर", "Colefolower/गोबी", "Patato/अल्लू", " प्याज", "बैंगन", "पत्ता गोभी" ," शिमला मिर्च", " हरी मिर्च", " लहसुन", " गाजर", " मूली"],
   Dairy: ["Ghee/ देसीघी kg", " पनीर", "milk/दूध", "curd/दही" ],
-Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीराम भुजिया ", "Samoosa/ समोसा ],
+Snacks: ["Biscuits/बिस्कुट", "Chips/ लेस ल्दीराम भुजिया ", "Samoosa/ समोसा" ],
   Bathroom: ["Soap/ शैंपू 2 Pack", "Soap/ गोदरेज साबुन 4 Pack", "Clinic Plus/ क्लीनिंग प्लस शैंपू ", "Surf Excel/ सर्फ एक्सेल ", "Vanish/ वेनिस", "Ezzy/ ईजी"]
 };
 
