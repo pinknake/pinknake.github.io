@@ -8,8 +8,8 @@ const APP_SHELL = [
   "/style.css",
   "/app.js",
   "/manifest.json",
-  "/icons/icon-192.JPG",
-  "/icons/icon-512.JPG"
+  "/icons/icon192.png",
+  "/icons/icon-512.png"
 ];
 
 /* ================= INSTALL ================= */
