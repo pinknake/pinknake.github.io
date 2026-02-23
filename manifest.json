@@ -27,12 +27,7 @@
 
   "screenshots": [
     {
-      "src": " .png",
-      "sizes": "540x720",
-      "type": "image/png"
-    },
-    {
-      "src": ".png",
+      "src": "fevicon-share.png",
       "sizes": "540x720",
       "type": "image/png"
     }
