@@ -23,6 +23,12 @@
       "sizes": "512x512",
       "type": "image/jpeg"
     }
+    {
+    "src": "icons/fevicon-share.png",
+    "sizes": "1024x1024",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }
   ],
 
   "screenshots": [
