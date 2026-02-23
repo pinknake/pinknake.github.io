@@ -24,7 +24,7 @@
       "type": "image/jpeg"
     }
     {
-    "src": "icons/fevicon-share.png",
+    "src": "icon1024.png",
     "sizes": "1024x1024",
     "type": "image/png",
     "purpose": "any maskable"
@@ -33,7 +33,7 @@
 
   "screenshots": [
     {
-      "src": "fevicon-share.png",
+      "src": "logo.png",
       "sizes": "540x720",
       "type": "image/png"
     }
