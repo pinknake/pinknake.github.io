@@ -1,0 +1,40 @@
+{
+  "name": "Kitchen Manager",
+  "short_name": "Kitchen",
+  "id": "/",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#ff6b00",
+  "background_color": "#ffffff",
+  "description": "Smart kitchen expense and stock manager PWA app",
+  "lang": "en",
+  "categories": ["productivity","food","utilities"],
+
+  "icons": [
+    {
+      "src": "icons/icon-192.JPG",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "icons/icon-512.JPG",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": " .png",
+      "sizes": "540x720",
+      "type": "image/png"
+    },
+    {
+      "src": ".png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ]
+}
