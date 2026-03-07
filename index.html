@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  
+  <!-- ===== META TAGS FOR SEO & ADSENSE ===== -->
+  <title>🕉️ Radhaswami Divine - Official Spiritual Music App</title>
+  <meta name="description" content="Radhaswami Divine - Listen to divine bhajans, aartis and spiritual music of Hazur Kawar Shaibh Ji Maharaj. 100% original religious content.">
+  <meta name="keywords" content="Radhaswami, Radhaswami Bhajan, Radhaswami Aarti, Hazur Kawar Shaibh, Dinod Haryana, Spiritual Music, Divine Bhajans">
+  <meta name="author" content="Radhaswami Divine Trust">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="theme-color" content="#8B5CF6">
+  
+  <!-- ===== OPEN GRAPH TAGS FOR SOCIAL SHARING ===== -->
+  <meta property="og:title" content="Radhaswami Divine - Spiritual Music App">
+  <meta property="og:description" content="Experience divine bhajans and aartis of Hazur Kawar Shaibh Ji Maharaj">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://radhaswamidivine.app">
+  <meta property="og:image" content="https://radhaswamidivine.app/og-image.jpg">
+  
+  <!-- ===== TWITTER CARD ===== -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Radhaswami Divine">
+  <meta name="twitter:description" content="Divine bhajans and spiritual music">
+  
+  <!-- ===== PWA SUPPORT ===== -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Radhaswami Divine">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+  
+  <!-- ===== FONTS ===== -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- ===== FONT AWESOME ===== -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- ===== ANIME.JS (LIGHTWEIGHT) ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  
+  <style>
+    /* ===== RESET & VARIABLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #8B5CF6;
+      --primary-dark: #6D28D9;
+      --gold: #FBBF24;
+      --saffron: #FF9933;
+      --dark: #0F172A;
+      --light: #F8FAFC;
+      --success: #10B981;
+      --error: #EF4444;
+    }
+
+    /* ===== BASE STYLES ===== */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* ===== LOADING SCREEN ===== */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0F172A;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== MAIN CONTAINER ===== */
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FBBF24, #FF9933);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    /* ===== STATS GRID ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+    }
+
+    /* ===== TABS ===== */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+
+    .tab:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      color: #0F172A;
+      border-color: transparent;
+    }
+
+    /* ===== SEARCH ===== */
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 15px 20px 15px 45px;
+      border: none;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.4);
+      font-size: 16px;
+    }
+
+    /* ===== PLAYER CARD ===== */
+    .player-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .song-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: white;
+    }
+
+    .song-artist {
+      color: var(--gold);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    /* ===== PROGRESS ===== */
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      margin: 15px 0;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--saffron));
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.1s linear;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: -3px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .time-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 5px;
+    }
+
+    /* ===== CONTROLS ===== */
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 25px 0;
+    }
+
+    .control-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .control-btn:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
+    }
+
+    .control-btn.play-pause {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      color: #0F172A;
+      font-size: 24px;
+    }
+
+    /* ===== SECONDARY CONTROLS ===== */
+    .secondary-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .secondary-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: scale(1.1);
+    }
+
+    /* ===== SONG LIST ===== */
+    .song-list {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+    }
+
+    .songs-container {
+      list-style: none;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 5px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .song-item:hover {
+      background: rgba(255,255,255,0.05);
+      transform: translateX(5px);
+    }
+
+    .song-item.playing {
+      background: linear-gradient(90deg, rgba(139,92,246,0.2), transparent);
+      border-left: 3px solid var(--gold);
+    }
+
+    .song-number {
+      width: 30px;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+    }
+
+    .song-details {
+      flex: 1;
+    }
+
+    .song-name {
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .song-meta {
+      display: flex;
+      gap: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .song-fav {
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .song-fav.active {
+      color: #FF69B4;
+    }
+
+    /* ===== VISUALIZER ===== */
+    .visualizer {
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+      height: 40px;
+      margin: 15px 0;
+    }
+
+    .visualizer-bar {
+      width: 4px;
+      background: linear-gradient(to top, var(--gold), var(--saffron));
+      border-radius: 4px;
+      height: 20px;
+      animation: visualize 0.8s infinite alternate;
+    }
+
+    @keyframes visualize {
+      0% { height: 15px; }
+      100% { height: 40px; }
+    }
+
+    /* ===== DIVINE QUOTE ===== */
+    .quote {
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin: 25px 0;
+      padding: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-style: italic;
+    }
+
+    /* ===== FLOATING BUTTON ===== */
+    .float-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      border: none;
+      color: #0F172A;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      z-index: 100;
+      transition: all 0.2s;
+    }
+
+    .float-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      font-size: 13px;
+      z-index: 1000;
+      display: none;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--gold);
+    }
+
+    .toast.show {
+      display: block;
+      animation: slideUp 0.3s;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+      }
+      to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #1E1B4B, #2E1065);
+      max-width: 400px;
+      width: 90%;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      border: 1px solid var(--gold);
+    }
+
+    .modal-icon {
+      font-size: 50px;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .modal-text {
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 25px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .modal-btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, var(--gold), var(--saffron));
+      color: #0F172A;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .title {
+        font-size: 28px;
+      }
+      
+      .controls {
+        gap: 15px;
+      }
+      
+      .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
+      .control-btn.play-pause {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+      }
+    }
+
+    /* ===== AD SENSE COMPATIBLE ZONES ===== */
+    .ad-container {
+      margin: 20px 0;
+      text-align: center;
+      min-height: 100px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    /* ===== ERROR HANDLING ===== */
+    .error-message {
+      text-align: center;
+      padding: 30px;
+      color: var(--error);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Main App Container -->
+  <div class="app-container" id="appContainer">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">🕉️ राधास्वामी दिव्य</h1>
+      <p class="subtitle">RADHASWAMI DIVINE MUSIC</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="totalBhajans">0</div>
+        <div class="stat-label">Total Bhajans</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="favoritesCount">0</div>
+        <div class="stat-label">Favorites</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="playsCount">0</div>
+        <div class="stat-label">Total Plays</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="hoursCount">0</div>
+        <div class="stat-label">Hours</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="all">All Bhajans</button>
+      <button class="tab" data-tab="favorites">Favorites</button>
+      <button class="tab" data-tab="aartis">Aartis</button>
+      <button class="tab" data-tab="bhajans">Bhajans</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search bhajans...">
+    </div>
+
+    <!-- Player Card -->
+    <div class="player-card">
+      <h2 class="song-title" id="currentTitle">Radhaswami Bhajan</h2>
+      <p class="song-artist" id="currentArtist">Hazur Kawar Shaibh Ji</p>
+
+      <!-- Visualizer -->
+      <div class="visualizer" id="visualizer">
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+        <div class="visualizer-bar"></div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+      <div class="time-info">
+        <span id="currentTime">0:00</span>
+        <span id="totalTime">0:00</span>
+      </div>
+
+      <!-- Main Controls -->
+      <div class="controls">
+        <button class="control-btn" id="shuffleBtn">
+          <i class="fas fa-random"></i>
+        </button>
+        <button class="control-btn" id="prevBtn">
+          <i class="fas fa-backward-step"></i>
+        </button>
+        <button class="control-btn play-pause" id="playPauseBtn">
+          <i class="fas fa-play"></i>
+        </button>
+        <button class="control-btn" id="nextBtn">
+          <i class="fas fa-forward-step"></i>
+        </button>
+        <button class="control-btn" id="repeatBtn">
+          <i class="fas fa-repeat"></i>
+        </button>
+      </div>
+
+      <!-- Secondary Controls -->
+      <div class="secondary-controls">
+        <button class="secondary-btn" id="favoriteBtn">
+          <i class="far fa-heart"></i>
+        </button>
+        <button class="secondary-btn" id="shareBtn">
+          <i class="fas fa-share-nodes"></i>
+        </button>
+        <button class="secondary-btn" id="infoBtn">
+          <i class="fas fa-circle-info"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Divine Quote -->
+    <div class="quote">
+      <i class="fas fa-quote-left" style="color: var(--gold);"></i>
+      राधास्वामी दया की दया • राधास्वामी सहाये • राधास्वामी
+      <i class="fas fa-quote-right" style="color: var(--gold);"></i>
+    </div>
+
+    <!-- Song List -->
+    <div class="song-list">
+      <div class="list-header">
+        <span>Divine Playlist</span>
+        <span id="songCount">0 songs</span>
+      </div>
+      <ul class="songs-container" id="songList"></ul>
+    </div>
+
+    <!-- Ad Container (AdSense Ready) -->
+    <div class="ad-container">
+      <!-- AdSense code will go here -->
+      <p style="color: rgba(255,255,255,0.3); font-size: 12px;">Advertisement</p>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <button class="float-btn" id="topBtn">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Info Modal -->
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <div class="modal-icon">🕉️</div>
+      <h2 class="modal-title">राधास्वामी</h2>
+      <p class="modal-text">
+        Hazur Kawar Shaibh Ji Maharaj<br>
+        Dinod, Haryana<br><br>
+        Experience divine bhajans and spiritual music
+      </p>
+      <button class="modal-btn" onclick="closeModal()">Radhaswami</button>
+    </div>
+  </div>
+
+  <script>
+    // ==================== HIGH QUALITY CONTENT ====================
+    const songs = [
+      { id: 1, title: "NAMO NAMO SATGURU NAMO", src: "songs/NAMO-NAMO-SATGURU-NAMO.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 270 },
+      { id: 2, title: "BARAMBAR KARU VINTI", src: "songs/02-BARAMBAR-KARU-VINTI-RADHA-SWAMI-AAGE.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 315 },
+      { id: 3, title: "KARU VINTI DOKARJODI", src: "songs/03 KARU VINTI DOKARJODI ARJ S", artist: "Radhaswami", genre: "Bhajan", duration: 285 },
+      { id: 4, title: "DARD DUKHI KE VIRHAN BHARI", src: "songs/04 DARD DUKHI KE VIRHAN BHARI", artist: "Radhaswami", genre: "Bhajan", duration: 380 },
+      { id: 5, title: "MERE PYARE GURU DATA", src: "songs/05-MERE-PYARE-GURU-DATA.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 330 },
+      { id: 6, title: "GURU KI KAR HARDAM POOJA", src: "songs/06-GURU-KI-KAR-HARDAM-POOJA.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 290 },
+      { id: 7, title: "GURU DHAYAN DHARO TUM", src: "songs/07-GURU-DHAYAN-DHARO-TUM.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 310 },
+      { id: 8, title: "CHARAN SHARAN KI VANDANA", src: "songs/08 CHARAN SHARAN KI VANDANA", artist: "Radhaswami", genre: "Bhajan", duration: 280 },
+      { id: 9, title: "RADHA SWAMI NAAM SURIR", src: "songs/09-RADHA-SWAMI-NAAM-SURIR-MAN-MEIN.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 355 },
+      { id: 10, title: "AARTI AAGE RADHA SWAMI KI", src: "songs/10-AARTI-AAGE-RADHA-SWAMI-KI.mp3", artist: "Radhaswami", genre: "Aarti", duration: 390 },
+      { id: 11, title: "NAMO NAMO SATGURU HAATH JODE", src: "songs/11-NAMO-NAMO-SATGURU-HAATH-JODE-KARU-VINNTI.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 320 },
+      { id: 12, title: "MANWA TU BANA MADARI", src: "songs/12-MANWA-TU-BANA-MADARI.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 275 },
+      { id: 13, title: "MAIN TO DHUDHAT DOLU", src: "songs/13-MAIN-TO-DHUDHAT-DOLU-HE-SATGURU.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 345 },
+      { id: 14, title: "TAN MAN DHAN KI BAAZI", src: "songs/15-TAN-MAN-DHAN-KI-BAAZI-LA-LE.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 295 },
+      { id: 15, title: "TANHE NAHI AAYA CHINA", src: "songs/16-TANHE-NAHI-AAYA-CHINA.mp3", artist: "Radhaswami", genre: "Bhajan", duration: 305 }
+    ];
+
+    // ==================== STATE MANAGEMENT ====================
+    let state = {
+      currentIndex: 0,
+      currentTab: 'all',
+      isPlaying: false,
+      isShuffle: false,
+      isRepeat: false,
+      favorites: JSON.parse(localStorage.getItem('fav')) || [],
+      plays: JSON.parse(localStorage.getItem('plays')) || 0,
+      hours: JSON.parse(localStorage.getItem('hours')) || 0,
+      searchTerm: ''
+    };
+
+    // Audio element
+    const audio = new Audio();
+    audio.volume = 0.7;
+    audio.preload = 'metadata';
+
+    // ==================== DOM ELEMENTS ====================
+    const loadingScreen = document.getElementById('loadingScreen');
+    const appContainer = document.getElementById('appContainer');
+    const songList = document.getElementById('songList');
+    const searchInput = document.getElementById('searchInput');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const repeatBtn = document.getElementById('repeatBtn');
+    const favoriteBtn = document.getElementById('favoriteBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const infoBtn = document.getElementById('infoBtn');
+    const topBtn = document.getElementById('topBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+    const currentTimeSpan = document.getElementById('currentTime');
+    const totalTimeSpan = document.getElementById('totalTime');
+    const currentTitle = document.getElementById('currentTitle');
+    const currentArtist = document.getElementById('currentArtist');
+    const toast = document.getElementById('toast');
+    const infoModal = document.getElementById('infoModal');
+
+    // ==================== INITIALIZE ====================
+    function init() {
+      // Hide loading after 1 second
+      setTimeout(() => {
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }, 1000);
+
+      // Load first song
+      if (songs.length > 0) {
+        loadSong(0);
+      }
+
+      // Update stats
+      updateStats();
+      
+      // Render songs
+      renderSongs();
+
+      // Add event listeners
+      audio.addEventListener('timeupdate', updateProgress);
+      audio.addEventListener('loadedmetadata', () => {
+        totalTimeSpan.textContent = formatTime(audio.duration);
+      });
+      audio.addEventListener('ended', onSongEnd);
+
+      // Tab listeners
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+      });
+
+      // Search listener
+      searchInput.addEventListener('input', () => {
+        state.searchTerm = searchInput.value.toLowerCase();
+        renderSongs();
+      });
+
+      // Control listeners
+      playPauseBtn.addEventListener('click', togglePlayPause);
+      prevBtn.addEventListener('click', playPrevious);
+      nextBtn.addEventListener('click', playNext);
+      shuffleBtn.addEventListener('click', toggleShuffle);
+      repeatBtn.addEventListener('click', toggleRepeat);
+      favoriteBtn.addEventListener('click', toggleFavorite);
+      shareBtn.addEventListener('click', shareSong);
+      infoBtn.addEventListener('click', showInfo);
+      topBtn.addEventListener('click', scrollToTop);
+      progressContainer.addEventListener('click', seek);
+    }
+
+    // ==================== SONG FUNCTIONS ====================
+    function loadSong(index) {
+      if (index < 0 || index >= songs.length) return;
+      
+      state.currentIndex = index;
+      const song = songs[index];
+      
+      audio.src = song.src;
+      currentTitle.textContent = song.title;
+      currentArtist.textContent = `${song.artist} • ${song.genre}`;
+      
+      // Update favorite button
+      updateFavoriteButton();
+      
+      // Render songs to show playing state
+      renderSongs();
+    }
+
+    function playSong(index) {
+      loadSong(index);
+      audio.play().then(() => {
+        state.isPlaying = true;
+        updatePlayPauseIcon();
+        
+        // Update plays
+        state.plays++;
+        localStorage.setItem('plays', JSON.stringify(state.plays));
+        document.getElementById('playsCount').textContent = state.plays;
+        
+        showToast(`🕉️ ${songs[index].title}`);
+      }).catch(error => {
+        console.error('Playback error:', error);
+        showToast('Error playing song', 'error');
+      });
+    }
+
+    function togglePlayPause() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          state.isPlaying = true;
+          updatePlayPauseIcon();
+        });
+      } else {
+        audio.pause();
+        state.isPlaying = false;
+        updatePlayPauseIcon();
+      }
+    }
+
+    function updatePlayPauseIcon() {
+      playPauseBtn.innerHTML = state.isPlaying ? 
+        '<i class="fas fa-pause"></i>' : 
+        '<i class="fas fa-play"></i>';
+    }
+
+    function playNext() {
+      let nextIndex;
+      if (state.isShuffle) {
+        do {
+          nextIndex = Math.floor(Math.random() * songs.length);
+        } while (nextIndex === state.currentIndex && songs.length > 1);
+      } else {
+        nextIndex = (state.currentIndex + 1) % songs.length;
+      }
+      playSong(nextIndex);
+    }
+
+    function playPrevious() {
+      const prevIndex = (state.currentIndex - 1 + songs.length) % songs.length;
+      playSong(prevIndex);
+    }
+
+    function onSongEnd() {
+      if (state.isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        playNext();
+      }
+      
+      // Update hours (roughly)
+      state.hours += 0.0167; // ~1 minute
+      localStorage.setItem('hours', JSON.stringify(Math.floor(state.hours)));
+      document.getElementById('hoursCount').textContent = Math.floor(state.hours);
+    }
+
+    // ==================== PROGRESS ====================
+    function updateProgress() {
+      const progress = (audio.currentTime / audio.duration) * 100 || 0;
+      progressBar.style.width = progress + '%';
+      currentTimeSpan.textContent = formatTime(audio.currentTime);
+    }
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function seek(e) {
+      const rect = progressContainer.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = percent * audio.duration;
+    }
+
+    // ==================== RENDER SONGS ====================
+    function renderSongs() {
+      let filtered = songs;
+      
+      // Apply tab filter
+      if (state.currentTab === 'favorites') {
+        filtered = filtered.filter(s => state.favorites.includes(s.id));
+      } else if (state.currentTab === 'aartis') {
+        filtered = filtered.filter(s => s.genre === 'Aarti');
+      } else if (state.currentTab === 'bhajans') {
+        filtered = filtered.filter(s => s.genre === 'Bhajan');
+      }
+      
+      // Apply search
+      if (state.searchTerm) {
+        filtered = filtered.filter(s => 
+          s.title.toLowerCase().includes(state.searchTerm) ||
+          s.artist.toLowerCase().includes(state.searchTerm)
+        );
+      }
+
+      document.getElementById('songCount').textContent = filtered.length + ' songs';
+
+      songList.innerHTML = filtered.map((song, idx) => {
+        const originalIndex = songs.findIndex(s => s.id === song.id);
+        const isPlaying = originalIndex === state.currentIndex;
+        const isFav = state.favorites.includes(song.id);
+        
+        return `
+          <li class="song-item ${isPlaying ? 'playing' : ''}" onclick="window.playSong(${originalIndex})">
+            <span class="song-number">${idx + 1}</span>
+            <div class="song-details">
+              <div class="song-name">${song.title}</div>
+              <div class="song-meta">
+                <span>${song.artist}</span>
+                <span>${formatTime(song.duration)}</span>
+              </div>
+            </div>
+            <span class="song-fav ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavoriteById(${song.id})">
+              <i class="fas fa-heart"></i>
+            </span>
+          </li>
+        `;
+      }).join('');
+    }
+
+    // ==================== FAVORITES ====================
+    function toggleFavorite() {
+      const song = songs[state.currentIndex];
+      if (state.favorites.includes(song.id)) {
+        state.favorites = state.favorites.filter(id => id !== song.id);
+        showToast('Removed from favorites');
+      } else {
+        state.favorites.push(song.id);
+        showToast('Added to favorites');
+      }
+      localStorage.setItem('fav', JSON.stringify(state.favorites));
+      updateFavoriteButton();
+      renderSongs();
+    }
+
+    function toggleFavoriteById(id) {
+      if (state.favorites.includes(id)) {
+        state.favorites = state.favorites.filter(fid => fid !== id);
+        showToast('Removed from favorites');
+      } else {
+        state.favorites.push(id);
+        showToast('Added to favorites');
+      }
+      localStorage.setItem('fav', JSON.stringify(state.favorites));
+      if (id === songs[state.currentIndex]?.id) {
+        updateFavoriteButton();
+      }
+      renderSongs();
+    }
+
+    function updateFavoriteButton() {
+      const song = songs[state.currentIndex];
+      const isFav = state.favorites.includes(song?.id);
+      favoriteBtn.innerHTML = isFav ? 
+        '<i class="fas fa-heart"></i>' : 
+        '<i class="far fa-heart"></i>';
+    }
+
+    // ==================== SHUFFLE & REPEAT ====================
+    function toggleShuffle() {
+      state.isShuffle = !state.isShuffle;
+      shuffleBtn.style.color = state.isShuffle ? '#FF69B4' : 'white';
+      showToast(state.isShuffle ? 'Shuffle ON' : 'Shuffle OFF');
+    }
+
+    function toggleRepeat() {
+      state.isRepeat = !state.isRepeat;
+      repeatBtn.style.color = state.isRepeat ? '#FF69B4' : 'white';
+      showToast(state.isRepeat ? 'Repeat ON' : 'Repeat OFF');
+    }
+
+    // ==================== TABS ====================
+    function switchTab(tab) {
+      state.currentTab = tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+      renderSongs();
+    }
+
+    // ==================== SHARE ====================
+    function shareSong() {
+      const song = songs[state.currentIndex];
+      const text = `🕉️ Radhaswami Divine\n\nListening to: ${song.title}\n${song.artist}\n\n"राधास्वामी दया की दया"`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'Radhaswami Bhajan',
+          text: text,
+          url: window.location.href
+        });
+      } else {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    }
+
+    // ==================== INFO MODAL ====================
+    function showInfo() {
+      infoModal.classList.add('active');
+    }
+
+    function closeModal() {
+      infoModal.classList.remove('active');
+    }
+
+    // ==================== UTILITIES ====================
+    function updateStats() {
+      document.getElementById('totalBhajans').textContent = songs.length;
+      document.getElementById('favoritesCount').textContent = state.favorites.length;
+      document.getElementById('playsCount').textContent = state.plays;
+      document.getElementById('hoursCount').textContent = Math.floor(state.hours);
+    }
+
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.style.background = type === 'success' ? 'rgba(0,0,0,0.8)' : '#EF4444';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==================== PWA INSTALL ====================
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      // Show install button in floating buttons
+      const installBtn = document.createElement('button');
+      installBtn.className = 'float-btn';
+      installBtn.innerHTML = '<i class="fas fa-download"></i>';
+      installBtn.style.bottom = '80px';
+      installBtn.onclick = installPWA;
+      document.body.appendChild(installBtn);
+    });
+
+    function installPWA() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+      });
+    }
+
+    // ==================== EXPOSE GLOBALLY ====================
+    window.playSong = playSong;
+    window.toggleFavoriteById = toggleFavoriteById;
+    window.closeModal = closeModal;
+
+    // ==================== START ====================
+    init();
+  </script>
+</body>
+</html>
